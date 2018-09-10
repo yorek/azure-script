@@ -11,10 +11,12 @@ class HandlerManager:
     __handlers = {}
 
     def __init__(self):
+        print("Loading handlers...")
         for h in availabe_handlers:
-            print(h.azure_object)
+            print(". Found handler: '{0}'".format(h.azure_object))
             self.__handlers[h.azure_object] = h(self.context)
-
+        print
+        
     def set_context(self, name, value):
         self.context[name] = value
 
