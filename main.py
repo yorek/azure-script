@@ -45,25 +45,11 @@ class AQLTransformer(Transformer):
             if self.__handler_manager.is_handler_available(obj2):
                 obj = obj2
         
-        #print("***** FOUND OBJECT: '{0}'".format(obj))
-
         if self.__handler_manager.is_handler_available(obj):
             handler = self.__handler_manager.get_handler(obj)
             cmd += handler.create(items)            
         else:
-            print("***** MISSING HANDLER FOR: '{0}'".format(obj))
-     
-        # if (obj.startswith("eventgrid topic")):
-        #     cmd += u" eventgrid topic create -g {0} -n {1}".format(self.context["resource-group"], items[2])
-        #     cmd += u" -l {0}".format(self.context["location"])
-
-        # if (obj.startswith("storage")):
-        #     cmd += u" storage create {0}".format(items[1])
-        #     cmd += u" -g {0} -n {1}".format(self.context["resource-group"], items[2])
-        #     cmd += u" -l {0}".format(self.context["location"])
-        #     if (len(items)>3):
-        #         for param in items[3].children:
-        #             cmd += " --{0} {1}".format(param[0], param[1])
+            print("***** MISSING HANDLER FOR: '{0}'".format(obj))             
 
         print(cmd)
 

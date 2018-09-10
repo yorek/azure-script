@@ -36,7 +36,7 @@ create eventhubs eventhub 'dmk1eventhub'
 	capacity = 8
 );
 
-create eventhubs consumer-group 'dmk1cg'
+create eventhubs eventhub consumer-group 'dmk1cg'
 (
 	namespace = 'dmk1eventhubs',
 	eventhub = 'dmk1eventhub'

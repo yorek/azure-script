@@ -2,9 +2,9 @@ start: instruction+
 
 instruction: [create|use|execute] ";" 
 
-create: "create" object [object] name [["with"] block]
-use: "use" object [object] name
-execute: "execute" object [object] "action" action [["with"] block]
+create: "create" object object* name [["with"] block]
+use: "use" object object* name
+execute: "execute" object object* "action" action [["with"] block]
 
 object: OBJECT -> azobject
 name: STRING -> azname
