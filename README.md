@@ -1,0 +1,2 @@
+# adl
+Azure Deployment Language
