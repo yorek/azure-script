@@ -1,0 +1,28 @@
+start: instruction+
+
+instruction: command object [subobject] name ["with" block] ";" 
+            | execute object action ["with" block] ";"                
+
+command: CREATE|USE
+execute: EXECUTE
+object: OBJECT
+subobject: OBJECT
+action: "action" STRING
+name: STRING
+value: STRING|NUMBER
+
+block: "(" keyvalue+ ")"
+keyvalue: object "=" (value|block) [","]
+
+CREATE: "create"
+USE: "use"
+EXECUTE: "execute"
+ACTION: "action"
+
+OBJECT: ("a".."z" | "-")+
+STRING: (/".*?(?<!\\)"/ | /'.*?(?<!\\)'/)
+
+
+%import common.SIGNED_NUMBER -> NUMBER
+%import common.WS
+%ignore WS
