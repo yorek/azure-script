@@ -87,7 +87,7 @@ def main(debug=0):
 
     print('transpilation results:')
     print
-    
+        
     AQLTransformer().transform(tree)    
     print
 

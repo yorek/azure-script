@@ -1,4 +1,4 @@
-from Handler import Handler
+from handlers.Handler import Handler
 
 class EventGridHandler(Handler):
     azure_object = "eventgrid"

@@ -1,8 +1,5 @@
 from Handler import Handler
-from Storage import StorageHandler
-from ResourceGroup import ResourceGroupHandler
-from EventGrid import EventGridHandler
-from Eventhubs import EventHubsHandler
+import az
 
 availabe_handlers = (vars()["Handler"].__subclasses__())
 
@@ -11,12 +8,15 @@ class HandlerManager:
     __handlers = {}
 
     def __init__(self):
+        self.load_handlers()        
+
+    def load_handlers(self):
         print("Loading handlers...")
         for h in availabe_handlers:
             print(". Found handler: '{0}'".format(h.azure_object))
             self.__handlers[h.azure_object] = h(self.context)
         print
-        
+
     def set_context(self, name, value):
         self.context[name] = value
 
