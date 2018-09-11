@@ -17,7 +17,6 @@ value: (name|NUMBER|block) -> azvalue
 OBJECT: ("a".."z" | "-")+
 STRING: (/".*?(?<!\\)"/ | /'.*?(?<!\\)'/)
 
-
 %import common.SIGNED_NUMBER -> NUMBER
 %import common.WS
 %ignore WS

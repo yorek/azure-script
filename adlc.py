@@ -1,6 +1,7 @@
 import sys
-from lark import Lark, Transformer
-from handlers import HandlerManager
+from lark import Lark, Transformer, Tree
+from lark.lexer import Token
+from handlers.HandlerManager import HandlerManager
 
 class AQLTransformer(Transformer):
     __handler_manager = HandlerManager()
@@ -38,18 +39,28 @@ class AQLTransformer(Transformer):
     def create(self, items):                
         cmd = u""
         
-        obj = items[0]
+        objects = []
+        params = []
+        for item in items:
+            if isinstance(item, Token) and item.type == 'OBJECT':
+                objects.append(str(item))
+            elif isinstance(item, Tree):
+                params = item.children
+            else:
+                name = str(item)
 
-        if (items[1].type == 'OBJECT'):
-            obj2 = obj + " " + items[1]
-            if self.__handler_manager.is_handler_available(obj2):
-                obj = obj2
-        
-        if self.__handler_manager.is_handler_available(obj):
-            handler = self.__handler_manager.get_handler(obj)
-            cmd += handler.create(items)            
+        fqon = ''
+
+        for i in range(len(objects), 0, -1):
+            fqon = ' '.join(objects[0:i])
+            if self.__handler_manager.is_handler_available(fqon):
+                break
+
+        if self.__handler_manager.is_handler_available(fqon):
+            handler = self.__handler_manager.get_handler(fqon)
+            cmd += handler.create(objects, name, params)            
         else:
-            print("***** MISSING HANDLER FOR: '{0}'".format(obj))             
+            print("***** MISSING HANDLER FOR: '{0}'".format(fqon))             
 
         print(cmd)
 
@@ -67,13 +78,13 @@ class AQLTransformer(Transformer):
         pass
 
 
-def main(debug=0):
+def main(adl_file, debug=False):
     print('loading grammar...')
     with open('aql2.lark', 'r') as f:
         aql_grammar = f.read()
 
     print('loading adl file...')
-    with open('test3.adl', 'r') as f:
+    with open(adl_file, 'r') as f:
         text = f.read()
 
     print('parsing...')
@@ -91,10 +102,22 @@ def main(debug=0):
     AQLTransformer().transform(tree)    
     print
 
-if __name__ == '__main__':
+def show_help():
+    print("aldc <file.adl> [options]")
+    print
+    print("options:")
+    print(" --debug : print debug info")
 
-    if ( len(sys.argv) == 1 ):
-        main()
+
+if __name__ == '__main__':
+    debug = False
+
+    if ( len(sys.argv) < 2 or len(sys.argv) > 3 ):
+        show_help()
+        exit
     
-    if ( len(sys.argv) == 2 and sys.argv[1] == "debug" ):   
-        main(1)
+    if ( len(sys.argv) == 3):   
+        if sys.argv[2].lower() == "--debug":
+            debug = True                
+
+    main(sys.argv[1], debug)

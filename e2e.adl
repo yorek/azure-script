@@ -6,7 +6,7 @@ use resource group 'dmk1';
 
 create storage account 'dmk1storage'
 (
-	sku = 'Standard_LRS'	
+	sku = 'Standard_LRS'		
 );
 
 use storage account 'dmk1storage';

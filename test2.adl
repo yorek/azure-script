@@ -1,8 +1,6 @@
 use location 'eastus';
 
-create resource-group 'dmk1';
-
-use resource-group 'dmk1';
+use resource group 'dmk1';
 
 create storage account 'dmk1storage' with
 (
