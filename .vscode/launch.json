@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "${cwd}\\adlc.py",
-            "args": [ "e2e.adl", "--debug" ],
+            "args": [ "e2e-b.adl", "--debug" ],
             "console": "integratedTerminal"
         },
         {

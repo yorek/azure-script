@@ -67,9 +67,11 @@ class AQLTransformer(Transformer):
     def execute(self, items):
         cmd = u"az"
 
-        cmd += " {0} {1}".format(items[0], items[1])
+        cmd += " {0} {1}".format(items[0], items[1])                    
 
-        for param in items[2].children:
+        params = [i for i in items if isinstance(i, Tree)][0]
+
+        for param in params.children:
             cmd += " --{0} {1}".format(param[0], param[1])
 
         print(cmd)
@@ -80,7 +82,7 @@ class AQLTransformer(Transformer):
 
 def main(adl_file, debug=False):
     print('loading grammar...')
-    with open('aql2.lark', 'r') as f:
+    with open('aql-b.lark', 'r') as f:
         aql_grammar = f.read()
 
     print('loading adl file...')

@@ -1,0 +1,21 @@
+start: instruction+
+
+instruction: [create|use|execute] ";" 
+
+create: object object* "create" name [["with"] block]
+use: object object* "use" name
+execute: object object* [["with"] block]
+
+object: OBJECT -> azobject
+name: STRING -> azname
+
+block: "(" pair ("," pair)* ")"
+pair: object "=" value
+value: (name|NUMBER|block) -> azvalue
+
+OBJECT: ("a".."z" | "-")+
+STRING: (/".*?(?<!\\)"/ | /'.*?(?<!\\)'/)
+
+%import common.SIGNED_NUMBER -> NUMBER
+%import common.WS
+%ignore WS

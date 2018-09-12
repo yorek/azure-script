@@ -1,0 +1,43 @@
+location use 'eastus';
+
+resource group create 'dmk1';
+
+resource group use 'dmk1';
+
+storage account create 'dmk1storage'
+(
+	sku = 'Standard_LRS'		
+);
+
+storage account use 'dmk1storage';
+
+storage share create 'locust';
+
+storage upload file
+(
+	share = 'locust',
+	source = './locust-scripts/simulator-eg.py',
+	account-name = 'dmk1storage'
+);
+
+eventgrid topic create 'dmk1topic';
+
+eventhubs namespace create 'dmk1eventhubs' 
+(
+	sku = 'Standard',
+	capacity = 8
+);
+
+eventhubs eventhub create 'dmk1eventhub' 
+(
+	namespace = 'dmk1eventhubs',
+	message-retention = 1,
+	partition-count = 32,	
+	capacity = 8
+);
+
+eventhubs eventhub consumer-group create 'dmk1cg'
+(
+	namespace = 'dmk1eventhubs',
+	eventhub = 'dmk1eventhub'
+);
