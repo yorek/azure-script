@@ -1,8 +1,0 @@
-use location 'eastus';
-
-use resource group 'dmk1';
-
-create storage account 'dmk1storage' with
-(
-	sku = 'Standard_LRS'	
-);
