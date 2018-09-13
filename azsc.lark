@@ -1,19 +1,23 @@
 start: instruction+
 
-instruction: [create|use|execute] ";" 
+instruction: [variable][create|use|execute|list] ";" 
+    | variable "=" value ";"
 
 create: object object* "create" name [["with"] block]
+list: object object* "list" name [["with"] block]
 use: object object* "use" name
 execute: object object* [["with"] block]
+variable: "$" object
+
 
 object: OBJECT -> azobject
 name: STRING -> azname
 
-block: "(" pair ("," pair)* ")"
-pair: object "=" value
+block: "{" pair ("," pair)* "}"
+pair: object ":" value
 value: (name|NUMBER|block) -> azvalue
 
-OBJECT: ("a".."z" | "-")+
+OBJECT: ("a".."z" | "A".."Z" | "1".."9" | "-")+
 STRING: (/".*?(?<!\\)"/ | /'.*?(?<!\\)'/)
 
 %import common.SIGNED_NUMBER -> NUMBER

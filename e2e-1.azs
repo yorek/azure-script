@@ -1,0 +1,78 @@
+$location = 'eastus';
+$eventHubName = 'dmk1eventhub';
+
+location use 'eastus';
+
+resource group create 'dmk1';
+
+resource group use 'dmk1';
+
+storage account create 'dmk1storage'
+{
+	sku: 'Standard_LRS'		
+};
+
+storage account use 'dmk1storage';
+
+eventgrid topic create 'dmk1topic';
+
+storage share create 'dmk1locust';
+
+storage share use 'dmk1locust';
+
+storage upload file
+{	
+	source: './locust-scripts/simulator-eg.py'
+};
+
+eventhubs namespace create 'dmk1eventhubs' 
+{
+	sku: 'Standard',
+	capacity: 8
+};
+
+eventhubs namespace use 'dmk1eventhubs';
+
+eventhubs eventhub create 'dmk1eventhub' 
+{
+	message-retention: 1,
+	partition-count: 32,	
+	capacity: 8
+};
+
+eventhubs eventhub use 'dmk1eventhub';
+
+eventhubs eventhub consumer-group create 'dmk1cg';
+
+functionapp create 'dmk1functionapp1';
+
+functionapp deployment source config-zip 
+{
+	src: 'something.zip'
+};
+
+eventhub namespace authorization-rule keys list 'RootManageSharedAccessKey'
+{
+	query: "primaryConnectionString"
+};
+
+functionapp config appsettings set 
+{
+	settings: "EventHubConnectionString=$constr"
+};
+
+functionapp config appsettings set 
+{
+	settings: "EventHubPath=$eventHubName"
+};
+
+appinsight create 'dmk1functionapp1appinsights' {
+	id: "koala"	
+};
+
+appinsight list 'dmk1functionapp1appinsights' {
+	query: "properties.InstrumentationKey"
+};
+	
+
+
