@@ -35,11 +35,17 @@ isn't that so much better?
 AZ Script is written in python and can easily be extended to support any kind of Azure Resource just by writing a simple plugin, which is nothing more than a class derived from the base class ```Handler```. Really easy!.
 
 ## Usage
-thgit 
-
+```
+azsc.bat <filename.azs> [--debug]
+```
+will generate the AZ CLI commands needed to do what defined in the script file.
+`--debug` will also print the parse tree for debugging purposes
 
 ## Transpilation
 The result of transpiling is also extensibile. For now the result is a script of AZ CLI commands, but it can be replaced to generate ARM templates or even direct REST API calls if you really want.
+
+## Notes
+Grammar definition is done using EBNF format and the parses is [Lark](https://github.com/lark-parser/lark)
 
 ## Roadmap
 For now this is just an experiment. Let's see where it goes...
