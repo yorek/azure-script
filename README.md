@@ -24,9 +24,9 @@ with AZ Script you would write
 ```
 location use 'eastus';
 resource group use 'myrg';
-storage account create 'storage' ( 
-  sku = 'Standard_LRS'
-);
+storage account create 'storage' { 
+  sku: 'Standard_LRS'
+};
 ```
  
 isn't that so much better?
