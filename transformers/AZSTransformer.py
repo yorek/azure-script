@@ -5,23 +5,24 @@ from handlers.HandlerManager import HandlerManager
 class AZSTransformer(Transformer):
     __handler_manager = HandlerManager()
 
-    def pair(self, (k,v)):
+    def pair(self, kv):
+        k,v = kv
         return k,v
 
-    def action(self, (s,)):
-        return s[1:-1]
+    def action(self, s):        
+        return s[0][1:-1]
 
-    def azvalue(self, (s,)):
-        return s
+    def azvalue(self, s):
+        return s[0]
 
-    def string(self, (s,)):
-        return '"' + s[1:-1] + '"'
+    def string(self, s):
+        return '"' + s[0][1:-1] + '"'
 
-    def azname(self, (s,)):
-        return '"' + s[1:-1] + '"'
+    def azname(self, s):
+        return '"' + s[0][1:-1] + '"'
 
-    def azobject(self, (s,)):
-        return s
+    def azobject(self, s):
+        return s[0]
 
     def use(self, items):
         if len(items) == 2:

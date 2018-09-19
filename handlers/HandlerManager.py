@@ -1,5 +1,5 @@
 from handlers import availabe_handlers
-from Handler import Handler
+from handlers import Handler
 
 class HandlerManager:
     context = {}

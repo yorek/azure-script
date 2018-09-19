@@ -38,11 +38,11 @@ if __name__ == '__main__':
 
     if ( len(sys.argv) < 2 or len(sys.argv) > 3 ):
         show_help()
-        exit
+        exit(0)
 
     if (not sys.argv[1].endswith(".azs")):
         show_help()
-        exit
+        exit(0)
     
     if ( len(sys.argv) == 3):   
         if sys.argv[2].lower() == "--debug":
