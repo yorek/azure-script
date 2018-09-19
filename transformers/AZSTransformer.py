@@ -31,7 +31,7 @@ class AZSTransformer(Transformer):
         if len(items) == 3:
             k = "{0}-{1}".format(items[0], items[1])
             v = items[2]
-
+        
         #print("[set {0} = {1}]".format(k, v))
         self.__handler_manager.set_context(k, v)
 
@@ -63,7 +63,35 @@ class AZSTransformer(Transformer):
 
         print(cmd)
 
-    def execute(self, items):
+    def execute(self, items):                
+        cmd = u""
+        
+        objects = []
+        params = []
+        for item in items:
+            if isinstance(item, Token) and item.type == 'OBJECT':
+                objects.append(str(item))
+            elif isinstance(item, Tree):
+                params = item.children
+            else:
+                name = str(item)
+
+        fqon = ''
+
+        for i in range(len(objects), 0, -1):
+            fqon = ' '.join(objects[0:i])
+            if self.__handler_manager.is_handler_available(fqon):
+                break
+
+        if self.__handler_manager.is_handler_available(fqon):
+            handler = self.__handler_manager.get_handler(fqon)
+            cmd += handler.execute(objects, name, params)            
+        else:
+            print("***** MISSING HANDLER FOR: '{0}'".format(fqon))             
+
+        print(cmd)
+
+    def execute_old(self, items):        
         cmd = u"az"
 
         cmd += " {0} {1}".format(items[0], items[1])                    

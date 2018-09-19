@@ -1,6 +1,3 @@
-$location = 'eastus';
-$eventHubName = 'dmk1eventhub';
-
 location use 'eastus';
 
 resource group create 'dmk1';

@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "${cwd}\\azsc.py",
-            "args": [ "e2e-b.adl", "--debug" ],
+            "args": [ "e2e-1.azs", "--debug" ],
             "console": "integratedTerminal"
         },
         {
