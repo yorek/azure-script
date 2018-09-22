@@ -6,5 +6,5 @@ class Handler(object):
 
     def set_context_value(self, objects, value):
         key = '-'.join(objects) 
-        print("[{0}:{1}]".format(key, value))
+        #print("[{0}:{1}]".format(key, value))
         self.context[key] = value
