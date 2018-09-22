@@ -12,6 +12,8 @@
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <InterpreterId>MSBuild|main|$(MSBuildProjectFullPath)</InterpreterId>
+    <CommandLineArguments>e2e-1.azs</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -19,12 +21,20 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="azsc.bat" />
+    <Content Include="azsc.lark" />
+    <Content Include="e2e-1.azs" />
+    <Content Include="LICENSE" />
+    <Content Include="README.md" />
     <Content Include="requirements.txt" />
+    <Content Include="test.azs" />
+    <Content Include="TODO.md" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="azsc.py" />
     <Compile Include="handlers\arm\__init__.py" />
     <Compile Include="handlers\az\EventGrid.py" />
+    <Compile Include="handlers\az\CosmosDB.py" />
     <Compile Include="handlers\az\EventHubs.py" />
     <Compile Include="handlers\az\ResourceGroup.py" />
     <Compile Include="handlers\az\Storage.py" />

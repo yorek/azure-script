@@ -2,22 +2,19 @@ location use 'eastus';
 
 resource group create 'dmk1';
 
-storage account create 'dmk1storage'
-{
+storage account create 'dmk1storage' (
 	sku: 'Standard_LRS'		
-};
+);
 
-storage account use 'dmk1storage';
-
-eventhubs namespace create 'dmk1ingest' {
+eventhubs namespace create 'dmk1ingest' (
 	sku: "Standard",
 	capacity: 20
-};
+);
 
-eventhubs eventhub create 'dmk1ingest-32' {
+eventhubs eventhub create 'dmk1ingest-32' (
 	message-rention: 1,
 	partition-count: 32
-};
+);
 
 eventhubs eventhub consumer-group create 'cosmos';
 
@@ -25,10 +22,11 @@ cosmosdb create 'dmk1cosmosdb';
 
 cosmosdb database create 'streaming';
 
-cosmosdb collection create 'rawdata' {
+cosmosdb collection create 'rawdata' 
+(
 	partition-key-path: "eventData/eventId",
 	throughput: 20000,
 	indexing-policy: '{"indexingMode": "none"}'
-}
+);
 
 

@@ -2,13 +2,13 @@ from lark import Lark
 from transformers.AZSTransformer import AZSTransformer
 import sys
 
-def main(adl_file, debug=False):
+def main(azs_file, debug=False):
     print('loading grammar...')
     with open('azsc.lark', 'r') as f:
         aql_grammar = f.read()
 
-    print('loading adl file...')
-    with open(adl_file, 'r') as f:
+    print('loading azs file...')
+    with open(azs_file, 'r') as f:
         text = f.read()
 
     print('parsing...')

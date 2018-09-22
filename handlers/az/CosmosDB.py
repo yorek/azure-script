@@ -1,7 +1,7 @@
 from handlers.Handler import Handler
 
-class EventHubsHandler(Handler):
-    azure_object = "eventhubs"
+class CosmosDBHandler(Handler):
+    azure_object = "cosmosdb"
  
     def create(self, objects, name, params):
         cmd = "az"

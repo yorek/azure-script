@@ -9,11 +9,10 @@ use: object object* "use" name
 execute: object object* [["with"] block]
 variable: "$" object
 
-
 object: OBJECT -> azobject
 name: STRING -> azname
 
-block: "{" pair ("," pair)* "}"
+block: "(" pair ("," pair)* ")"
 pair: object ":" value
 value: (name|NUMBER|block) -> azvalue
 

@@ -19,7 +19,7 @@ class HandlerManager:
         self.context[name] = value
 
     def is_handler_available(self, azobject):
-        return self.__handlers.has_key(azobject)
+        return azobject in self.__handlers
 
     def get_handler(self, azobject):
         return self.__handlers[azobject]

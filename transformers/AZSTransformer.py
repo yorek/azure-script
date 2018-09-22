@@ -24,15 +24,9 @@ class AZSTransformer(Transformer):
     def azobject(self, s):
         return s[0]
 
-    def use(self, items):
-        if len(items) == 2:
-            k = items[0]
-            v = items[1]
-
-        if len(items) == 3:
-            k = "{0}-{1}".format(items[0], items[1])
-            v = items[2]
-        
+    def use(self, items):        
+        k = '-'.join(items[0:-1])
+        v = items[-1]
         #print("[set {0} = {1}]".format(k, v))
         self.__handler_manager.set_context(k, v)
 
