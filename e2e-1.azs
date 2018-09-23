@@ -12,7 +12,7 @@ eventhubs namespace create 'dmk1ingest' (
 );
 
 eventhubs eventhub create 'dmk1ingest-32' (
-	message-rention: 1,
+	message-retention: 1,
 	partition-count: 32
 );
 
@@ -24,9 +24,9 @@ cosmosdb database create 'streaming';
 
 cosmosdb collection create 'rawdata' 
 (
-	partition-key-path: "eventData/eventId",
+	partition-key-path: "/eventData/eventId",
 	throughput: 20000,
-	indexing-policy: '{"indexingMode": "none"}'
+	indexing-policy: "{'indexingMode': 'none'}"
 );
 
 

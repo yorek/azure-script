@@ -30,6 +30,8 @@ class CosmosDBDatabaseHandler(CosmosDBHandler):
 
         cmd = CosmosDBHandler.create(self, objects, name, params)
 
+        self.set_context_value(objects, db_name)
+
         return cmd
 
 
@@ -54,5 +56,7 @@ class CosmosDBCollectionHandler(CosmosDBHandler):
             sys.exit(1)
 
         cmd = CosmosDBHandler.create(self, objects, name, params)
+
+        self.set_context_value(objects, collection_name)
 
         return cmd

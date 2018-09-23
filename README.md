@@ -16,17 +16,35 @@ and all subsequent command will use that location, if not explicity overridden i
 The language has been created so that you can reuse everything you already know from AZ CLI. for example to create a storage account with AZ CLI you would type something like
 
 ```
-az storage account create --resource-group 'myrg' --name 'mystorage' --sku='Standard_LRS' --location 'eastus'
+az group create -n 'dmk1' -l 'eastus'
+az storage account create -g 'dmk1' -n 'dmk1storage' -l 'eastus' --sku 'Standard_LRS'
+az eventhubs namespace create -g 'dmk1' -n 'dmk1ingest' -l 'eastus' --sku 'Standard' --capacity 20
+az eventhubs eventhub create -g 'dmk1' -n 'dmk1ingest-32' --message-rention 1 --partition-count 32 --namespace-name 'dmk1ingest'
+az eventhubs eventhub consumer-group create -g 'dmk1' -n 'cosmos' --eventhub-name 'dmk1ingest-32' --namespace-name 'dmk1ingest'
 ```
 
 with AZ Script you would write
 
 ```
 location use 'eastus';
-resource group use 'myrg';
-storage account create 'storage' { 
-  sku: 'Standard_LRS'
-};
+
+resource group create 'dmk1';
+
+storage account create 'dmk1storage' (
+	sku: 'Standard_LRS'		
+);
+
+eventhubs namespace create 'dmk1ingest' (
+	sku: "Standard",
+	capacity: 20
+);
+
+eventhubs eventhub create 'dmk1ingest-32' (
+	message-retention: 1,
+	partition-count: 32
+);
+
+eventhubs eventhub consumer-group create 'cosmos';
 ```
  
 isn't that so much better?
