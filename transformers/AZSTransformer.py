@@ -4,6 +4,7 @@ from handlers.HandlerManager import HandlerManager
 
 class AZSTransformer(Transformer):
     __handler_manager = HandlerManager()
+    __cmd = u""
 
     def pair(self, kv):
         k,v = kv
@@ -30,9 +31,7 @@ class AZSTransformer(Transformer):
         #print("[set {0} = {1}]".format(k, v))
         self.__handler_manager.set_context(k, v)
 
-    def create(self, items):                
-        cmd = u""
-        
+    def create(self, items):                       
         objects = []
         params = []
         for item in items:
@@ -52,15 +51,11 @@ class AZSTransformer(Transformer):
 
         if self.__handler_manager.is_handler_available(fqon):
             handler = self.__handler_manager.get_handler(fqon)
-            cmd += handler.create(objects, name, params)            
+            self.__cmd += handler.create(objects, name, params)            
         else:
             print("***** MISSING HANDLER FOR: '{0}'".format(fqon))             
-
-        print(cmd)
 
     def execute(self, items):                
-        cmd = u""
-        
         objects = []
         params = []
         for item in items:
@@ -80,11 +75,12 @@ class AZSTransformer(Transformer):
 
         if self.__handler_manager.is_handler_available(fqon):
             handler = self.__handler_manager.get_handler(fqon)
-            cmd += handler.execute(objects, name, params)            
+            self.__cmd += handler.execute(objects, name, params)            
         else:
             print("***** MISSING HANDLER FOR: '{0}'".format(fqon))             
 
-        print(cmd)
-
     def instruction(self, items):    
-        pass
+        self.__cmd += "\n"
+
+    def get_command(self):
+        return self.__cmd

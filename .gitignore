@@ -334,3 +334,4 @@ ASALocalRun/
 .pyenv/
 .venv/
 env/
+*.egg-info/

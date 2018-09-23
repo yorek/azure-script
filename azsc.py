@@ -1,51 +1,38 @@
-from lark import Lark
-from transformers.AZSTransformer import AZSTransformer
 import sys
+import logging
+import click
+from lark import Lark
 
-def main(azs_file, debug=False):
-    print('loading grammar...')
+logging.basicConfig(filename='azsc.log', level=logging.INFO, format='%(asctime)s %(message)s')
+
+@click.command()
+@click.argument('script')
+@click.option('--debug', is_flag=True, help="Write debug information")
+def cli(script, debug):
+    logging.info("AZ Script Compiler v 0.1")
+
+    logging.info("loading grammar")
     with open('azsc.lark', 'r') as f:
-        aql_grammar = f.read()
+        grammar = f.read()
 
-    print('loading azs file...')
-    with open(azs_file, 'r') as f:
+    logging.info("loading script file")
+    with open(script, 'r') as f:
         text = f.read()
 
-    print('parsing...')
-    parser = Lark(aql_grammar)
+    logging.info("setting up parser")
+    parser = Lark(grammar)
+
+    logging.info("generating parse tree")
     tree = parser.parse(text)
 
-    if (debug):
-        print('resulting parse tree')
-        print(tree.pretty())
-        print
+    logging.info("importing parse tree transformer")
+    from transformers.AZSTransformer import AZSTransformer
 
-    print('transpilation results:')
-    print
-        
-    AZSTransformer().transform(tree)    
-    print
+    logging.info("compiling")
+    t =  AZSTransformer()
+    t.transform(tree)
+    cmd = t.get_command()
 
-def show_help():
-    print("azsc <file.azs> [options]")
-    print
-    print("options:")
-    print(" --debug : print debug info")
+    print(cmd) 
 
-
-if __name__ == '__main__':
-    debug = False
-
-    if ( len(sys.argv) < 2 or len(sys.argv) > 3 ):
-        show_help()
-        exit(0)
-
-    if (not sys.argv[1].endswith(".azs")):
-        show_help()
-        exit(0)
-    
-    if ( len(sys.argv) == 3):   
-        if sys.argv[2].lower() == "--debug":
-            debug = True                
-
-    main(sys.argv[1], debug)
+    logging.info("done")   
