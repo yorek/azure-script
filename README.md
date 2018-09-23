@@ -1,16 +1,21 @@
 # AZ Script
 
-A script language created from AZ CLI commands to make deployment and management of Azure Resource easier and straightforward. 
+A script language created from AZ CLI commands to make deployment and management of Azure Resource as simple and intelligent as possibile.
 
 ## Goal
-The goal is to have a language that is just like AZ CLI command but with less overhead and more clever, make deployment automation a breeze.
+For this first realease the goal is to support all available AZ CLI commands and:
+
+- remove all redundancy: no need to specify the same options again and again. 
+- keep command signature and options consistency across all commands: in some commands the resource name is not specified using the --name option. AZ  Script will correct that.
+- provide context-aware environment so every command knows what happened before him and can act accordingly
+
 For example, if you want all your resources deployed into the 'eastus' region you can just write
 
 ```
 location use 'eastus';
 ```
 
-and all subsequent command will use that location, if not explicity overridden in the command itself. Same logic can be applied to any resource that depend on other resource. Storage accounts for example, or VPNs.
+and all subsequent command will use that location, if not explicity overridden in the command itself. **Same logic can be applied to any resource that depend on other resource.** Storage accounts for example, or VPNs.
 
 ## Language
 The language has been created so that you can reuse everything you already know from AZ CLI. for example to create a storage account with AZ CLI you would type something like
