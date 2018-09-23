@@ -1,4 +1,4 @@
-from handlers import availabe_handlers
+from handlers import available_handlers
 from handlers import Handler
 
 class HandlerManager:
@@ -10,7 +10,7 @@ class HandlerManager:
 
     def load_handlers(self):
         print("Loading handlers...")
-        for h in availabe_handlers:
+        for h in available_handlers:
             print(". Found handler: '{0}'".format(h.azure_object))
             self.__handlers[h.azure_object] = h(self.context)
         print
