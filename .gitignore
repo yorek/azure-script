@@ -333,3 +333,4 @@ ASALocalRun/
 *.pyc
 .pyenv/
 .venv/
+env/

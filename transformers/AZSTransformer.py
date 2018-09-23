@@ -16,10 +16,10 @@ class AZSTransformer(Transformer):
         return s[0]
 
     def string(self, s):
-        return '"' + s[0][1:-1] + '"'
+        return "'" + s[0][1:-1] + "'"
 
     def azname(self, s):
-        return '"' + s[0][1:-1] + '"'
+        return "'" + s[0][1:-1] + "'"
 
     def azobject(self, s):
         return s[0]
@@ -83,18 +83,6 @@ class AZSTransformer(Transformer):
             cmd += handler.execute(objects, name, params)            
         else:
             print("***** MISSING HANDLER FOR: '{0}'".format(fqon))             
-
-        print(cmd)
-
-    def execute_old(self, items):        
-        cmd = u"az"
-
-        cmd += " {0} {1}".format(items[0], items[1])                    
-
-        params = [i for i in items if isinstance(i, Tree)][0]
-
-        for param in params.children:
-            cmd += " --{0} {1}".format(param[0], param[1])
 
         print(cmd)
 
