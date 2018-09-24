@@ -12,7 +12,7 @@ class HandlerManager:
     def load_handlers(self):
         logging.info("registering handlers")
         for h in available_handlers:
-            logging.info("found handler: '{0}'".format(h.azure_object))
+            logging.debug("\tfound handler: '{0}'".format(h.azure_object))
             self.__handlers[h.azure_object] = h(self.context)
         print
 

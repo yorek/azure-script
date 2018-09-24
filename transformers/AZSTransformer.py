@@ -84,3 +84,6 @@ class AZSTransformer(Transformer):
 
     def get_command(self):
         return self.__cmd
+
+    def get_context(self):
+        return self.__handler_manager.context

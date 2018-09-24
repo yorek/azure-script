@@ -3,12 +3,16 @@ import logging
 import click
 from lark import Lark
 
-logging.basicConfig(filename='azsc.log', level=logging.INFO, format='%(asctime)s %(message)s')
+logging.basicConfig(filename='azsc.log', filemode='w', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 @click.command()
 @click.argument('script')
+@click.option('--target', default='az', help="transpiling target. only 'az' supported at the moment.")
 @click.option('--debug', is_flag=True, help="Write debug information")
-def cli(script, debug):
+def cli(script, target, debug):
+    if (debug == True):
+        logging.getLogger().setLevel(logging.DEBUG)
+
     logging.info("AZ Script Compiler v 0.1")
 
     logging.info("loading grammar")
@@ -25,6 +29,8 @@ def cli(script, debug):
     logging.info("generating parse tree")
     tree = parser.parse(text)
 
+    logging.debug("parse tree:\n" + tree.pretty())
+
     logging.info("importing parse tree transformer")
     from transformers.AZSTransformer import AZSTransformer
 
@@ -34,5 +40,11 @@ def cli(script, debug):
     cmd = t.get_command()
 
     print(cmd) 
+
+    if (debug==True):
+        logging.debug("context:")
+        ctx = t.get_context()
+        for c in ctx:
+            logging.debug("\t[%s]=%s", str(c), str(ctx[c]))
 
     logging.info("done")   
