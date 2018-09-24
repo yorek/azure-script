@@ -41,4 +41,11 @@ functionapp deployment source config-zip 'dmk1func'
 	src: "package.zip"
 );
 
+$EVENTHUB_CS = eventhubs namespace authorization-rule keys list 'RootManageSharedAccessKey' (	
+	query: "primaryConnectionString"
+);
+
+functionapp config appsettings set 'dmk1func' (
+	settings: "EventHubsConnectionString=$EVENTHUB_CS"
+);
 
