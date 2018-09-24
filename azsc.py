@@ -29,7 +29,7 @@ def cli(script, debug):
     from transformers.AZSTransformer import AZSTransformer
 
     logging.info("compiling")
-    t =  AZSTransformer()
+    t = AZSTransformer()
     t.transform(tree)
     cmd = t.get_command()
 
