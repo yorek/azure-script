@@ -6,6 +6,19 @@ class AZSTransformer(Transformer):
     __handler_manager = HandlerManager()
     __cmd = u""
 
+    def __get_name_objects_params(self, items):
+        objects = []
+        params = []
+        for item in items:
+            if isinstance(item, Token) and item.type == 'OBJECT':
+                objects.append(str(item))
+            elif isinstance(item, Tree):
+                params = item.children
+            else:
+                name = str(item)
+
+        return name, objects, params
+
     def pair(self, kv):
         k,v = kv
         return k,v
@@ -28,56 +41,19 @@ class AZSTransformer(Transformer):
     def use(self, items):        
         k = '-'.join(items[0:-1])
         v = items[-1]
-        #print("[set {0} = {1}]".format(k, v))
         self.__handler_manager.set_context(k, v)
 
     def create(self, items):                       
-        objects = []
-        params = []
-        for item in items:
-            if isinstance(item, Token) and item.type == 'OBJECT':
-                objects.append(str(item))
-            elif isinstance(item, Tree):
-                params = item.children
-            else:
-                name = str(item)
+        name, objects, params = self.__get_name_objects_params(items)
 
-        fqon = ''
-
-        for i in range(len(objects), 0, -1):
-            fqon = ' '.join(objects[0:i])
-            if self.__handler_manager.is_handler_available(fqon):
-                break
-
-        if self.__handler_manager.is_handler_available(fqon):
-            handler = self.__handler_manager.get_handler(fqon)
-            self.__cmd += handler.create(objects, name, params)            
-        else:
-            print("***** MISSING HANDLER FOR: '{0}'".format(fqon))             
+        handler = self.__handler_manager.get_handler(objects)
+        self.__cmd += handler.create(objects, name, params)            
 
     def execute(self, items):                
-        objects = []
-        params = []
-        for item in items:
-            if isinstance(item, Token) and item.type == 'OBJECT':
-                objects.append(str(item))
-            elif isinstance(item, Tree):
-                params = item.children
-            else:
-                name = str(item)
+        name, objects, params = self.__get_name_objects_params(items)
 
-        fqon = ''
-
-        for i in range(len(objects), 0, -1):
-            fqon = ' '.join(objects[0:i])
-            if self.__handler_manager.is_handler_available(fqon):
-                break
-
-        if self.__handler_manager.is_handler_available(fqon):
-            handler = self.__handler_manager.get_handler(fqon)
-            self.__cmd += handler.execute(objects, name, params)            
-        else:
-            print("***** MISSING HANDLER FOR: '{0}'".format(fqon))             
+        handler = self.__handler_manager.get_handler(objects)
+        self.__cmd += handler.create(objects, name, params)            
 
     def instruction(self, items):    
         self.__cmd += "\n"

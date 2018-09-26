@@ -36,9 +36,5 @@ appservice plan create 'dmk1plan' (
 
 functionapp create 'dmk1func';
 
-functionapp deployment source config-zip 'dmk1func'
-(
-	src: "package.zip"
-);
 
 

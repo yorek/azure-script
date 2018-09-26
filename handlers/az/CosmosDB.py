@@ -1,15 +1,15 @@
 import sys
 from handlers.Handler import Handler
+from handlers.az.Generic import GenericHandler
 
-class CosmosDBHandler(Handler):
+class CosmosDBHandler(GenericHandler):
     azure_object = "cosmosdb"
  
     def create(self, objects, name, params):
-        cmd = "az"
-        cmd += u" {0} create -g {1} -n {2}".format(' '.join(objects), self.context["resource group"], name)
-        
-        for param in params:
-            cmd += " --{0} {1}".format(param[0], param[1])
+        if not "resource-group" in params:
+            params.append(["resource-group", self.context["resource group"]])
+
+        cmd = GenericHandler.create(self, objects, name, params)
 
         self.set_context_value(objects, name)
 

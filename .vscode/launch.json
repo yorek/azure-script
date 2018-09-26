@@ -8,7 +8,7 @@
             "name": "Python: Main",
             "type": "python",
             "request": "launch",
-            "program": "${cwd}\\azsc.py",
+            "program": "${cwd}/azsc.py",
             "args": [ "e2e-1.azs", "--debug" ],
             "console": "integratedTerminal"
         },
