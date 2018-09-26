@@ -5,6 +5,7 @@ class Handler(object):
         self.context = context
 
     def set_context_value(self, objects, value):
-        key = ' '.join(objects) 
-        #print("[{0}:{1}]".format(key, value))
-        self.context[key] = value
+        if objects[-1] == "create":
+            key = ' '.join(objects[0:-1]) 
+            #print("[{0}:{1}]".format(key, value))
+            self.context[key] = value

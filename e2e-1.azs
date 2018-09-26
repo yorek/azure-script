@@ -1,6 +1,8 @@
 location use 'eastus';
 
-resource group create 'dmk1';
+resource group create 'dmk1' (
+	location: 'westus'
+);
 
 storage account create 'dmk1storage' (
 	sku: 'Standard_LRS'		
@@ -36,5 +38,15 @@ appservice plan create 'dmk1plan' (
 
 functionapp create 'dmk1func';
 
+functionapp deployment source config-zip 'dmk1func'
+(
+	src: "package.zip"
+);
 
+eventhubs namespace authorization-rule keys list 'RootManageSharedAccessKey' (	
+	query: "primaryConnectionString"
+);
 
+functionapp config appsettings set 'dmk1func' (
+	settings: "EventHubsConnectionString=$EVENTHUB_CS"
+);

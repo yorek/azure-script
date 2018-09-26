@@ -4,11 +4,11 @@ from handlers.az.Generic import GenericHandler
 class ResourceGroupHandler(GenericHandler):
     azure_object = "resource group"
  
-    def create(self, objects, name, params):
+    def execute(self, objects, name, params):
         if not "location" in params:
-            params.append(["location", self.context["location"]])
+            params["location"] = self.context["location"]
 
-        cmd = GenericHandler.create(self, ["group"], name, params)
+        cmd = GenericHandler.execute(self, ["group", "create"], name, params)
 
         self.set_context_value(objects, name)
 

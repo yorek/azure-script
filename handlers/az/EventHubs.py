@@ -1,65 +1,65 @@
 import sys
 from handlers.Handler import Handler
+from handlers.az.Generic import GenericHandler
 
-class EventHubsConsumerGroupHandler(Handler):
+class EventHubsConsumerGroupHandler(GenericHandler):
     azure_object = "eventhubs eventhub consumer-group"
  
-    def create(self, objects, name, params):
-        cmd = "az"
-        cmd += u" {0} create -g {1} -n {2}".format(' '.join(objects), self.context["resource group"], name)
-        
-        for param in params:
-            cmd += " --{0} {1}".format(param[0], param[1])
-
+    def execute(self, objects, name, params):
         if not "eventhub-name" in params:
             if "eventhubs eventhub" in self.context:
-                cmd += u" --eventhub-name {0}".format(self.context["eventhubs eventhub"])
+                params["eventhub-name"] = self.context["eventhubs eventhub"]                
             else:    
-                print("***** MISSING 'eventhub-name' option in command and no 'eventhubs eventhub' found in context")
+                print("***** MISSING 'eventhub-name' option in command and no 'eventhubs eventhub' found")
                 sys.exit(1)
 
         if not "namespace-name" in params:
             if "eventhubs namespace" in self.context:
-                cmd += u" --namespace-name {0}".format(self.context["eventhubs namespace"])
+                params["namespace-name"] = self.context["eventhubs namespace"]                
             else:    
-                print("***** MISSING 'namespace-name' option in command and no 'eventhubs namespace' found in context")
+                print("***** MISSING 'namespace-name' option in command and no 'eventhubs namespace' found")
                 sys.exit(1)
+
+        if not "resource-group" in params:
+            params["resource-group"] = self.context["resource group"]
+
+        cmd = GenericHandler.execute(self, objects, name, params)
 
         self.set_context_value(objects, name)
 
         return cmd
 
-class EventHubsEventHubHandler(Handler):
+class EventHubsEventHubHandler(GenericHandler):
     azure_object = "eventhubs eventhub"
  
-    def create(self, objects, name, params):
-        cmd = "az"
-        cmd += u" {0} create -g {1} -n {2}".format(' '.join(objects), self.context["resource group"], name)
-        
-        for param in params:
-            cmd += " --{0} {1}".format(param[0], param[1])
-
+    def execute(self, objects, name, params):
         if not "namespace-name" in params:
             if "eventhubs namespace" in self.context:
-                cmd += u" --namespace-name {0}".format(self.context["eventhubs namespace"])
+                params["namespace-name"] = self.context["eventhubs namespace"]                
             else:    
                 print("***** MISSING 'namespace-name' option in command and no 'eventhubs-namespace' found")
                 sys.exit(1)
 
+        if not "resource-group" in params:
+            params["resource-group"] = self.context["resource group"]
+
+        cmd = GenericHandler.execute(self, objects, name, params)
+
         self.set_context_value(objects, name)
 
         return cmd
 
-class EventHubsNamespaceHandler(Handler):
+class EventHubsNamespaceHandler(GenericHandler):
     azure_object = "eventhubs namespace"
  
-    def create(self, objects, name, params):
-        cmd = "az"
-        cmd += u" {0} create -g {1} -n {2}".format(' '.join(objects), self.context["resource group"], name)
-        cmd += u" -l {0}".format(self.context["location"])
+    def execute(self, objects, name, params):
+        if not "resource-group" in params:
+            params["resource-group"] = self.context["resource group"]
 
-        for param in params:
-            cmd += " --{0} {1}".format(param[0], param[1])
+        if not "location" in params:
+            params["location"] = self.context["location"]
+
+        cmd = GenericHandler.execute(self, objects, name, params)
 
         self.set_context_value(objects, name)
 

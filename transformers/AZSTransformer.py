@@ -17,7 +17,13 @@ class AZSTransformer(Transformer):
             else:
                 name = str(item)
 
-        return name, objects, params
+        params_dict = {}
+        for param in params:
+            params_dict[str(param[0])] = param[1]
+
+        #print(params_dict)
+
+        return name, objects, params_dict
 
     def pair(self, kv):
         k,v = kv
@@ -43,17 +49,11 @@ class AZSTransformer(Transformer):
         v = items[-1]
         self.__handler_manager.set_context(k, v)
 
-    def create(self, items):                       
-        name, objects, params = self.__get_name_objects_params(items)
-
-        handler = self.__handler_manager.get_handler(objects)
-        self.__cmd += handler.create(objects, name, params)            
-
     def execute(self, items):                
         name, objects, params = self.__get_name_objects_params(items)
 
         handler = self.__handler_manager.get_handler(objects)
-        self.__cmd += handler.create(objects, name, params)            
+        self.__cmd += handler.execute(objects, name, params)            
 
     def instruction(self, items):    
         self.__cmd += "\n"
