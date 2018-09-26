@@ -28,7 +28,7 @@ cosmosdb collection create 'rawdata'
 (
 	partition-key-path: "/eventData/eventId",
 	throughput: 20000,
-	indexing-policy: "{'indexingMode': 'none'}"
+	indexing-policy: @index-policy.json
 );
 
 appservice plan create 'dmk1plan' (
@@ -40,7 +40,7 @@ functionapp create 'dmk1func';
 
 functionapp deployment source config-zip 'dmk1func'
 (
-	src: "package.zip"
+	src: "StreamingProcessor-CosmosDB.zip"
 );
 
 eventhubs namespace authorization-rule keys list 'RootManageSharedAccessKey' (	
@@ -48,5 +48,5 @@ eventhubs namespace authorization-rule keys list 'RootManageSharedAccessKey' (
 );
 
 functionapp config appsettings set 'dmk1func' (
-	settings: "EventHubsConnectionString=$EVENTHUB_CS"
+	settings: 'EventHubsConnectionString=Something'
 );

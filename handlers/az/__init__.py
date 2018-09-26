@@ -5,3 +5,4 @@ from handlers.az.ResourceGroup import *
 from handlers.az.Storage import *
 from handlers.az.CosmosDB import *
 from handlers.az.AppService import *
+from handlers.az.FunctionApp import *

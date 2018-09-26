@@ -1,3 +1,4 @@
+import sys
 from handlers.Handler import Handler
 
 class GenericHandler(Handler):
@@ -14,3 +15,9 @@ class GenericHandler(Handler):
 
         return cmd
  
+    def _param_from_context(self, params, param_name, context_name):
+        if not param_name in params:
+            if context_name in self.context:
+                params[param_name] = self.context[context_name]
+            else:
+                sys.exit("Missing '{0}' parameter and not suitable context value '{1}' found.".format(param_name, context_name))

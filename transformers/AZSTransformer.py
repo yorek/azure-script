@@ -41,6 +41,9 @@ class AZSTransformer(Transformer):
     def azname(self, s):
         return '"' + s[0][1:-1] + '"'
 
+    def azfile(self, s):
+        return s[0]
+
     def azobject(self, s):
         return s[0]
 
