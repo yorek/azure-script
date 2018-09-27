@@ -1,6 +1,6 @@
 # AZ Script
 
-A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile.
+A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile. It help to reduce by 40% the code you need to write!
 
 ## Goal
 For this first realease the goal is to support all available AZ CLI commands and:
