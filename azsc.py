@@ -48,3 +48,6 @@ def cli(script, target, debug):
             logging.debug("\t[%s]=%s", str(c), str(ctx[c]))
 
     logging.info("done")   
+
+if __name__ == '__main__':
+    cli()

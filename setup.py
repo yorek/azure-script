@@ -8,8 +8,9 @@ setup(
         'Click',
         'lark-parser==0.6.4'
     ],
-    entry_points='''
-        [console_scripts]
-        azsc=azsc:cli
-    ''',
+    entry_points={
+        'console_scripts': [
+            'azsc=azsc:cli'
+        ]
+    }        
 )
