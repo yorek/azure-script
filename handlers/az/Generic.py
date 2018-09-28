@@ -1,13 +1,26 @@
 import sys
 from handlers.Handler import Handler
 
+class ContextParameter:
+    name = None
+    context = None
+
+    def __init__(self, name, context):
+        self.name = name
+        self.context = context
+
 class GenericHandler(Handler):
     azure_object = "*"
+
+    context_parameters = []
 
     def execute(self, objects, name, params):
         cmd = u"az"
         cmd += u" {0}".format(' '.join(objects))
         cmd += u" --name {0}".format(name)
+
+        for cp in self.context_parameters:
+            self._param_from_context(params, cp.name, cp.context)            
         
         if (len(params)>0):
             for param in params:
