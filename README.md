@@ -1,6 +1,6 @@
 # AZ Script
 
-A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile. It help to reduce by 40% the code you need to write!
+A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile. It helps to reduce by 40% the code you need to write!
 
 ## Goal
 For this first realease the goal is to support all available AZ CLI commands and:
@@ -33,7 +33,7 @@ with AZ Script you would write
 ```
 location use 'eastus';
 
-resource group create 'dmk1';
+group create 'dmk1';
 
 storage account create 'dmk1storage' (
 	sku: 'Standard_LRS'		
@@ -59,10 +59,12 @@ AZ Script is written in Python and can easily be extended to support any kind of
 
 The supported resources, right now, are
 
+- appservice
+- cosmosdb
+- functionapp
+- eventhubs
 - resource group
 - storage
-- eventhubs
-- cosmosdb
 
 More will come in near future, stay tuned.
 
