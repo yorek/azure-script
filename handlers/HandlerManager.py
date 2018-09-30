@@ -13,7 +13,7 @@ class HandlerManager:
         logging.info("registering handlers")
         for h in available_handlers:
             logging.debug("\tfound handler: '{0}'".format(h.azure_object))
-            self.__handlers[h.azure_object] = h(self.context)
+            self.__handlers[h.azure_object] = h
         print
 
     def set_context(self, name, value):
@@ -30,7 +30,11 @@ class HandlerManager:
             if self.is_handler_available(fqn):
                 break
 
+        h = None
+
         if self.is_handler_available(fqn):
-            return self.__handlers[fqn]
+            h = self.__handlers[fqn]
         else:
-            return self.__handlers["*"]
+            h = self.__handlers["*"]
+
+        return h(self.context, azobjects)

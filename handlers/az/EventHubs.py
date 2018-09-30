@@ -9,8 +9,6 @@ class EventHubsHandler(GenericHandler):
         fon = ' '.join(objects[0:-1])
 
         #print(fon)
-        self.context_parameters = []
-
         if fon == "eventhubs eventhub consumer-group":
             self.context_parameters.append(ContextParameter("eventhub-name", "eventhubs eventhub"))
             self.context_parameters.append(ContextParameter("namespace-name", "eventhubs namespace"))
