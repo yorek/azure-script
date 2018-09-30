@@ -4,12 +4,12 @@ from handlers.az.Generic import GenericHandler
 class AppServiceHandler(GenericHandler):
     azure_object = "appservice"
  
-    def execute(self, objects, name, params):
-        self._param_from_context(params, "resource-group", "resource group")
+    def execute(self):
+        self.add_context_parameter("resource-group", "group")
 
-        cmd = GenericHandler.execute(self, objects, name, params)
+        cmd = super().execute()
 
-        self.set_context_value(objects, name)
+        self.save_to_context()
 
         return cmd
-
+        

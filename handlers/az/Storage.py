@@ -5,33 +5,25 @@ from handlers.az.Generic import GenericHandler
 class StorageShareHandler(GenericHandler):
     azure_object = "storage share"
  
-    def execute(self, objects, name, params):
-        if not "account-name" in params:
-            if "storage account" in self.context:
-                params["account-name"] = self.context["storage account"]                
-            else:    
-                print("***** MISSING 'account-name' option in command and no 'storage account' found")
-                sys.exit(1)
+    def execute(self):
+        self.add_context_parameter("account-name", "storage account")
 
-        cmd = GenericHandler.execute(self, objects, name, params)
+        cmd = super().execute()
 
-        self.set_context_value(objects, name)
+        self.save_to_context()
 
         return cmd
 
 class StorageHandler(GenericHandler):
     azure_object = "storage"
  
-    def execute(self, objects, name, params):
-        if not "resource-group" in params:
-            params["resource-group"] = self.context["resource group"]
+    def execute(self):
+        self.add_context_parameter("resource-group", "group")
+        self.add_context_parameter("location", "location")
 
-        if not "location" in params:
-            params["location"] = self.context["location"]
+        cmd = super().execute()
 
-        cmd = GenericHandler.execute(self, objects, name, params)
-
-        self.set_context_value(objects, name)
+        self.save_to_context()
 
         return cmd
   

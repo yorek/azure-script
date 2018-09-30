@@ -17,34 +17,45 @@ class ContextParameter:
     
     def __str__(self):
         return "{0} => {1}".format(self.name, self.context)
-
+        
 class GenericHandler(Handler):
-    azure_object = "*"
+    azure_object = "*"    
 
-    context_parameters = []
+    context_parameters = None
 
-    def execute(self, objects, name, params):
+    def __init__(self, context, resources, action, name, params):
+        super().__init__(context, resources, action, name, params)
+        self.context_parameters = []
+
+    def execute(self):
         cmd = u"az"
-        cmd += u" {0}".format(' '.join(objects))
-        cmd += u" --name {0}".format(name)
+        cmd += u" {0}".format(' '.join(self.resources))
+        cmd += u" {0}".format(self.action)
+        cmd += u" --name {0}".format(self.name)
 
-        #print("-> {0} {1}".format(objects, name))
+        #print("-> {0} {1} {2}".format(self.resources, self.action, self.name))
+        #print("-> CONTEXT: {0}".format(self.context))
+        #print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
 
         for cp in self.context_parameters:
-            self._param_from_context(params, cp.name, cp.context)            
+            self._param_from_context(cp.name, cp.context)            
         
-        if (len(params)>0):
-            for param in params:
-                cmd += u" --{0} {1}".format(param, params[param])
+        if (len(self.params)>0):
+            for param in self.params:
+                cmd += u" --{0} {1}".format(param, self.params[param])
 
         return cmd
  
-    def _param_from_context(self, params, param_name, context_name):
-        if not param_name in params:
+    def add_context_parameter(self, parameter_name, context_name):
+        self.context_parameters.append(ContextParameter(parameter_name, context_name))
+        
+    def _param_from_context(self, param_name, context_name):
+        if not param_name in self.params:
             if context_name in self.context:
-                if context_name in self.context_parameters:
-                    params[param_name] = self.context[context_name]
+                self.params[param_name] = self.context[context_name]
             else:                    
-                #print("-> CONTEXT: {0}".format(self.context))
-                #print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
+                print("-> CONTEXT: {0}".format(self.context))
+                print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
                 sys.exit("Missing '{0}' parameter and not suitable context value '{1}' found.".format(param_name, context_name))
+
+    

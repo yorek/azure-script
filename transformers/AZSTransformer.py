@@ -54,9 +54,11 @@ class AZSTransformer(Transformer):
 
     def execute(self, items):                
         name, objects, params = self.__get_name_objects_params(items)
+        resources = objects[0:-1]
+        action = objects[-1]
 
-        handler = self.__handler_manager.get_handler(objects)
-        self.__cmd += handler.execute(objects, name, params)            
+        handler = self.__handler_manager.get_handler(resources, action, name, params)
+        self.__cmd += handler.execute()            
 
     def instruction(self, items):    
         self.__cmd += "\n"

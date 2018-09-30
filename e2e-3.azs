@@ -1,6 +1,6 @@
 location use 'eastus';
 
-resource group create 'dmk1' (
+group create 'dmk1' (
 	location: 'westus'
 );
 

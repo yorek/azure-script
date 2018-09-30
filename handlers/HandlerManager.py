@@ -22,11 +22,11 @@ class HandlerManager:
     def is_handler_available(self, azobject): 
         return azobject in self.__handlers
 
-    def get_handler(self, azobjects):
+    def get_handler(self, resources, action, name, params):
         fqn = ''
 
-        for i in range(len(azobjects), 0, -1):
-            fqn = ' '.join(azobjects[0:i])
+        for i in range(len(resources), 0, -1):
+            fqn = ' '.join(resources[0:i])
             if self.is_handler_available(fqn):
                 break
 
@@ -37,4 +37,4 @@ class HandlerManager:
         else:
             h = self.__handlers["*"]
 
-        return h(self.context, azobjects)
+        return h(self.context, resources, action, name, params)

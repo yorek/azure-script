@@ -1,17 +1,21 @@
 class Handler(object):
     context = None
-    objects = None
+    resources = None
     action = None
     params = None
+    name = None
 
-    def __init__(self, context, objects):
+    def __init__(self, context, resources, action, name, params):
         self.context = context
-        self.objects = objects
-        #print("objects: {0}".format(objects))
-        #print("context: {0}".format(context))
+        self.resources = resources
+        self.action = action
+        self.name = name
+        self.params = params
 
-    def set_context_value(self, objects, value):
-        if objects[-1] == "create":
-            key = ' '.join(objects[0:-1]) 
-            #print("[{0}:{1}]".format(key, value))
-            self.context[key] = value
+    def get_full_resource_name(self):
+        return ' '.join(self.resources)
+
+    def save_to_context(self):
+        key =  self.get_full_resource_name()
+        #print("[{0}:{1}]".format(key, value))
+        self.context[key] = self.name
