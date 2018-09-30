@@ -5,6 +5,9 @@ from handlers.HandlerManager import HandlerManager
 class AZSTransformer(Transformer):
     __handler_manager = HandlerManager()
     __cmd = u""
+    __result = u""
+
+    __assign_to = None
 
     def __get_name_objects_params(self, items):
         objects = []
@@ -60,11 +63,19 @@ class AZSTransformer(Transformer):
         handler = self.__handler_manager.get_handler(resources, action, name, params)
         self.__cmd += handler.execute()            
 
+    def variable(self, items):        
+        self.__assign_to = items[0]
+
     def instruction(self, items):    
-        self.__cmd += "\n"
+        if self.__assign_to is not None:
+            self.__cmd = "export {0}=$({1})".format(self.__assign_to, self.__cmd)
+
+        self.__result += self.__cmd + "\n"
+        self.__cmd = u""
+        self.__assign_to = None
 
     def get_command(self):
-        return self.__cmd
+        return self.__result
 
     def get_context(self):
         return self.__handler_manager.context

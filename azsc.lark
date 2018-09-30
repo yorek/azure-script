@@ -1,6 +1,6 @@
 start: instruction+
 
-instruction: [variable][use|execute] ";" 
+instruction: [variable "="][use|execute] ";" 
     | variable "=" value ";"
 
 use: object object* "use" name
@@ -16,7 +16,7 @@ pair: object ":" value
 value: (name|file|NUMBER|block) -> azvalue
 
 FILE: /@.*/
-OBJECT: ("a".."z" | "A".."Z" | "1".."9" | "-")+
+OBJECT: ("a".."z" | "A".."Z" | "1".."9" | "-" | "_" )+
 STRING: (/".*?(?<!\\)"/ | /'.*?(?<!\\)'/)
 
 %import common.SIGNED_NUMBER -> NUMBER
