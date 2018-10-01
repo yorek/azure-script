@@ -69,7 +69,24 @@ The supported resources, right now, are
 More will come in near future, stay tuned.
 
 ## Install
-TDB
+
+In this Alpha stage it is strongly recommended that you use virtualenv to setup a isolated environment:
+
+	virtualenv env --python=<path_to_python_3>
+
+in my case, since I have installed Python 3 as part of Visual Studio 2017, the full command is the following:
+
+	virtualenv env --python="C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\python.exe"
+
+and then activate it (for Linux see [here](https://virtualenv.pypa.io/en/stable/userguide/#usage))
+
+	.\env\Scripts\activate
+
+you can then install required packages:
+
+	pip install -e .
+
+and you're done, you can start using it.
 
 ## Usage
 Just run the `azsc` compiler, passing the script file you want to compile.
@@ -80,6 +97,12 @@ azsc <filename.azs> [--debug]
 
 will generate the AZ CLI commands needed to do what defined in the script file.
 `--debug` will also print the parse tree for debugging purposes
+
+As a starting sample you can use the `e2e-1.azs` script:
+
+	azsc .\e2e-1.azs
+
+it will generate AZ CLI script ready to be executed in a [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) bash.
 
 ## Compilation
 The result of compiling is, at present time, a transpilation to AZ CLI commands. The entire process is completely extensibile, so in future plugins to generate ARM templates or even direct REST API calls could be created.
