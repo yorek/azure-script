@@ -112,3 +112,15 @@ Grammar definition is done using EBNF format and the parses is [Lark](https://gi
 
 ## Roadmap
 For now this is just an experiment. Let's see where it goes...
+
+But if you're curious here's something I have in mind:
+
+- Support syntax highlighting and code completion in VS Code
+- Build a graph of dependencies and the run as many AZ CLI commands in parallel as possibile
+- Define a clever way to deal with erros like:
+	- automatic retry 
+	- break the scripts
+	- take compensating actions
+- generate Powershell Script
+- generate ARM template
+- actually execute the commands instead of just generating a script
