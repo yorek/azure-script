@@ -6,7 +6,8 @@ setup(
     py_modules=['azsc'],
     install_requires=[
         'Click',
-        'lark-parser==0.6.4'
+        'lark-parser==0.6.4',
+        'setuptools'
     ],
     entry_points={
         'console_scripts': [
