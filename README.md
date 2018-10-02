@@ -18,7 +18,7 @@ location use 'eastus';
 and all subsequent command will use that location, if not explicity overridden in the command itself. **Same logic can be applied to any resource that depend on other resource.** Storage accounts for example, or VPNs.
 
 ## Language
-The language has been created so that you can reuse everything you already know from AZ CLI. For example to create a storage account with AZ CLI you would type something like
+The language has been created so that you can reuse everything you already know from AZ CLI. For example to create a storage account, an event hub that uses it and the related consumer group, with AZ CLI you would type something like
 
 ```
 az group create -n 'dmk1' -l 'eastus'
@@ -28,7 +28,7 @@ az eventhubs eventhub create -g 'dmk1' -n 'dmk1ingest-32' --message-rention 1 --
 az eventhubs eventhub consumer-group create -g 'dmk1' -n 'cosmos' --eventhub-name 'dmk1ingest-32' --namespace-name 'dmk1ingest'
 ```
 
-with AZ Script you would write
+while with AZ Script you would write
 
 ```
 location use 'eastus';
@@ -36,28 +36,28 @@ location use 'eastus';
 group create 'dmk1';
 
 storage account create 'dmk1storage' (
-	sku: 'Standard_LRS'		
+    sku: 'Standard_LRS'
 );
 
 eventhubs namespace create 'dmk1ingest' (
-	sku: "Standard",
-	capacity: 20
+    sku: "Standard",
+    capacity: 20
 );
 
 eventhubs eventhub create 'dmk1ingest-32' (
-	message-retention: 1,
-	partition-count: 32
+    message-retention: 1,
+    partition-count: 32
 );
 
 eventhubs eventhub consumer-group create 'cosmos';
 ```
- 
+
 isn't that so much better?
 
 ## Extensibility
-AZ Script is written in Python and can easily be extended to support any kind of Azure resource just by writing a simple plugin, which is nothing more than a class derived from the base class ```Handler```. Really easy!.
+AZ Script is written in Python and can easily be extended to support any kind of Azure resource just by writing a simple plugin, which is nothing more than a class derived from the base class ```Handler```. Really easy!
 
-The supported resources, right now, are
+The (somehow) supported resources, right now, are
 
 - appservice
 - cosmosdb
@@ -72,19 +72,19 @@ More will come in near future, stay tuned.
 
 In this Alpha stage it is strongly recommended that you use virtualenv to setup a isolated environment:
 
-	virtualenv env --python=<path_to_python_3>
+    virtualenv env --python=<path_to_python_3>
 
 in my case, since I have installed Python 3 as part of Visual Studio 2017, the full command is the following:
 
-	virtualenv env --python="C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\python.exe"
+    virtualenv env --python="C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\python.exe"
 
 and then activate it (for Linux see [here](https://virtualenv.pypa.io/en/stable/userguide/#usage))
 
-	.\env\Scripts\activate
+    .\env\Scripts\activate
 
 you can then install required packages:
 
-	pip install -e .
+    pip install -e .
 
 and you're done, you can start using it.
 
@@ -96,7 +96,7 @@ azsc <filename.azs> [--debug]
 ```
 
 will generate the AZ CLI commands needed to do what defined in the script file.
-`--debug` will also print the parse tree for debugging purposes
+`--debug` will also log into `azsc.log` the parse tree for debugging purposes
 
 As a starting sample you can use the `e2e-1.azs` script:
 
@@ -108,7 +108,7 @@ it will generate AZ CLI script ready to be executed in a [WSL](https://en.wikipe
 The result of compiling is, at present time, a transpilation to AZ CLI commands. The entire process is completely extensibile, so in future plugins to generate ARM templates or even direct REST API calls could be created.
 
 ## Notes
-Grammar definition is done using EBNF format and the parses is [Lark](https://github.com/lark-parser/lark)
+Grammar definition is done using EBNF format and the parser is [Lark](https://github.com/lark-parser/lark)
 
 ## Roadmap
 For now this is just an experiment. Let's see where it goes...
@@ -116,11 +116,11 @@ For now this is just an experiment. Let's see where it goes...
 But if you're curious here's something I have in mind:
 
 - Support syntax highlighting and code completion in VS Code
-- Build a graph of dependencies and the run as many AZ CLI commands in parallel as possibile
-- Define a clever way to deal with erros like:
-	- automatic retry 
-	- break the scripts
+- Build a graph of dependencies and run as many AZ CLI commands in parallel as possibile
+- Define a clever way to deal with errors like:
+	- automatic retry
+	- break script execution
 	- take compensating actions
-- generate Powershell Script
+- generate a Powershell Script
 - generate ARM template
 - actually execute the commands instead of just generating a script

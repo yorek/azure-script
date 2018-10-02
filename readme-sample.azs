@@ -1,0 +1,20 @@
+location use 'eastus';
+
+group create 'dmsample';
+
+storage account create 'dmsamplestorage' (
+	sku: 'Standard_LRS'		
+);
+
+eventhubs namespace create 'dmsampleingest' (
+	sku: "Standard",
+	capacity: 20
+);
+
+eventhubs eventhub create 'dmksampleingest-32' (
+	message-retention: 1,
+	partition-count: 32
+);
+
+eventhubs eventhub consumer-group create 'sample';
+
