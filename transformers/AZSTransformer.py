@@ -75,7 +75,7 @@ class AZSTransformer(Transformer):
         self.__assign_to = None
 
     def get_command(self):
-        return self.__result
+        return self.__result.strip()
 
     def get_context(self):
         return self.__handler_manager.context

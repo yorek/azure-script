@@ -1,0 +1,20 @@
+#
+# Test file
+#
+
+# set location
+location use 'eastus';
+
+# create resource group
+group create 'dmiottest';
+
+# make sure IoT Hub Extension is installed
+extension add 'azure-cli-iot-ext';
+
+# create iot hub 
+iot hub create 'dmiothubtest' (
+	sku: "F1" 
+);
+
+# create iot hub device
+iot hub device-identity create 'mydevice';

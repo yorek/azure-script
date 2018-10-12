@@ -1,0 +1,11 @@
+location use 'eastus';
+
+group create 'dmiottest';
+
+extension add 'azure-cli-iot-ext';
+
+iot hub create 'dmiothubtest' (
+	sku: "F1" 
+);
+
+iot hub device-identity create 'mydevice';

@@ -22,18 +22,17 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
     <Content Include="azsc.lark" />
     <Content Include="e2e-1.azs" />
-    <Content Include="e2e-2.azs" />
     <Content Include="LICENSE" />
     <Content Include="README.md" />
-    <Content Include="requirements.txt" />
-    <Content Include="test.azs" />
-    <Content Include="TODO.md" />
+    <Content Include="requirements_dev.txt" />
+    <Content Include="tox.ini" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="azsc.py" />
-    <Compile Include="handlers\arm\__init__.py" />
+    <Compile Include="azsc_test.py" />
     <Compile Include="handlers\az\EventGrid.py" />
     <Compile Include="handlers\az\CosmosDB.py" />
     <Compile Include="handlers\az\EventHubs.py" />

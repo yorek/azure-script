@@ -7,7 +7,7 @@ setup(
     install_requires=[
         'Click',
         'lark-parser==0.6.4',
-        'setuptools'
+        'setuptools'        
     ],
     entry_points={
         'console_scripts': [

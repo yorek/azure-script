@@ -1,7 +1,3 @@
-#
-# Test file
-#
-
 location use 'eastus';
 
 group create 'dmk1';

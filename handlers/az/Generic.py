@@ -31,7 +31,9 @@ class GenericHandler(Handler):
         cmd = u"az"
         cmd += u" {0}".format(' '.join(self.resources))
         cmd += u" {0}".format(self.action)
-        cmd += u" --name {0}".format(self.name)
+        
+        if (self.name != None):
+            cmd += u" --name {0}".format(self.name)
 
         #print("-> {0} {1} {2}".format(self.resources, self.action, self.name))
         #print("-> CONTEXT: {0}".format(self.context))
