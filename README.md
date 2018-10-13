@@ -65,8 +65,10 @@ The (somehow) supported resources, right now, are
 
 - appservice
 - cosmosdb
-- functionapp
 - eventhubs
+- extension
+- functionapp
+- iot
 - resource group
 - storage
 
@@ -123,7 +125,8 @@ For now this is just an experiment. Let's see where it goes...
 
 But if you're curious here's something I have in mind:
 
-- Support syntax highlighting and code completion in VS Code
+- Support syntax highlighting Visual Studio Code (done: https://github.com/yorek/azure-script-vscode)
+- Support for and code completion in Visual Studio Code
 - Build a graph of dependencies and the run as many AZ CLI commands in parallel as possibile
 - Define a clever way to deal with erros like:
 	- automatic retry 
@@ -131,7 +134,7 @@ But if you're curious here's something I have in mind:
 	- take compensating actions
 - generate Powershell Script
 - generate ARM template
-- actually execute the commands instead of just generating a script
+- execute the commands instead of just generating a script
 
 # Contributing
 

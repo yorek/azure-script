@@ -25,6 +25,7 @@ class HandlerManager:
     def get_handler(self, resources, action, name, params):
         fqn = ''
 
+        # check what is the most specific handler possible        
         for i in range(len(resources), 0, -1):
             fqn = ' '.join(resources[0:i])
             if self.is_handler_available(fqn):
@@ -32,6 +33,8 @@ class HandlerManager:
 
         h = None
 
+        # if an handler is found use it otherwise fall back
+        # to the generic handler
         if self.is_handler_available(fqn):
             h = self.__handlers[fqn]
         else:
