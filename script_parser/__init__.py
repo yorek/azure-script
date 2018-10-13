@@ -15,8 +15,13 @@ def run_parser(script, target, debug):
         grammar = f.read()
 
     logging.info("loading script file")
-    with open(script, 'r') as f:
-        text = f.read()
+    try:
+        with open(script, 'r') as f:
+            text = f.read()
+    except IOError:
+        error_message = "script {0} file not found".format(script)
+        logging.error(error_message)
+        return "ERROR: " + error_message
 
     logging.info("setting up parser")
     lark = Lark(grammar)
@@ -34,8 +39,6 @@ def run_parser(script, target, debug):
     t.transform(tree)
     cmd = t.get_command()
 
-    print(cmd) 
-
     if (debug==True):
         logging.debug("context:")
         ctx = t.get_context()
@@ -44,3 +47,4 @@ def run_parser(script, target, debug):
 
     logging.info("done")   
 
+    return cmd
