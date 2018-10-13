@@ -22,11 +22,10 @@ cosmosdb create 'dmk1cosmosdb';
 
 cosmosdb database create 'streaming';
 
-cosmosdb collection create 'rawdata' 
-(
+cosmosdb collection create 'rawdata' (
 	partition-key-path: "/eventData/eventId",
 	throughput: 20000,
-	indexing-policy: "{'indexingMode': 'none'}"
+	indexing-policy: @indexing.json
 );
 
 appservice plan create 'dmk1plan' (
@@ -36,8 +35,7 @@ appservice plan create 'dmk1plan' (
 
 functionapp create 'dmk1func';
 
-functionapp deployment source config-zip 'dmk1func'
-(
+functionapp deployment source config-zip 'dmk1func' (
 	src: "package.zip"
 );
 
