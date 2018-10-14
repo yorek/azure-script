@@ -335,7 +335,8 @@ ASALocalRun/
 .venv/
 env/
 *.egg-info/
+build/
+dist/
 
 # Visual Studio Code
- .vscode/settings.json
- 
+.vscode/settings.json
