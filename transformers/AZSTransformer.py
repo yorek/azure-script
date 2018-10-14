@@ -61,7 +61,9 @@ class AZSTransformer(Transformer):
         action = objects[-1]
 
         handler = self.__handler_manager.get_handler(resources, action, name, params)
-        self.__cmd += handler.execute()            
+        result = handler.execute()
+        #print("R:{0}".format(result))
+        self.__cmd += result
 
     def variable(self, items):        
         self.__assign_to = items[0]

@@ -27,7 +27,7 @@ class FunctionAppHandler(GenericHandler):
             self.add_context_parameter("resource-group", "group")
             self.add_context_parameter("location", "location")
 
-        cmd = super().execute()
+        cmd = super(FunctionAppHandler, self).execute()
 
         self.save_to_context()
 

@@ -7,7 +7,7 @@ class AppServiceHandler(GenericHandler):
     def execute(self):
         self.add_context_parameter("resource-group", "group")
 
-        cmd = super().execute()
+        cmd = super(AppServiceHandler, self).execute()
 
         self.save_to_context()
 

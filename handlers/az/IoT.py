@@ -10,7 +10,7 @@ class IoTHubHandler(GenericHandler):
         if fqn == "iot hub":
             self.add_context_parameter("resource-group", "group")
 
-        cmd = super().execute()
+        cmd = super(IoTHubHandler, self).execute()
 
         self.save_to_context()
 
@@ -25,7 +25,7 @@ class IotHubDeviceIdentity(GenericHandler):
         self.name = None
         self.add_context_parameter("hub-name", "iot hub")
 
-        cmd = super().execute()
+        cmd = super(IotHubDeviceIdentity, self).execute()
 
         self.save_to_context(value=device_id)
 

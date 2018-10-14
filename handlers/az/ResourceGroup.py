@@ -7,7 +7,7 @@ class ResourceGroupHandler(GenericHandler):
     def execute(self):
         self.add_context_parameter("location", "location")
 
-        cmd = super().execute()
+        cmd = super(ResourceGroupHandler, self).execute()
 
         self.save_to_context()
 

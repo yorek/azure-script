@@ -24,7 +24,7 @@ class GenericHandler(Handler):
     context_parameters = None
 
     def __init__(self, context, resources, action, name, params):
-        super().__init__(context, resources, action, name, params)
+        super(GenericHandler, self).__init__(context, resources, action, name, params)
         self.context_parameters = []
 
     def execute(self):

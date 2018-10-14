@@ -29,7 +29,7 @@ class CosmosDBHandler(GenericHandler):
             self.name = self.get_from_context("cosmosdb")            
             self.add_context_parameter("db-name", "cosmosdb database")
 
-        cmd = super().execute()
+        cmd = super(CosmosDBHandler, self).execute()
 
         self.save_to_context()
 
