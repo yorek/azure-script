@@ -337,4 +337,5 @@ env/
 *.egg-info/
 
 # Visual Studio Code
-.vscode/settings.json
+ .vscode/settings.json
+ 
