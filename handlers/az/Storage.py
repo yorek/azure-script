@@ -8,7 +8,7 @@ class StorageShareHandler(GenericHandler):
     def execute(self):
         self.add_context_parameter("account-name", "storage account")
 
-        cmd = super().execute()
+        cmd = super(StorageShareHandler, self).execute()
 
         self.save_to_context()
 
@@ -21,7 +21,7 @@ class StorageHandler(GenericHandler):
         self.add_context_parameter("resource-group", "group")
         self.add_context_parameter("location", "location")
 
-        cmd = super().execute()
+        cmd = super(StorageHandler, self).execute()
 
         self.save_to_context()
 
