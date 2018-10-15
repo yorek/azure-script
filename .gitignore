@@ -339,6 +339,11 @@ env3/
 *.egg-info/
 build/
 dist/
+.tox/
+htmlcov/
+.pytest_cache/
 
 # Visual Studio Code
 .vscode/settings.json
+coverage.xml
+testresults.xml
