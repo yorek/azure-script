@@ -1,4 +1,7 @@
-import azsc
+import logging
 
-if __name__ == '__main__':
-    azsc.cli()
+logging.basicConfig(
+    filename='azsc.log', 
+    filemode='w', 
+    level=logging.INFO, 
+    format='%(asctime)s %(levelname)s %(message)s')

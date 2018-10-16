@@ -8,3 +8,6 @@ import click
 def cli(script, target, debug):
     result = run_parser(script, target, debug)
     print(result)
+
+if __name__ == '__main__':
+    cli()

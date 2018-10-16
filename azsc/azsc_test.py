@@ -1,4 +1,4 @@
-from transformers.AZSTransformer import AZSTransformer
+from azsc.transformers.AZSTransformer import AZSTransformer
 from lark import Lark
 
 def parse(text):

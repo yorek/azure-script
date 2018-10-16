@@ -3,8 +3,6 @@ import logging
 import os 
 from lark import Lark
 
-logging.basicConfig(filename='azsc.log', filemode='w', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
-
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def run_parser(script, target, debug):
@@ -14,7 +12,7 @@ def run_parser(script, target, debug):
     logging.info("AZ Script Compiler v 0.1")
 
     logging.info("loading grammar")
-    with open(os.path.join(__location__, '../azsc.lark'), 'r') as f:
+    with open(os.path.join(__location__, '../grammar/azsc.lark'), 'r') as f:
         grammar = f.read()
 
     logging.info("loading script file")
