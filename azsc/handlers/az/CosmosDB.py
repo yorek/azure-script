@@ -1,6 +1,6 @@
 import sys
-from handlers.Handler import Handler
-from handlers.az.Generic import GenericHandler
+from azsc.handlers.Handler import Handler
+from azsc.handlers.az.Generic import GenericHandler
 
 class CosmosDBHandler(GenericHandler):
     azure_object = "cosmosdb"

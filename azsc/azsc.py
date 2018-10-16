@@ -1,4 +1,4 @@
-from script_parser import run_parser
+from azsc.script_parser import run_parser
 import click
 
 @click.command()
@@ -8,6 +8,3 @@ import click
 def cli(script, target, debug):
     result = run_parser(script, target, debug)
     print(result)
-
-if __name__ == '__main__':
-    cli()

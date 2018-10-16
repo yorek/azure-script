@@ -8,8 +8,8 @@
             "name": "AZCS E2E Sample",
             "type": "python",
             "request": "launch",
-            "program": "${cwd}/azsc.py",
-            "args": [ "e2e-2.azs", "--debug" ],
+            "program": "${cwd}/azsc/__init__.py",
+            "args": [ "./samples/e2e-2.azs", "--debug" ],
             "console": "integratedTerminal"
         }
     ]

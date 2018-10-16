@@ -1,8 +1,11 @@
 import sys
 import logging
+import os 
 from lark import Lark
 
 logging.basicConfig(filename='azsc.log', filemode='w', level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def run_parser(script, target, debug):
     if (debug == True):
@@ -11,7 +14,7 @@ def run_parser(script, target, debug):
     logging.info("AZ Script Compiler v 0.1")
 
     logging.info("loading grammar")
-    with open('azsc.lark', 'r') as f:
+    with open(os.path.join(__location__, '../azsc.lark'), 'r') as f:
         grammar = f.read()
 
     logging.info("loading script file")
@@ -32,7 +35,7 @@ def run_parser(script, target, debug):
     logging.debug("parse tree:\n" + tree.pretty())
 
     logging.info("importing parse tree transformer")
-    from transformers.AZSTransformer import AZSTransformer
+    from azsc.transformers.AZSTransformer import AZSTransformer
 
     logging.info("compiling")
     t = AZSTransformer()

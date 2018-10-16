@@ -1,5 +1,5 @@
 import sys
-from handlers.Handler import Handler
+from azsc.handlers.Handler import Handler
 
 class ContextParameter:
     name = None

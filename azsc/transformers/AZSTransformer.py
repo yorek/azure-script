@@ -1,6 +1,6 @@
 from lark import Transformer, Tree
 from lark.lexer import Token
-from handlers.HandlerManager import HandlerManager
+from azsc.handlers.HandlerManager import HandlerManager
 
 class AZSTransformer(Transformer):
     __handler_manager = HandlerManager()

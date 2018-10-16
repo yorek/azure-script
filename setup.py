@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="azsc",
-    version="0.1.0",
+    version="0.1.1",
     author="Davide Mauri",
     author_email="info@davidemauri.it",
     description="A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile.",
@@ -32,7 +32,7 @@ setuptools.setup(
     ],
     entry_points={
         'console_scripts': [
-            'azsc=azsc:cli'
+            'azsc=azsc.azsc:cli'
         ]
     }        
 )

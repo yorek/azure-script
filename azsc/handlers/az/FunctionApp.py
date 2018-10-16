@@ -1,5 +1,5 @@
-from handlers.Handler import Handler
-from handlers.az.Generic import GenericHandler
+from azsc.handlers.Handler import Handler
+from azsc.handlers.az.Generic import GenericHandler
 
 class FunctionAppHandler(GenericHandler):
     azure_object = "functionapp"
