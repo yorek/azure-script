@@ -107,7 +107,7 @@ will generate the AZ CLI commands needed to do what defined in the script file.
 
 As a starting sample you can use the `e2e-1.azs` script:
 
-	azsc .\e2e-1.azs
+	azsc .\samples\e2e-1.azs
 
 it will generate AZ CLI script ready to be executed in a [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) bash.
 
