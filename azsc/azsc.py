@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from azsc.script_parser import run_parser
 import click
 
