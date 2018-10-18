@@ -11,8 +11,9 @@ def run_parser(script, target, debug):
 
     logging.info("AZ Script Compiler v 0.1")
 
+    #os.path.join(os.path.split(__file__)[0], "monitor.js")
     logging.info("loading grammar")
-    with open(os.path.join(__location__, '../grammar/azsc.lark'), 'r') as f:
+    with open(os.path.join(__location__, os.path.join('..', 'grammar', 'azsc.lark')), 'r') as f:
         grammar = f.read()
 
     logging.info("loading script file")
