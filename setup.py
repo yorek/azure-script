@@ -13,6 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/yorek/azure-script",
     packages=setuptools.find_packages(),
+    package_data={'azsc': ['grammar/*.lark']},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",
