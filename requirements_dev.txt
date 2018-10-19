@@ -5,3 +5,4 @@ tox
 pytest
 coverage
 pytest-cov
+bumpversion
