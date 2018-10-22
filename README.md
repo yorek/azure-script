@@ -140,13 +140,14 @@ But if you're curious here's something I have in mind:
 - Support syntax highlighting Visual Studio Code (done: https://github.com/yorek/azure-script-vscode)
 - Support for and code completion in Visual Studio Code
 - Build a graph of dependencies and the run as many AZ CLI commands in parallel as possibile
+- Using the dependency graph, validate the command even before running them
 - Define a clever way to deal with erros like:
 	- automatic retry 
 	- break the scripts
 	- take compensating actions
-- generate Powershell Script
-- generate ARM template
-- execute the commands instead of just generating a script
+- Generate Powershell Script
+- Generate ARM template
+- Execute the commands instead of just generating a script
 
 # Contributing
 
