@@ -2,7 +2,7 @@ import setuptools
 
 # don't read README.md when running from tox
 
-if (__name__ == "main"):
+if __name__ == '__main__':
     with open("README.md", "r") as fh:
         long_description = fh.read()
 else:
@@ -10,7 +10,7 @@ else:
 
 setuptools.setup(
     name="azsc",
-    version="0.1.5",
+    version="0.1.6",
     author="Davide Mauri",
     author_email="info@davidemauri.it",
     description="A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile.",
