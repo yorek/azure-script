@@ -76,6 +76,18 @@ More will come in near future, stay tuned.
 
 ## Install
 
+### Runtime Only
+
+Just use the usual `pip` tool:
+
+	pip install azsc
+
+Done. You may want to take a look at the samples folder to get started with Azure Script:
+
+[Azure Script Samples](./samples)
+
+### Development Enviroment
+
 In this Alpha stage it is strongly recommended that you use virtualenv to setup a isolated environment:
 
 	virtualenv env --python=<path_to_python_3>
