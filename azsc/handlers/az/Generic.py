@@ -1,4 +1,5 @@
 import sys
+import collections
 from azsc.handlers.Handler import Handler
 
 class ContextParameter:
@@ -43,7 +44,8 @@ class GenericHandler(Handler):
             self._param_from_context(cp.name, cp.context)            
         
         if (len(self.params)>0):
-            for param in self.params:
+            ordered_params = collections.OrderedDict(sorted(self.params.items()))
+            for param in ordered_params:
                 cmd += u" --{0} {1}".format(param, self.params[param])
 
         return cmd

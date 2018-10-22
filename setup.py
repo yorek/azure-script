@@ -1,7 +1,12 @@
 import setuptools
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+# don't read README.md when running from tox
+
+if (__name__ == "main"):
+    with open("README.md", "r") as fh:
+        long_description = fh.read()
+else:
+        long_description = ""
 
 setuptools.setup(
     name="azsc",

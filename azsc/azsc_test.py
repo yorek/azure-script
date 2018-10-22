@@ -40,7 +40,7 @@ def test_storage_account():
 
     test = parse(script).splitlines()
     assert(test[0]) == 'az group create --name "test" --location "eastus"'
-    assert(test[1]) == 'az storage account create --name "teststorage" --sku "Standard_LRS" --resource-group "test" --location "eastus"'
+    assert(test[1]) == 'az storage account create --name "teststorage" --location "eastus" --resource-group "test" --sku "Standard_LRS"'
 
 def test_comments():
     script = """
