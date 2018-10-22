@@ -78,7 +78,7 @@ More will come in near future, stay tuned.
 
 ### Runtime Only
 
-Just use the usual `pip` tool:
+If you're not interested into developing Azure Script compiler, just use the usual `pip` tool:
 
 	pip install azsc
 
@@ -88,7 +88,7 @@ Done. You may want to take a look at the samples folder to get started with Azur
 
 ### Development Enviroment
 
-In this Alpha stage it is strongly recommended that you use virtualenv to setup a isolated environment:
+If you want to help in developing Azure Script compiler, is strongly recommended that you use virtualenv to setup a isolated environment:
 
 	virtualenv env --python=<path_to_python_3>
 
