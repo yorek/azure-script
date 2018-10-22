@@ -10,7 +10,7 @@ else:
 
 setuptools.setup(
     name="azsc",
-    version="0.1.4",
+    version="0.1.5",
     author="Davide Mauri",
     author_email="info@davidemauri.it",
     description="A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile.",
