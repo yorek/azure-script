@@ -8,3 +8,4 @@ from azsc.handlers.az.AppService import *
 from azsc.handlers.az.FunctionApp import *
 from azsc.handlers.az.Extension import *
 from azsc.handlers.az.IoT import *
+from azsc.handlers.az.SqlServer import *

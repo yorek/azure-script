@@ -1,0 +1,8 @@
+location use 'eastus';
+
+group create 'dmsample';
+
+sql server create 'dmsqlserver' (
+	admin-user: "dm-admin",
+	admin-password: "s0mEsTrong-Pa$$w0rd!"
+);

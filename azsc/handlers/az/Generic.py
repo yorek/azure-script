@@ -22,7 +22,8 @@ class ContextParameter:
 class GenericHandler(Handler):
     azure_object = "*"    
 
-    context_parameters = None
+    context_parameters = {}
+    required_parameters = []
 
     def __init__(self, context, resources, action, name, params):
         super(GenericHandler, self).__init__(context, resources, action, name, params)
@@ -40,9 +41,17 @@ class GenericHandler(Handler):
         #print("-> CONTEXT: {0}".format(self.context))
         #print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
 
+        # push parameters from valus available in the context
         for cp in self.context_parameters:
             self._param_from_context(cp.name, cp.context)            
         
+        # check that all required parameters are set
+        for rp in self.required_parameters:
+            if not rp in self.params:
+                print("-> PARAM: {0}".format(rp))
+                sys.exit("Missing '{0}' required parameter.".format(rp))
+
+        # add params to generated command line 
         if (len(self.params)>0):
             ordered_params = collections.OrderedDict(sorted(self.params.items()))
             for param in ordered_params:
@@ -62,4 +71,7 @@ class GenericHandler(Handler):
                 print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
                 sys.exit("Missing '{0}' parameter and not suitable context value '{1}' found.".format(param_name, context_name))
 
+    def set_required_parameter(self, parameter_name):
+        if not parameter_name in self.required_parameters:
+            self.required_parameters.append(parameter_name) 
     
