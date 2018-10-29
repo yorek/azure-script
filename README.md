@@ -1,3 +1,4 @@
+[![Build Status](https://damauri.visualstudio.com/azure-cli-script/_apis/build/status/azure-cli-script-CI-Cov)](https://damauri.visualstudio.com/azure-cli-script/_build/latest?definitionId=4)
 
 # Azure CLI Script
 
