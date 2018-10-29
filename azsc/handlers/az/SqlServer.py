@@ -6,8 +6,6 @@ class SqlServerHandler(GenericHandler):
     azure_object = "sql server"
     
     def execute(self):
-        fqn = self.get_full_resource_name()
-
         if (self.action == "create"):        
             # use the value set by the "group" command
             # to fill the "resource-group" parameter, required by "az sql server" command

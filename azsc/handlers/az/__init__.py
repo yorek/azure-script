@@ -1,11 +1,5 @@
-from azsc.handlers.az.Generic import *
-from azsc.handlers.az.EventGrid import *
-from azsc.handlers.az.EventHubs import *
-from azsc.handlers.az.ResourceGroup import *
-from azsc.handlers.az.Storage import *
-from azsc.handlers.az.CosmosDB import *
-from azsc.handlers.az.AppService import *
-from azsc.handlers.az.FunctionApp import *
-from azsc.handlers.az.Extension import *
-from azsc.handlers.az.IoT import *
-from azsc.handlers.az.SqlServer import *
+import pkgutil 
+
+__path__ = pkgutil.extend_path(__path__, __name__)
+for importer, modname, ispkg in pkgutil.walk_packages(path=__path__, prefix=__name__+'.'):
+    __import__(modname)

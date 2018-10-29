@@ -13,6 +13,10 @@ class HandlerManager:
         logging.info("registering handlers")
         for h in available_handlers:
             logging.debug("\tfound handler: '{0}'".format(h.azure_object))
+            if h.azure_object in self.__handlers:
+                error_message = "duplicate handler found: '{0}'".format(h.azure_object) 
+                logging.error("\t" + error_message)
+                raise RuntimeError(error_message)
             self.__handlers[h.azure_object] = h
         print
 

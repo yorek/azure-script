@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from lark import Transformer, Tree
 from lark.lexer import Token
 from azsc.handlers.HandlerManager import HandlerManager

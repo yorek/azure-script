@@ -1,9 +1,34 @@
 class Handler(object):
-    context = None
+    """
+    The basic Handler class, that provides access to the active context, shared between all script commands
+    and details about the command being parsed
+    """
+    
+    context = {}
+    """
+    A dictionary that contains all the values pushed into the active context,
+    shared between all commands in the script
+    """
+    
     resources = None
+    """
+    The resource objects, as array of strings, used by the command being parsed
+    """
+
     action = None
-    params = None
+    """
+    The action specified by the command being parsed
+    """
+
+    params = {}
+    """
+    The parameters, if any, specified in the command being parsed
+    """
+
     name = None
+    """ 
+    The object name target of command being parsed
+    """
 
     def __init__(self, context, resources, action, name, params):
         self.context = context
