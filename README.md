@@ -19,6 +19,8 @@ location use 'eastus';
 
 and all subsequent command will use that location, if not explicity overridden in the command itself. **Same logic can be applied to any resource that depend on other resource.** Storage accounts for example, or VPNs.
 
+>Note: This is an experiment created by a customer facing team at Microsoft called, Commercial Software Engineering. We work with customers on a daily basis and as a result of that work we create this project. It is being used by partners today around the globe. Please help us improve it by trying it out and providing us feedback.
+
 ## Language
 
 The language has been created so that you can reuse everything you already know from AZ CLI. For example to create a storage account with AZ CLI you would type something like
