@@ -79,35 +79,13 @@ More will come in near future, stay tuned.
 
 ## Install
 
-### Runtime Only
-
-If you're not interested into developing Azure Script compiler, just use the usual `pip` tool:
+Just use the usual `pip` tool:
 
 	pip install azsc
 
 Done. You may want to take a look at the samples folder to get started with Azure Script:
 
 [Azure Script Samples](./samples)
-
-### Development Enviroment
-
-If you want to help in developing Azure Script compiler, is strongly recommended that you use virtualenv to setup a isolated environment:
-
-	virtualenv env --python=<path_to_python_3>
-
-in my case, since I have installed Python 3 as part of Visual Studio 2017, the full command is the following:
-
-	virtualenv env --python="C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\python.exe"
-
-and then activate it (for Linux see [here](https://virtualenv.pypa.io/en/stable/userguide/#usage))
-
-	.\env\Scripts\activate
-
-you can then install required packages:
-
-	pip install -e .
-
-and you're done, you can start using it.
 
 ## Usage
 
@@ -151,7 +129,3 @@ But if you're curious here's something I have in mind:
 - Generate Powershell Script
 - Generate ARM template
 - Execute the commands instead of just generating a script
-
-# Contributing
-
-This project welcomes contributions and suggestions. Just fork the repository, make your changes and submit a Pull Request. 
