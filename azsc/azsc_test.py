@@ -7,7 +7,7 @@ from lark import Lark
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def parse(text):
-    with open(os.path.join(__location__, './grammar/azsc.lark'), 'r') as f:
+    with open(os.path.join(__location__, os.path.join('grammar', 'azsc.lark')), 'r') as f:
         grammar = f.read()
 
     parser = Lark(grammar)
