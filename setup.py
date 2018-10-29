@@ -1,9 +1,12 @@
+import os
 import setuptools
 
 # don't read README.md when running from tox
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+readme_path = os.path.join(__location__, "README.md")
 
-if __name__ == '__main__':
-    with open("README.md", "r") as fh:
+if os.path.exists(readme_path):
+    with open(readme_path, 'r') as fh:
         long_description = fh.read()
 else:
         long_description = ""
