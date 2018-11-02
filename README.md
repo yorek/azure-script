@@ -69,12 +69,15 @@ AZ Script is written in Python and can easily be extended to support any kind of
 The (somehow) supported resources, right now, are
 
 - appservice
+- appinsights
 - cosmosdb
 - eventhubs
 - extension
 - functionapp
 - iot
 - resource group
+- sql db
+- sql server
 - storage
 
 More will come in near future, stay tuned.
@@ -100,11 +103,27 @@ azsc <filename.azs> [--debug]
 will generate the AZ CLI commands needed to do what defined in the script file.
 `--debug` will also print the parse tree for debugging purposes
 
-As a starting sample you can use the `e2e-1.azs` script:
+As a starting sample you can use the `e2e-2.azs` script:
 
-	azsc .\samples\e2e-1.azs
+	azsc .\samples\e2e-2.azs
 
 it will generate AZ CLI script ready to be executed in a [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) bash.
+
+### Full Bash Script generation
+
+If you want to generate a full featured bash script you can use the "azsh" target:
+
+	azsc .\samples\e2e-2.azs --target azsh
+
+### File Output
+
+The --output option will generate the code into the specified file instead of sending the result to the console
+
+	azsc .\samples\e2e-2.azs --target azsh --output c:\temp\azsc\full-output.sh
+
+### Samples Notes
+
+Please note that some samples requires additional file in order to properly run the resulting bash script. For example `package.zip` or `indexing.json` that are not provided since they are just used in the samples as placeholders to show what you can do with Azure Script.
 
 ## Compilation
 
