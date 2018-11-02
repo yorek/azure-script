@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch", 
             "module": "azsc.azsc",
-            "args": [ "./samples/e2e-2.azs", "--debug" ] 
+            "args": [ "./samples/e2e-2.azs", "--debug", "--target", "azsh" ] 
         }
     ]
 }

@@ -1,0 +1,16 @@
+location use 'eastus';
+
+group create 'dmsample';
+
+databricks service create 'my-databricks';
+
+databricks clusters create 'my-cluster'
+(
+    mode: 'Standard',
+    runtime: '4.3',
+    python: '2',
+    worker: 'Standard_DS3_v2',
+    min-workers: 2,
+    max-workers: 8
+    terminate-after: 120
+)

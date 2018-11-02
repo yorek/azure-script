@@ -16,5 +16,13 @@ iot hub create 'dmiothubtest' (
 	sku: "F1" 
 );
 
+# or, if iot hub already exists
+# iot hub use 'dmiothubtest';
+
 # create iot hub device
 iot hub device-identity create 'mydevice';
+
+# overrides context setting
+iot hub device-identity create 'mydevice' (
+	hub-name: "anotheriothub"
+);

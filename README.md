@@ -1,8 +1,12 @@
-[![Build Status](https://damauri.visualstudio.com/azure-cli-script/_apis/build/status/azure-cli-script-CI-Cov)](https://damauri.visualstudio.com/azure-cli-script/_build/latest?definitionId=4)
+# AZ CLI Script
 
-# Azure CLI Script
+A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possible. It will significantly reduce the amount of custom code you need to write to execute Az CLI commands.
 
-A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile. It helps to reduce by 40% the code you need to write!
+[![Build Status](https://dev.azure.com/epicstuff/AZ%20CLI%20Script/_apis/build/status/Build)](https://dev.azure.com/epicstuff/AZ%20CLI%20Script/_build/latest?definitionId=27)
+
+## This is an experiment
+
+We created this project while coding with Azure customers. It is an experiment and not yet officially support and maintained by the AZ CLI team. Our customers found it useful and we think you might as well. Please give it a try, use it in your project, submit issues and help us continue to develop it.
 
 ## Goal
 
@@ -19,8 +23,6 @@ location use 'eastus';
 ```
 
 and all subsequent command will use that location, if not explicity overridden in the command itself. **Same logic can be applied to any resource that depend on other resource.** Storage accounts for example, or VPNs.
-
->Note: This is an experiment created by a customer facing team at Microsoft called, Commercial Software Engineering. We work with customers on a daily basis and as a result of that work we create this project. It is being used by partners today around the globe. Please help us improve it by trying it out and providing us feedback.
 
 ## Language
 
@@ -79,13 +81,13 @@ More will come in near future, stay tuned.
 
 ## Install
 
-Just use the usual `pip` tool:
+If you're not interested into developing AZ CLI Script compiler, just use the usual `pip` tool:
 
 	pip install azsc
 
-Done. You may want to take a look at the samples folder to get started with Azure Script:
+Done. You may want to take a look at the samples folder to get started with AZ CLI Script:
 
-[Azure Script Samples](./samples)
+[AZ CLI Script Samples](./samples)
 
 ## Usage
 
@@ -118,10 +120,14 @@ For now this is just an experiment. Let's see where it goes...
 
 But if you're curious here's something I have in mind:
 
+- Support 3rd party Azure Resources (like Azure Databricks) in order to provide a common, unified, infrastructure-as-code experience
 - Support syntax highlighting Visual Studio Code (done: https://github.com/yorek/azure-script-vscode)
 - Support for and code completion in Visual Studio Code
+- Support running and debugging .azs script in Visual Studio Code
+- Add templating support (using [Liquid](https://shopify.github.io/liquid/))
 - Build a graph of dependencies and the run as many AZ CLI commands in parallel as possibile
 - Using the dependency graph, validate the command even before running them
+- Enforce application of best practies and well-know patterns
 - Define a clever way to deal with erros like:
 	- automatic retry 
 	- break the scripts
@@ -129,3 +135,8 @@ But if you're curious here's something I have in mind:
 - Generate Powershell Script
 - Generate ARM template
 - Execute the commands instead of just generating a script
+- Add an interactive mode
+
+# Contributing
+
+This project welcomes contributions and suggestions. Just fork the repository, make your changes and submit a Pull Request. 

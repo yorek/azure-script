@@ -17,7 +17,7 @@ class EventHubsHandler(GenericHandler):
             self.add_context_parameter("namespace-name", "eventhubs namespace")
             self.add_context_parameter("resource-group", "group")
 
-        if fqn == "eventhubs namespace authorization-rule keys list":
+        if fqn == "eventhubs namespace authorization-rule keys":
             self.add_context_parameter("namespace-name", "eventhubs namespace")
             self.add_context_parameter("resource-group", "group")
 

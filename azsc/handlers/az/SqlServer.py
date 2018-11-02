@@ -26,3 +26,22 @@ class SqlServerHandler(GenericHandler):
 
         return cmd
 
+class SqlServerFirewallRuleHandler(GenericHandler):
+    azure_object = "sql server firewall-rule"
+    
+    def execute(self):
+        if (self.action == "create"):        
+            # add parameters from context
+            self.add_context_parameter("resource-group", "group")
+            self.add_context_parameter("server", "sql server")
+
+            # check that required parameters are actually provided
+            self.set_required_parameter("start-ip-address")
+            self.set_required_parameter("end-ip-address")
+
+        cmd = super(SqlServerFirewallRuleHandler, self).execute()
+
+        # push object name into script context
+        self.save_to_context()
+
+        return cmd

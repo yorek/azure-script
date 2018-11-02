@@ -26,7 +26,7 @@ class HandlerManager:
     def is_handler_available(self, azobject): 
         return azobject in self.__handlers
 
-    def get_handler(self, resources, action, name, params):
+    def get_handler(self, resources, action, name, params, target):
         fqn = ''
 
         # check what is the most specific handler possible        
@@ -44,4 +44,4 @@ class HandlerManager:
         else:
             h = self.__handlers["*"]
 
-        return h(self.context, resources, action, name, params)
+        return h(self.context, resources, action, name, params, target)

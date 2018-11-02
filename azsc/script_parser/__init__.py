@@ -1,15 +1,26 @@
 import sys
 import logging
 import os 
+import codecs
+import pkg_resources 
 from lark import Lark
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-def run_parser(script, target, debug):
+def run_parser(script, target, output, debug):
     if (debug == True):
-        logging.getLogger().setLevel(logging.DEBUG)
+        logging.basicConfig(
+            filename='azsc.log', 
+            filemode='w', 
+            level=logging.DEBUG, 
+            format='%(asctime)s %(levelname)s %(message)s')
+    else:
+        logging.basicConfig(
+            level=logging.INFO, 
+            format='%(message)s')
 
-    logging.info("AZ Script Compiler v 0.1")
+    version = pkg_resources.require("azsc")[0].version
+    logging.info("az cli script compiler v {0}\n".format(version))
 
     #os.path.join(os.path.split(__file__)[0], "monitor.js")
     logging.info("loading grammar")
@@ -37,7 +48,7 @@ def run_parser(script, target, debug):
     from azsc.transformers.AZSTransformer import AZSTransformer
 
     logging.info("compiling")
-    t = AZSTransformer()
+    t = AZSTransformer(target)
     t.transform(tree)
     cmd = t.get_command()
 
@@ -48,5 +59,15 @@ def run_parser(script, target, debug):
             logging.debug("\t[%s]=%s", str(c), str(ctx[c]))
 
     logging.info("done")   
+
+    try:
+        if (output is not None):
+            with codecs.open(output, "w", "utf-8") as f:
+                f.write(cmd)
+                f.close()
+                cmd = ""                
+    except OSError:
+        logging.exception("unable to write to output file")
+        sys.exit("unable to write to output file")
 
     return cmd

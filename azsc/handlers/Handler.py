@@ -30,12 +30,18 @@ class Handler(object):
     The object name target of command being parsed
     """
 
-    def __init__(self, context, resources, action, name, params):
+    target = None
+    """
+    transpilation target
+    """
+
+    def __init__(self, context, resources, action, name, params, target):
         self.context = context
         self.resources = resources
         self.action = action
         self.name = name
         self.params = params
+        self.target = target
 
     def get_full_resource_name(self):
         """

@@ -16,3 +16,13 @@ sql server firewall-rule create 'Office' (
     start-ip-address: "1.2.3.4",
     end-ip-address: "1.2.3.4"
 );
+
+cosmosdb create 'dmk1cosmosdb';
+
+cosmosdb database create 'streaming';
+
+cosmosdb collection create 'rawdata' (
+	partition-key-path: "/eventData/eventId",
+	throughput: 20000,
+	indexing-policy: @indexing.json
+);

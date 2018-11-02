@@ -22,12 +22,13 @@ class ContextParameter:
 class GenericHandler(Handler):
     azure_object = "*"    
 
-    context_parameters = {}
+    context_parameters = []
     required_parameters = []
 
-    def __init__(self, context, resources, action, name, params):
-        super(GenericHandler, self).__init__(context, resources, action, name, params)
+    def __init__(self, context, resources, action, name, params, target):
+        super(GenericHandler, self).__init__(context, resources, action, name, params, target)
         self.context_parameters = []
+        self.required_parameters = []
 
     def execute(self):
         cmd = u"az"
@@ -43,11 +44,14 @@ class GenericHandler(Handler):
 
         # push parameters from valus available in the context
         for cp in self.context_parameters:
-            self._param_from_context(cp.name, cp.context)            
+            self._set_param_from_context(cp.name, cp.context)            
         
         # check that all required parameters are set
         for rp in self.required_parameters:
             if not rp in self.params:
+                print("ERROR:")
+                print("-> RESOURCE: " + self.azure_object)                
+                print("-> NAME: " + (self.name or "(unknown)"))
                 print("-> PARAM: {0}".format(rp))
                 sys.exit("Missing '{0}' required parameter.".format(rp))
 
@@ -57,21 +61,29 @@ class GenericHandler(Handler):
             for param in ordered_params:
                 cmd += u" --{0} {1}".format(param, self.params[param])
 
-        return cmd
+        if (self.target == "azsh"):
+            cmd += " -o json >> azcli-execution.log"
+
+        return cmd, self
  
     def add_context_parameter(self, parameter_name, context_name):
         self.context_parameters.append(ContextParameter(parameter_name, context_name))
         
-    def _param_from_context(self, param_name, context_name):
-        if not param_name in self.params:
-            if context_name in self.context:
-                self.params[param_name] = self.context[context_name]
-            else:                    
-                print("-> CONTEXT: {0}".format(self.context))
-                print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
-                sys.exit("Missing '{0}' parameter and not suitable context value '{1}' found.".format(param_name, context_name))
+    def add_parameter(self, parameter_name, parameter_value):
+        self.params[parameter_name] = parameter_value
 
     def set_required_parameter(self, parameter_name):
         if not parameter_name in self.required_parameters:
             self.required_parameters.append(parameter_name) 
-    
+
+    def _set_param_from_context(self, param_name, context_name):
+        if not param_name in self.params:
+            if context_name in self.context:
+                self.params[param_name] = self.context[context_name]
+            else:                    
+                print("ERROR:")
+                print("-> RESOURCE: " + self.azure_object)                
+                print("-> NAME: " + (self.name or "(unknown)"))
+                print("-> CONTEXT: {0}".format(self.context))
+                print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
+                sys.exit("Missing '{0}' parameter and not suitable context value '{1}' found.".format(param_name, context_name))

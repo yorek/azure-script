@@ -1,3 +1,8 @@
+#
+# This script will build python packages
+# for Python 2 and Python 3
+#
+
 if (Test-Path -Path ".\env2\Scripts\activate") {
     .\env2\Scripts\activate
     python setup.py sdist bdist_wheel

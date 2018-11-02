@@ -14,7 +14,7 @@ def parse(text):
 
     tree = parser.parse(text)
 
-    t = AZSTransformer()
+    t = AZSTransformer("az")
     t.transform(tree)
     cmd = t.get_command()
 
@@ -40,7 +40,7 @@ def test_storage_account():
 
     test = parse(script).splitlines()
     assert(test[0]) == 'az group create --name "test" --location "eastus"'
-    assert(test[1]) == 'az storage account create --name "teststorage" --location "eastus" --resource-group "test" --sku "Standard_LRS"'
+    assert(test[2]) == 'az storage account create --name "teststorage" --location "eastus" --resource-group "test" --sku "Standard_LRS"'
 
 def test_comments():
     script = """
@@ -49,4 +49,24 @@ def test_comments():
 
     test = parse(script)
     assert(test) == ''
-  
+
+def test_sqlserver():
+    script = """  
+    location use 'eastus';
+    group create 'test';
+    sql server create 'test-sqlserver' (
+        admin-user: "user",
+        admin-password: "password"
+    );
+    sql db create 'test-sqldb' (
+        edition: 'Premium',
+        service-objective: 'P1'
+    );  
+    """
+
+    test = parse(script).splitlines()
+    
+    assert(test[0]) == 'az group create --name "test" --location "eastus"'
+    assert(test[2]) == 'az sql server create --name "test-sqlserver" --admin-password "password" --admin-user "user" --location "eastus" --resource-group "test"'
+    assert(test[4]) == 'az sql db create --name "test-sqldb" --edition "Premium" --resource-group "test" --server "test-sqlserver" --service-objective "P1"'
+

@@ -1,3 +1,7 @@
+#
+# Full End-To-End sample
+#
+
 location use 'eastus';
 
 group create 'dmk1';
@@ -8,7 +12,7 @@ storage account create 'dmk1storage' (
 
 eventhubs namespace create 'dmk1ingest' (
 	sku: "Standard",
-	capacity: 20
+	capacity: 20	
 );
 
 eventhubs eventhub create 'dmk1ingest-32' (
@@ -45,5 +49,25 @@ $EVENTHUB_CS = eventhubs namespace authorization-rule keys list 'RootManageShare
 
 functionapp config appsettings set 'dmk1func' (
 	settings: "EventHubsConnectionString=$EVENTHUB_CS"
+);
+
+functionapp config appsettings set 'dmk1func' (
+	settings: "EventHubName=dmk1ingest-32" 
+);
+
+functionapp config appsettings set 'dmk1func' (
+	settings: "ConsumerGroup=cosmos"
+);
+
+appinsights create 'dmk1appinsights' (
+	application-id: "StreamingAtScale"
+);
+
+$APPINSIGHTS_KEY = appinsights key list 'dmk1appinsights' (
+	query: "properties.InstrumentationKey"
+);
+
+functionapp config appsettings set 'dmk1func' (
+	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
 );
 

@@ -1,0 +1,71 @@
+#
+# Long term plan/vision
+#
+
+$NAME = ?("Sample Name") -- Parameters Support
+
+location use 'eastus';
+
+group create '${makeunique(NAME)}'; -- Support for function plugins/filter (like the Liquid template language does)
+
+storage account create '{$NAME}storage' (
+	sku: 'Standard_LRS'		
+);
+
+eventhubs namespace create '{$NAME}ingest' (
+	sku: "Standard",
+	capacity: 20
+);
+
+eventhubs eventhub create '{$NAME}ingest-32' (
+	message-retention: 1,
+	partition-count: 32
+);
+
+eventhubs eventhub consumer-group create 'cosmos';
+
+cosmosdb create '{$NAME}cosmosdb';
+
+cosmosdb database create 'streaming';
+
+cosmosdb collection create 'rawdata' (
+	partition-key-path: "/eventData/eventId",
+	throughput: 20000,
+	indexing-policy: @indexing.json
+);
+
+appservice plan create '{$NAME}plan' (
+	number-of-workers: 4,
+	sku: "P1"
+);
+
+functionapp create '{$NAME}func';
+
+functionapp deployment source config-zip '{$NAME}func' (
+	src: "package.zip"
+);
+
+$EVENTHUB_CS = eventhubs namespace authorization-rule keys list 'RootManageSharedAccessKey' (	
+	query: "primaryConnectionString"
+);
+
+functionapp config appsettings set '{$NAME}func' (
+	settings: 
+		"EventHubsConnectionString={$EVENTHUB_CS}", 
+		"EventHubName={$NAME}ingest-32", 
+		"ConsumerGroup=cosmos"
+);
+
+appinsights create '{$NAME}appinsights' (
+	application-id: "StreamingAtScale",
+	application-type: "other",
+	flow-type: "Redfield"
+);
+
+$APPINSIGHTS_KEY = appinsights key list '{$NAME}appinsights' (
+	query: "properties.InstrumentationKey"
+)
+
+functionapp config appsettings set '{$NAME}func' (
+	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_KEY}"
+);

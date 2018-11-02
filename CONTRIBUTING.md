@@ -6,15 +6,15 @@ This project welcomes contributions and suggestions. Just fork the repository, m
 
 If you want to help in developing Azure Script compiler, is strongly recommended that you use virtualenv to setup a isolated environment:
 
-	virtualenv env --python=<path_to_python_3>
+	virtualenv env3 --python=<path_to_python_3>
 
 in my case, since I have installed Python 3 as part of Visual Studio 2017, the full command is the following:
 
-	virtualenv env --python="C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\python.exe"
+	virtualenv env3 --python="C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\python.exe"
 
 and then activate it (for Linux see [here](https://virtualenv.pypa.io/en/stable/userguide/#usage))
 
-	.\env\Scripts\activate
+	.\env3\Scripts\activate
 
 you can then install required packages:
 
@@ -22,5 +22,5 @@ you can then install required packages:
 
 and you're done, you can start using it.
 
->Note: it is recommended to create two virtual environments, one for Python 2.7 and one for Python 3.x, named `env2` and `env3` respectivaly
+It is recommended to create two virtual environments, one for Python 2.7 and one for Python 3.x, named `env2` and `env3` respectively. 
 
