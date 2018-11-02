@@ -143,6 +143,8 @@ But if you're curious here's something I have in mind:
 - Support syntax highlighting Visual Studio Code (done: https://github.com/yorek/azure-script-vscode)
 - Support for and code completion in Visual Studio Code
 - Support running and debugging .azs script in Visual Studio Code
+- Run pre-validation checks (for example check that all files referenced in the script actually exists).
+- Add an option to inject pre-validation checks into generated script, when appropriate (for example with AZ CLI)
 - Add templating support (using [Liquid](https://shopify.github.io/liquid/))
 - Build a graph of dependencies and the run as many AZ CLI commands in parallel as possibile
 - Using the dependency graph, validate the command even before running them
