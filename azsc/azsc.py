@@ -13,7 +13,7 @@ from azsc.script_parser import run_parser
 def cli(script, target, output, debug):    
     result = run_parser(script, target, output, debug)
     if (output is None):
-        print(result, end="")
+        print(result)
 
 if __name__ == '__main__':
     cli()
