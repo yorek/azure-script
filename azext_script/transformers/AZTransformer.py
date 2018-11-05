@@ -4,7 +4,7 @@ from lark import Transformer, Tree
 from lark.lexer import Token
 from azext_script.handlers.HandlerManager import HandlerManager
 
-class AZSTransformer(Transformer):
+class AZTransformer(Transformer):
     __handler_manager = HandlerManager()
     __cmd = u""
     __result = u""

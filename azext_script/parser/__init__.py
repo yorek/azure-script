@@ -44,10 +44,10 @@ def parse_script(script, target, output, debug):
     logging.debug("parse tree:\n" + tree.pretty())
 
     logging.info("importing parse tree transformer")
-    from azext_script.transformers.AZSTransformer import AZSTransformer
+    from azext_script.transformers.AZTransformer import AZTransformer
 
     logging.info("compiling")
-    t = AZSTransformer(target)
+    t = AZTransformer(target)
     t.transform(tree)
     cmd = t.get_command()
 
