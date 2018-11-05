@@ -1,6 +1,6 @@
 import sys
 import collections
-from azext_script.handlers.Handler import Handler
+from azext_script.compilers.Handler import Handler
 
 class ContextParameter:
     name = None
