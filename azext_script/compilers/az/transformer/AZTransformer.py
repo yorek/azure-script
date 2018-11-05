@@ -5,7 +5,7 @@ from lark.lexer import Token
 from azext_script.compilers.HandlerManager import HandlerManager
 
 class AZTransformer(Transformer):
-    __handler_manager = HandlerManager()
+    __handler_manager = None
     __cmd = u""
     __result = u""
     __assign_to = None
@@ -14,6 +14,7 @@ class AZTransformer(Transformer):
 
     def  __init__(self, target):
         self.__target = target
+        self.__handler_manager = HandlerManager(target)
 
     def __get_name_objects_params(self, items):
         objects = []
@@ -66,7 +67,7 @@ class AZTransformer(Transformer):
         resources = objects[0:-1]
         action = objects[-1]
 
-        handler = self.__handler_manager.get_handler(resources, action, name, params, self.__target)
+        handler = self.__handler_manager.get_handler(resources, action, name, params)
         result = handler.execute()        
 
         # Dirty trink needs to be changed to a better way

@@ -2,6 +2,7 @@ import logging
 from azext_script.compilers import Handler
 
 class HandlerManager:
+    target = None
     context = {}
     __handlers = {}
     __available_handlers = set()
@@ -9,7 +10,8 @@ class HandlerManager:
     def __get_all_subclasses(self, cls):
         return set(cls.__subclasses__()).union([s for c in cls.__subclasses__() for s in self.__get_all_subclasses(c)])
 
-    def __init__(self):       
+    def __init__(self, target):       
+        self.target = target
         self.load_handlers()        
 
     def load_handlers(self):
@@ -24,13 +26,13 @@ class HandlerManager:
             self.__handlers[h.azure_object] = h
         print
 
-    def set_context(self, name, value):
+    def set_context(self, name, value):        
         self.context[name] = value
 
     def is_handler_available(self, azobject): 
         return azobject in self.__handlers
 
-    def get_handler(self, resources, action, name, params, target):
+    def get_handler(self, resources, action, name, params):
         fqn = ''
 
         # check what is the most specific handler possible        
@@ -48,4 +50,4 @@ class HandlerManager:
         else:
             h = self.__handlers["*"]
 
-        return h(self.context, resources, action, name, params, target)
+        return h(self.context, resources, action, name, params, self.target)
