@@ -5,7 +5,7 @@
  
 from knack.help_files import helps
 from azure.cli.core import AzCommandsLoader
-from azext_script.parser import parse_script
+from azext_script.parser import azure_script_parse
 
 helps['azure script'] = """
     type: command
@@ -14,7 +14,7 @@ helps['azure script'] = """
 
 def run_script(script, target="az", output=None):
     debug = False
-    result = parse_script(script, target, output, debug)
+    result = azure_script_parse(script, target, output, debug)
     if (output is None):
         print(result)
 

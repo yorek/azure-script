@@ -6,7 +6,7 @@ import pkg_resources
 from lark import Lark
 from azext_script._constants import VERSION
 
-def parse_script(script, target, output, debug):
+def azure_script_parse(script, target, output, debug):
     if (debug == True):
         logging.basicConfig(
             filename='azsc.log', 
@@ -44,7 +44,7 @@ def parse_script(script, target, output, debug):
     logging.debug("parse tree:\n" + tree.pretty())
 
     logging.info("importing parse tree transformer")
-    from azext_script.transformers.AZTransformer import AZTransformer
+    from azext_script.compilers.az.transformer.AZTransformer import AZTransformer
 
     logging.info("compiling")
     t = AZTransformer(target)

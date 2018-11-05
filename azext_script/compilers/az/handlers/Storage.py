@@ -1,6 +1,4 @@
-import sys
-from azext_script.handlers.Handler import Handler
-from azext_script.handlers.az.Generic import GenericHandler
+from .Generic import GenericHandler
 
 class StorageShareHandler(GenericHandler):
     azure_object = "storage share"

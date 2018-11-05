@@ -1,6 +1,5 @@
 import json
-from azext_script.handlers.Handler import Handler
-from azext_script.handlers.az.Generic import GenericHandler
+from .Generic import GenericHandler
 
 class AppInsightsHandler(GenericHandler):
     azure_object = "appinsights"
