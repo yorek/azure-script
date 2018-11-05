@@ -4,10 +4,9 @@ import os
 import codecs
 import pkg_resources 
 from lark import Lark
+from azext_script._constants import VERSION
 
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
-def run_parser(script, target, output, debug):
+def parse_script(script, target, output, debug):
     if (debug == True):
         logging.basicConfig(
             filename='azsc.log', 
@@ -19,12 +18,12 @@ def run_parser(script, target, output, debug):
             level=logging.INFO, 
             format='%(message)s')
 
-    version = pkg_resources.require("azsc")[0].version
+    version = VERSION
     logging.info("az cli script compiler v {0}\n".format(version))
 
-    #os.path.join(os.path.split(__file__)[0], "monitor.js")
     logging.info("loading grammar")
-    with open(os.path.join(__location__, os.path.join('..', 'grammar', 'azsc.lark')), 'r') as f:
+    location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))    
+    with open(os.path.join(location, os.path.join('..', 'grammar', 'azsc.lark')), 'r') as f:
         grammar = f.read()
 
     logging.info("loading script file")
@@ -45,7 +44,7 @@ def run_parser(script, target, output, debug):
     logging.debug("parse tree:\n" + tree.pretty())
 
     logging.info("importing parse tree transformer")
-    from azsc.transformers.AZSTransformer import AZSTransformer
+    from azext_script.transformers.AZSTransformer import AZSTransformer
 
     logging.info("compiling")
     t = AZSTransformer(target)

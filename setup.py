@@ -1,47 +1,73 @@
-import os
-import setuptools
+import re
+import os.path
+from io import open # pylint: disable=W0622
+from setuptools import setup, find_packages
 
-# don't read README.md when running from tox
-__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-readme_path = os.path.join(__location__, "README.md")
+#
+# Define objects and functions
+#
+package_folder_path = 'azext_script'
 
-if os.path.exists(readme_path):
-    with open(readme_path, 'r') as fh:
-        long_description = fh.read()
-else:
-        long_description = ""
+# Version extraction inspired from 'requests'
+with open(os.path.join(package_folder_path, '_constants.py'), 'r') as fd:
+    VERSION = re.search(r'^VERSION\s*=\s*[\'"]([^\'"]*)[\'"]',
+fd.read(), re.MULTILINE).group(1)
 
-setuptools.setup(
-    name="azsc",
-    version="0.1.13",
+CLASSIFIERS = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Interpreters",
+    "Topic :: Utilities",
+    'Intended Audience :: Developers',
+    'Intended Audience :: System Administrators',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'License :: OSI Approved :: MIT License',
+]
+
+DEPENDENCIES = [
+    'lark-parser==0.6.4'
+    ]
+
+def load_readme():
+    """
+    Load README.md file if not running from inside a test tool like tox.
+    """
+    location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    readme_path = os.path.join(location, "README.md")
+
+    if os.path.exists(readme_path):
+        with open(readme_path, 'r') as fh:
+            long_description = fh.read()
+    else:
+            long_description = ""
+
+    return long_description
+
+#
+# Run setup
+#
+
+setup(
+    name="azure-script",
+    version=VERSION,
     author="Davide Mauri",
     author_email="info@davidemauri.it",
+    license='MIT',
     description="A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile.",
-    long_description=long_description,
+    long_description=load_readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/yorek/azure-script",
-    packages=setuptools.find_packages(),
-    package_data={'azsc': ['grammar/*.lark']},
-    classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Environment :: Console",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Topic :: Internet",
-        "Topic :: Software Development :: Code Generators",
-        "Topic :: Software Development :: Interpreters",
-        "Topic :: Utilities"
-    ],
-    py_modules=['azsc'],
-    install_requires=[
-        'Click',
-        'lark-parser==0.6.4',
-        'setuptools'        
-    ],
-    entry_points={
-        'console_scripts': [
-            'azsc=azsc.azsc:cli'
-        ]
-    }        
+    packages=find_packages(),
+    package_data={'azext_script': ['grammar/*.lark']},
+    classifiers=CLASSIFIERS,
+    install_requires=DEPENDENCIES        
 )

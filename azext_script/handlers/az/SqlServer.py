@@ -1,5 +1,5 @@
-from azsc.handlers.Handler import Handler
-from azsc.handlers.az.Generic import GenericHandler
+from azext_script.handlers.Handler import Handler
+from azext_script.handlers.az.Generic import GenericHandler
 
 class SqlServerHandler(GenericHandler):
     # The AZ object this handler will manage

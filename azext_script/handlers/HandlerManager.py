@@ -1,6 +1,6 @@
 import logging
-from azsc.handlers import available_handlers
-from azsc.handlers import Handler
+from azext_script.handlers import available_handlers
+from azext_script.handlers import Handler
 
 class HandlerManager:
     context = {}

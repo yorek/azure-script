@@ -1,6 +1,6 @@
 import sys
-from azsc.handlers.Handler import Handler
-from azsc.handlers.az.Generic import GenericHandler
+from azext_script.handlers.Handler import Handler
+from azext_script.handlers.az.Generic import GenericHandler
 
 class EventHubsHandler(GenericHandler):
     azure_object = "eventhubs"

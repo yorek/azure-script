@@ -6,8 +6,8 @@ If an AZ CLI command is not yet 100% supported by Azure Script, you can easly cr
 
 Create a new empty `.py` in `~/azsc/handlers/az` folder and the copy and paste the followin startup code:
 
-    from azsc.handlers.Handler import Handler
-    from azsc.handlers.az.Generic import GenericHandler
+    from azext_script.handlers.Handler import Handler
+    from azext_script.handlers.az.Generic import GenericHandler
 
     class SqlServerHandler(GenericHandler):
         azure_object = "sql server"
@@ -48,8 +48,8 @@ In a real-world script, the user will probabily set the location and the resourc
 
 To achieve that, the handler needs to know which parameters can be inferred from context. The `add_context_parameter()` method takes care of this. Here's the updated code: 
 
-    from azsc.handlers.Handler import Handler
-    from azsc.handlers.az.Generic import GenericHandler
+    from azext_script.handlers.Handler import Handler
+    from azext_script.handlers.az.Generic import GenericHandler
 
     class SqlServerHandler(GenericHandler):
         # The AZ object this handler will manage
@@ -80,8 +80,8 @@ The required `admin-user` and `admin-password` parameter are needed only by the 
 
 Here's the updated code:
 
-    from azsc.handlers.Handler import Handler
-    from azsc.handlers.az.Generic import GenericHandler
+    from azext_script.handlers.Handler import Handler
+    from azext_script.handlers.az.Generic import GenericHandler
 
     class SqlServerHandler(GenericHandler):
         # The AZ object this handler will manage

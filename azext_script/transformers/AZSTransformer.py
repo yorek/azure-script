@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from lark import Transformer, Tree
 from lark.lexer import Token
-from azsc.handlers.HandlerManager import HandlerManager
+from azext_script.handlers.HandlerManager import HandlerManager
 
 class AZSTransformer(Transformer):
     __handler_manager = HandlerManager()
