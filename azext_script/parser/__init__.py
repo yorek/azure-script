@@ -5,6 +5,7 @@ import codecs
 import pkg_resources 
 from lark import Lark
 from azext_script._constants import VERSION
+from azext_script.compilers import get_transformer
 
 def azure_script_parse(script, target, output, debug):
     if (debug == True):
@@ -44,10 +45,11 @@ def azure_script_parse(script, target, output, debug):
     logging.debug("parse tree:\n" + tree.pretty())
 
     logging.info("importing parse tree transformer")
-    from azext_script.compilers.az.transformer.AZTransformer import AZTransformer
+    #get_transformer(target)
+    from azext_script.compilers.az.transformer.ScriptTransformer import ScriptTransformer
 
     logging.info("compiling")
-    t = AZTransformer(target)
+    t = ScriptTransformer(target)
     t.transform(tree)
     cmd = t.get_command()
 

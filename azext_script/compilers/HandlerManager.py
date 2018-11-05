@@ -1,5 +1,6 @@
 import logging
 from azext_script.compilers import Handler
+from azext_script.compilers.Compiler import get_supported_target
 
 class HandlerManager:
     target = None
@@ -16,6 +17,9 @@ class HandlerManager:
 
     def load_handlers(self):
         logging.info("registering handlers")
+        compiler = get_supported_target(self.target)
+        print('azext_script.compilers.{0}.handlers'.format(compiler))
+        __import__('azext_script.compilers.{0}.handlers'.format(compiler))
         __available_handlers = self.__get_all_subclasses(Handler)
         for h in __available_handlers:
             logging.debug("\tfound handler: '{0}'".format(h.azure_object))
@@ -23,8 +27,7 @@ class HandlerManager:
                 error_message = "duplicate handler found: '{0}'".format(h.azure_object) 
                 logging.error("\t" + error_message)
                 raise RuntimeError(error_message)
-            self.__handlers[h.azure_object] = h
-        print
+            self.__handlers[h.azure_object] = h        
 
     def set_context(self, name, value):        
         self.context[name] = value
