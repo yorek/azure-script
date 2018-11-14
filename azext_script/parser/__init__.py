@@ -45,13 +45,14 @@ def azure_script_parse(script, target, output, debug):
     logging.debug("parse tree:\n" + tree.pretty())
 
     logging.info("importing parse tree transformer")
+    #TODO: Transformer must be dynamically loaded based on the specified target
     #get_transformer(target)
     from azext_script.compilers.az.transformer.ScriptTransformer import ScriptTransformer
 
     logging.info("compiling")
     t = ScriptTransformer(target)
     t.transform(tree)
-    cmd = t.get_command()
+    result = t.get_result()
 
     if (debug==True):
         logging.debug("context:")
@@ -64,11 +65,11 @@ def azure_script_parse(script, target, output, debug):
     try:
         if (output is not None):
             with codecs.open(output, "w", "utf-8") as f:
-                f.write(cmd)
+                f.write(result)
                 f.close()
-                cmd = ""                
+                result = ""                
     except OSError:
         logging.exception("unable to write to output file")
         sys.exit("unable to write to output file")
 
-    return cmd
+    return result

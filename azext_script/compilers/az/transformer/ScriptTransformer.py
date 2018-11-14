@@ -123,7 +123,7 @@ rm azcli-execution.log -f
         if self.__target == "azsh":
             self.__result = header + self.__result
 
-    def get_command(self):
+    def get_result(self):
         return self.__result.strip()
 
     def get_context(self):
