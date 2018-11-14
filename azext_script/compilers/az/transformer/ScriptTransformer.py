@@ -17,6 +17,7 @@ class ScriptTransformer(Transformer):
         self.__handler_manager = HandlerManager(target)
 
     def __get_name_objects_params(self, items):
+        name = None
         objects = []
         params = []
         for item in items:

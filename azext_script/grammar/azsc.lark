@@ -4,7 +4,7 @@ instruction: [variable "="][use|execute] ";"
     | variable "=" value ";"
 
 use: object object* "use" name
-execute: object object* name [["with"] block]
+execute: object object* [name] [["with"] block]
 variable: "$" object
 
 object: OBJECT -> azobject
