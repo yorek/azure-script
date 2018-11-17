@@ -18,7 +18,7 @@ class HandlerManager:
     def load_handlers(self):
         logging.info("registering handlers")
         compiler = get_supported_target(self.target)
-        print('azext_script.compilers.{0}.handlers'.format(compiler))
+        #print('azext_script.compilers.{0}.handlers'.format(compiler))
         __import__('azext_script.compilers.{0}.handlers'.format(compiler))
         __available_handlers = self.__get_all_subclasses(Handler)
         for h in __available_handlers:

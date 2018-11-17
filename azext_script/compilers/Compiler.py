@@ -3,7 +3,7 @@ __transformer = None
 
 def register_supported_target(compiler, targets):
     for t in targets:
-        print("registering target {0}->{1}".format(t, compiler))
+        #print("registering target {0}->{1}".format(t, compiler))
         __supported_targets[t] = compiler
 
 def get_supported_target(target):
