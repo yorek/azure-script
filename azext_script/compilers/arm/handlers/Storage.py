@@ -1,29 +1,40 @@
 from .Generic import GenericHandler
-
-class StorageShareHandler(GenericHandler):
-    azure_object = "storage share"
- 
-    def execute(self):
-        self.add_context_parameter("account-name", "storage account")
-
-        cmd = super(StorageShareHandler, self).execute()
-
-        self.save_to_context()
-
-        return cmd
+import json
 
 class StorageHandler(GenericHandler):
     azure_object = "storage"
- 
+
+    arm = {
+        "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+        "contentVersion": "1.0.0.0",
+        "resources": [
+            {
+                "type": "Microsoft.Storage/storageAccounts", 
+                "apiVersion": "2018-07-01", 
+                "sku": {  
+                },
+            }
+        ]
+    }
+
     def execute(self):
-        self.add_context_parameter("resource-group", "group")
-        self.add_context_parameter("location", "location")
+        storage = self.arm["resources"][0]
 
-        cmd = super(StorageHandler, self).execute()
+        storage["name"] = self.name
+        storage["location"] = self.context["location"]
 
-        self.save_to_context()
+        if 'sku' in self.params:
+            storage["sku"]["name"] = self.params["sku"]
 
-        return cmd
+        storage["kind"] = self.params["kind"]
+
+        result = json.dumps(self.arm, indent=4)
+
+        #cmd = super(StorageHandler, self).execute()
+
+        #self.save_to_context()
+
+        return result
   
    
         

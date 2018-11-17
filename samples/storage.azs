@@ -1,0 +1,8 @@
+location use 'eastus';
+
+group up 'DM';
+
+storage account create 'dmstore4' (
+    sku: "Standard_LRS",
+    kind: "StorageV2"
+);

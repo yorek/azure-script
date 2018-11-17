@@ -31,18 +31,9 @@ class GenericHandler(Handler):
         self.required_parameters = []
 
     def execute(self):
-        cmd = u"az"
-        cmd += u" {0}".format(' '.join(self.resources))
-        cmd += u" {0}".format(self.action)
+        cmd = u""
         
-        if (self.name != None):
-            cmd += u" --name {0}".format(self.name)
-
-        #print("-> {0} {1} {2}".format(self.resources, self.action, self.name))
-        #print("-> CONTEXT: {0}".format(self.context))
-        #print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
-
-        # push parameters from valus available in the context
+        # push parameters from values available in the context
         for cp in self.context_parameters:
             self._set_param_from_context(cp.name, cp.context)            
         
@@ -64,7 +55,7 @@ class GenericHandler(Handler):
         if (self.target == "azsh"):
             cmd += " -o json >> azcli-execution.log"
 
-        return cmd, self
+        return ""
  
     def add_context_parameter(self, parameter_name, context_name):
         self.context_parameters.append(ContextParameter(parameter_name, context_name))

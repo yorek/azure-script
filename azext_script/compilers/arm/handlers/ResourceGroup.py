@@ -10,6 +10,6 @@ class ResourceGroupHandler(GenericHandler):
 
         self.save_to_context()
 
-        return cmd
+        return ""
  
   
