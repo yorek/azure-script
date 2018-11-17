@@ -9,9 +9,27 @@ from setuptools import setup, find_packages
 package_folder_path = 'azext_script'
 
 # Version extraction inspired from 'requests'
-with open(os.path.join(package_folder_path, '_constants.py'), 'r') as fd:
-    VERSION = re.search(r'^VERSION\s*=\s*[\'"]([^\'"]*)[\'"]',
-fd.read(), re.MULTILINE).group(1)
+def load_version():
+    with open(os.path.join(package_folder_path, '_constants.py'), 'r') as fd:
+        return re.search(r'^VERSION\s*=\s*[\'"]([^\'"]*)[\'"]', fd.read(), re.MULTILINE).group(1)
+
+def load_readme():
+    """
+    Load README.md file if not running from inside a test tool like tox.
+    """
+    location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    readme_path = os.path.join(location, "README.md")
+
+    if os.path.exists(readme_path):
+        with open(readme_path, 'r') as fh:
+            long_description = fh.read()
+    else:
+            long_description = ""
+
+    return long_description
+
+
+VERSION = load_version()
 
 CLASSIFIERS = [
     "Development Status :: 3 - Alpha",
@@ -35,22 +53,7 @@ CLASSIFIERS = [
 
 DEPENDENCIES = [
     'lark-parser==0.6.4'
-    ]
-
-def load_readme():
-    """
-    Load README.md file if not running from inside a test tool like tox.
-    """
-    location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    readme_path = os.path.join(location, "README.md")
-
-    if os.path.exists(readme_path):
-        with open(readme_path, 'r') as fh:
-            long_description = fh.read()
-    else:
-            long_description = ""
-
-    return long_description
+]
 
 #
 # Run setup
