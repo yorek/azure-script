@@ -2,7 +2,8 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License. See License.txt in the project root for license information.
 # --------------------------------------------------------------------------------------------
- 
+
+import sys 
 from knack.help_files import helps
 from azure.cli.core import AzCommandsLoader
 from azext_script.parser import azure_script_parse
@@ -46,3 +47,7 @@ class AzureScriptCommandsLoader(AzCommandsLoader):
             
 
 COMMAND_LOADER_CLS = AzureScriptCommandsLoader
+
+# Used to debug from VS Code only
+if (__name__ == "__main__"):
+    run_script(sys.argv[1], sys.argv[2])

@@ -5,11 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "AZCS E2E Sample",
+            "name": "Run Parser",
             "type": "python",
-            "request": "launch", 
-            "module": "azsc.azsc",
-            "args": [ "./samples/e2e-2.azs", "--debug", "--target", "azsh" ] 
+            "request": "launch",
+            "module": "azext_script.__init__",
+            "console": "integratedTerminal",
+            "args": ["./samples/e2e-2.azs", "az"]
         }
     ]
 }
