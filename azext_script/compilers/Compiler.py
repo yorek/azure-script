@@ -1,16 +1,20 @@
 __supported_targets = {}
+__available_transformers = {}
 __transformer = None
 
-def register_supported_target(compiler, targets):
-    for t in targets:
-        #print("registering target {0}->{1}".format(t, compiler))
+def register_supported_target(compiler, targets, transformer_type):
+    for t in targets:        
+        #print("registering compiler->target pair: {0}->{1}".format(t, compiler))
         __supported_targets[t] = compiler
+        __available_transformers[t] = transformer_type
 
 def get_supported_target(target):
     return __supported_targets[target]
 
 def get_transformer(target):
     compiler = get_supported_target(target)
-    __import__('azext_script.compilers.{0}.transformer.ScriptTransformer'.format(compiler), 'ScriptTransformer')
-    return ScriptTransformer(target)
+    #print(compiler)
+    #print("importing {0} to support {1} target".format(compiler, target))
+    t = __available_transformers[target](target)
+    return t
     

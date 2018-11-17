@@ -45,12 +45,10 @@ def azure_script_parse(script, target, output, debug):
     logging.debug("parse tree:\n" + tree.pretty())
 
     logging.info("importing parse tree transformer")
-    #TODO: Transformer must be dynamically loaded based on the specified target
-    #get_transformer(target)
-    from azext_script.compilers.az.transformer.ScriptTransformer import ScriptTransformer
+    t = get_transformer(target)
 
     logging.info("compiling")
-    t = ScriptTransformer(target)
+    #t = ScriptTransformer(target)
     t.transform(tree)
     result = t.get_result()
 
