@@ -59,7 +59,7 @@ class GenericHandler(Handler):
         if (len(self.params)>0):
             ordered_params = collections.OrderedDict(sorted(self.params.items()))
             for param in ordered_params:
-                cmd += u" --{0} {1}".format(param, self.params[param])
+                cmd += u" --{0} \"{1}\"".format(param, self.params[param])
 
         if (self.target == "azsh"):
             cmd += " -o json >> azcli-execution.log"
