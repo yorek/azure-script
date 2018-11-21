@@ -20,6 +20,20 @@ functionapp deployment source config-zip (
 	src: "pnpcc-processor.zip"
 );
 
+appinsights create 'pnpccfunctionappinsights' (
+	application-id: "function"
+);
+
+$APPINSIGHTS_KEY = appinsights key list 'pnpccfunctionappinsights' (
+	query: "properties.InstrumentationKey"
+);
+
+functionapp config appsettings set 'dmk1func' (
+	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
+);
+
+
+
 $RID = storage account show 'pnpccstorage' (
     query: "id"
 );
