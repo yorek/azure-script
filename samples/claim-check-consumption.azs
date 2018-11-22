@@ -1,36 +1,38 @@
-use location 'eastus';
+location use 'eastus';
 
 group create 'PNP';
 
 storage account create 'pnpccstorage'
 (
     sku: 'Standard_LRS'
-)
+);
 
 eventgrid topic create 'pnpcceventgrid';
 
-appservice plan create 'pnpccplan' (
-	number-of-workers: 1,
-	sku: "S1"
-);
-
 functionapp create 'pnpccfunctionapp';
-
-# if no plan existing in the context or specified as parameter
-# by default the consumption plan should be used
-#functionapp create --consumption-plan-location westeurope \
 
 functionapp deployment source config-zip (
 	src: "pnpcc-processor.zip"
 );
 
+appinsights create 'pnpccfunctionappinsights' (
+	application-id: "StreamingAtScale"
+);
+
+$APPINSIGHTS_KEY = appinsights key list 'pnpccfunctionappinsights' (
+	query: "properties.InstrumentationKey"
+);
+
+functionapp config appsettings set 'pnpccfunctionapp' (
+	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
+);
+
 $RID = storage account show 'pnpccstorage' (
     query: "id"
-) 
+);
 
 eventgrid subcription create 'function' (
-    endpoint: 'http://',
+    endpoint: 'https://pnpccfunctionapp.azurewebsites.net/api/ClaimCheck',
     endpoint-type: 'webhook',
-    resource-id: '$RID'
-    #topic-name
-)
+    resource-id: '$RID'    
+);
