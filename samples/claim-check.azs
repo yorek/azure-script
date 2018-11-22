@@ -1,0 +1,31 @@
+location use 'eastus';
+
+group create 'PNP';
+
+storage account create 'pnpccstorage'
+(
+    sku: 'Standard_LRS'
+);
+
+eventgrid topic create 'pnpcceventgrid';
+
+appservice plan create 'pnpccplan' (
+	number-of-workers: 1,
+	sku: "S1"
+);
+
+functionapp create 'pnpccfunctionapp';
+
+functionapp deployment source config-zip (
+	src: "pnpcc-processor.zip"
+);
+
+$RID = storage account show 'pnpccstorage' (
+    query: "id"
+);
+
+eventgrid event-subscription create 'function' (
+    endpoint: 'https://pnpccfunctionapp.azurewebsites.net/api/ClaimCheck',
+    endpoint-type: 'webhook',
+    resource-id: '$RID'
+);
