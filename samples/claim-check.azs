@@ -4,7 +4,8 @@ group create 'PNP';
 
 storage account create 'pnpccstorage'
 (
-    sku: 'Standard_LRS'
+    sku: 'Standard_LRS',
+	kind: 'StorageV2'
 );
 
 eventgrid topic create 'pnpcceventgrid';
@@ -17,7 +18,7 @@ appservice plan create 'pnpccplan' (
 functionapp create 'pnpccfunctionapp';
 
 functionapp deployment source config-zip (
-	src: "pnpcc-processor.zip"
+	src: "⁨~/VSTS/claim-tag-pattern⁩/code-samples⁩/sample-1-bin.zip"
 );
 
 appinsights create 'pnpccfunctionappinsights' (
@@ -31,8 +32,6 @@ $APPINSIGHTS_KEY = appinsights key list 'pnpccfunctionappinsights' (
 functionapp config appsettings set 'dmk1func' (
 	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
 );
-
-
 
 $RID = storage account show 'pnpccstorage' (
     query: "id"

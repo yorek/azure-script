@@ -47,10 +47,10 @@ class ScriptTransformer(Transformer):
         return s[0]
 
     def string(self, s):
-        return '"' + s[0][1:-1] + '"'
+        return s[0][1:-1]
 
     def azname(self, s):
-        return '"' + s[0][1:-1] + '"'
+        return s[0][1:-1]
 
     def azfile(self, s):
         return s[0]
