@@ -9,14 +9,14 @@ class AppInsightsHandler(GenericHandler):
 
         if (self.action == "create"):            
             properties = {
-                "ApplicationId": self.params["application-id"].strip('"'),
+                "ApplicationId": self.params["application-id"],
                 "Application_Type": "other",
                 "Flow_Type": "Redfield"
             }
 
             del self.params["application-id"]
 
-            self.add_parameter("properties", "'" + json.dumps(properties) + "'")
+            self.add_parameter("properties", json.dumps(properties))
             self.add_context_parameter("resource-group", "group")
             self.add_context_parameter("location", "location")
 
@@ -24,7 +24,7 @@ class AppInsightsHandler(GenericHandler):
             self.action = "show"
             self.add_context_parameter("resource-group", "group")
 
-        self.add_parameter("resource-type", '"Microsoft.Insights/components"')
+        self.add_parameter("resource-type", "Microsoft.Insights/components")
 
         cmd = super(AppInsightsHandler, self).execute()
 
