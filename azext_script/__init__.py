@@ -50,4 +50,4 @@ COMMAND_LOADER_CLS = AzureScriptCommandsLoader
 
 # Used to debug from VS Code only
 if (__name__ == "__main__"):
-    run_script(sys.argv[1], sys.argv[2])
+    run_script(sys.argv[1], sys.argv[2], sys.argv[3])
