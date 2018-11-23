@@ -90,6 +90,8 @@ class GenericHandler(Handler):
 
         if (self.target == "azsh"):
             cmd += " -o json >> azcli-execution.log"
+        else:
+            cmd += " -o json"
 
         return cmd, self
  

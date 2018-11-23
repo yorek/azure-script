@@ -90,7 +90,7 @@ class ScriptTransformer(Transformer):
 
         if (self.__target == "azsh"):
             if (self.__inner_command is not None):
-                self.__result += "echo '{0} {1} {2}'".format(self.__inner_command.action, self.__inner_command.get_full_resource_name(), self.__inner_command.name or '') + "\n"           
+                self.__result += "echo '{0}: {1} {2}'".format(self.__inner_command.action, self.__inner_command.get_full_resource_name(), self.__inner_command.name or '') + "\n"           
 
         if (self.__cmd != ''):
             self.__result += self.__cmd + "\n\n"
