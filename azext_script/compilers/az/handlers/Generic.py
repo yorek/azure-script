@@ -48,18 +48,45 @@ class GenericHandler(Handler):
         
         # check that all required parameters are set
         for rp in self.required_parameters:
-            if not rp in self.params:
-                print("ERROR:")
-                print("-> RESOURCE: " + self.azure_object)                
-                print("-> NAME: " + (self.name or "(unknown)"))
-                print("-> PARAM: {0}".format(rp))
-                sys.exit("Missing '{0}' required parameter.".format(rp))
+            #print(rp)
+            #print(type(rp))
+            if type(rp) == type('str'):
+                if not rp in self.params:
+                    print("ERROR:")
+                    print("-> RESOURCE: " + self.azure_object)                
+                    print("-> NAME: " + (self.name or "(unknown)"))
+                    print("-> PARAM: {0}".format(rp))
+                    sys.exit("Missing '{0}' required parameter.".format(rp))
+            if type(rp) == type([]):
+                found = False
+                for p in rp:
+                    #print("CHECKING: {0}".format(p))
+                    if p in self.params:
+                        found = True
+                        break
+                if not found:
+                    print("ERROR:")
+                    print("-> RESOURCE: " + self.azure_object)                
+                    print("-> NAME: " + (self.name or "(unknown)"))
+                    print("-> PARAM: one of {0}".format(rp))
+                    sys.exit("Missing one of '{0}' required parameter.".format(rp))
 
         # add params to generated command line 
         if (len(self.params)>0):
             ordered_params = collections.OrderedDict(sorted(self.params.items()))
             for param in ordered_params:
-                cmd += u" --{0} {1}".format(param, self.params[param])
+                value = self.params[param]
+                quote = '"'
+
+                if '"' in value:
+                    quote = "'"
+
+                if "'" in value:
+                    quote = '"'
+
+                value = quote + value + quote
+
+                cmd += u" --{0} {1}".format(param, value)
 
         if (self.target == "azsh"):
             cmd += " -o json >> azcli-execution.log"
@@ -72,9 +99,15 @@ class GenericHandler(Handler):
     def add_parameter(self, parameter_name, parameter_value):
         self.params[parameter_name] = parameter_value
 
-    def set_required_parameter(self, parameter_name):
-        if not parameter_name in self.required_parameters:
-            self.required_parameters.append(parameter_name) 
+    def set_required_parameter(self, parameters):
+        """Mark parameters as mandatory
+
+        parameters: use a string to specify a mandatory parameter; use a list to specify a list of parameters where at least one is mandotory      
+        """
+
+        if not parameters in self.required_parameters:
+            #print("REQUIRED: {0}".format(parameters))
+            self.required_parameters.append(parameters) 
 
     def _set_param_from_context(self, param_name, context_name):
         if not param_name in self.params:
