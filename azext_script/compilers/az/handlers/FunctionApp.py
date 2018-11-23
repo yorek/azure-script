@@ -9,7 +9,14 @@ class FunctionAppHandler(GenericHandler):
         self.add_context_parameter("resource-group", "group")
         
         if fqn == "functionapp" and self.action == "create":
-            self.add_context_parameter("plan", "appservice plan")
+
+            # if not plan is specificied as parameter or available in the context
+            # then assume that a consumption plan should be used
+            if 'plan' not in self.params and 'appservice plan' not in self.context:
+                self.add_context_parameter("consumption-plan-location", "location")
+            else:
+                self.add_context_parameter("plan", "appservice plan")
+
             self.add_context_parameter("storage-account", "storage account")
 
         if fqn == "functionapp deployment source" and self.action == "config-zip":
