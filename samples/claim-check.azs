@@ -18,7 +18,7 @@ appservice plan create 'pnpccplan' (
 functionapp create 'pnpccfunctionapp';
 
 functionapp deployment source config-zip (
-	src: "⁨~/VSTS/claim-tag-pattern⁩/code-samples⁩/sample-1-bin.zip"
+	src: "⁨sample-1-bin.zip"
 );
 
 appinsights create 'pnpccfunctionappinsights' (
