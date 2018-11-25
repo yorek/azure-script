@@ -4,21 +4,36 @@
 # --------------------------------------------------------------------------------------------
 
 import sys 
+import logging
 from knack.help_files import helps
 from azure.cli.core import AzCommandsLoader
 from azext_script.parser import azure_script_parse
+from azext_script._constants import VERSION
 
-helps['azure script'] = """
+helps['script'] = """
+    type: group
+    short-summary: run Azure Script files.
+    long-summary: |
+                  Review the extension doc  to maximize usage
+                  https://github.com/yorek/azure-script
+"""
+
+helps['script run'] = """
     type: command
     short-summary: run Azure Script files.
 """
 
-def run_script(script, target="az", output=None, debug=False):
+def run_script(script, target="az", output=None):
+    debug = False
     result = azure_script_parse(script, target, output, debug)
     if (output is None):
         print(result)
 
+# Used to debug from VS Code only
+if (__name__ == "__main__"):
+    run_script(sys.argv[1], sys.argv[2], sys.argv[3], debug=True)
 
+# AZ CLI Extension Entry Class
 class AzureScriptCommandsLoader(AzCommandsLoader):
 
     def __init__(self, cli_ctx=None):
@@ -42,11 +57,6 @@ class AzureScriptCommandsLoader(AzCommandsLoader):
         with self.argument_context('script') as c:
             c.argument('script', options_list=['--script', '-s'], help='Script to load.')
             c.argument('target', options_list=['--target', '-t'], help='Transpilation target.')
-            c.argument('output', options_list=['--output-file', '-of'], help='Output file to be generated.')            
+            c.argument('output', options_list=['--output-file', '-of'], help='Output file to be generated.')           
             
-
 COMMAND_LOADER_CLS = AzureScriptCommandsLoader
-
-# Used to debug from VS Code only
-if (__name__ == "__main__"):
-    run_script(sys.argv[1], sys.argv[2], sys.argv[3], debug=True)

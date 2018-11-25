@@ -12,9 +12,9 @@ def get_supported_target(target):
     return __supported_targets[target]
 
 def get_transformer(target):
-    compiler = get_supported_target(target)
+    #compiler = get_supported_target(target)
     #print(compiler)
     #print("importing {0} to support {1} target".format(compiler, target))
-    t = __available_transformers[target](target)
-    return t
+    transformer = __available_transformers[target](target)
+    return transformer
     

@@ -1,6 +1,8 @@
-import logging
+from knack.log import get_logger
 from azext_script.compilers import Handler
 from azext_script.compilers.Compiler import get_supported_target
+
+logger = get_logger(__name__)
 
 class HandlerManager:
     target = None
@@ -16,16 +18,16 @@ class HandlerManager:
         self.load_handlers()        
 
     def load_handlers(self):
-        logging.info("registering handlers")
+        logger.debug("Registering Handlers")
         compiler = get_supported_target(self.target)
         #print('azext_script.compilers.{0}.handlers'.format(compiler))
         __import__('azext_script.compilers.{0}.handlers'.format(compiler))
         __available_handlers = self.__get_all_subclasses(Handler)
         for h in __available_handlers:
-            logging.debug("\tfound handler: '{0}'".format(h.azure_object))
+            logger.debug("Found Handler: '{0}'".format(h.azure_object))
             if h.azure_object in self.__handlers:
-                error_message = "duplicate handler found: '{0}'".format(h.azure_object) 
-                logging.error("\t" + error_message)
+                error_message = "Duplicate Handler found: '{0}'".format(h.azure_object) 
+                logger.error(error_message)
                 raise RuntimeError(error_message)
             self.__handlers[h.azure_object] = h        
 
