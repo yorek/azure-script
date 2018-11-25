@@ -1,3 +1,5 @@
+# Also names, when not using CREATE action, are inferred by active context
+
 location use 'eastus';
 
 group create 'PNP';
@@ -8,7 +10,17 @@ storage account create 'pnpccstorage'
 	kind: 'StorageV2'
 );
 
-eventgrid topic create 'pnpcceventgrid';
+$RID = storage account show (
+    query: "id"
+);
+
+appinsights create 'pnpccfunctionappinsights' (
+	application-id: "function"
+);
+
+$APPINSIGHTS_KEY = appinsights key list (
+	query: "properties.InstrumentationKey"
+);
 
 appservice plan create 'pnpccplan' (
 	number-of-workers: 1,
@@ -21,23 +33,13 @@ functionapp deployment source config-zip (
 	src: "sample-1-bin.zip"
 );
 
-appinsights create 'pnpccfunctionappinsights' (
-	application-id: "function"
-);
-
-$APPINSIGHTS_KEY = appinsights key list 'pnpccfunctionappinsights' (
-	query: "properties.InstrumentationKey"
-);
-
-functionapp config appsettings set 'pnpccfunctionapp' (
+functionapp config appsettings set (
 	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
 );
 
-$RID = storage account show 'pnpccstorage' (
-    query: "id"
-);
+eventgrid topic create 'pnpcceventgrid';
 
-eventgrid event-subscription create 'function' (
+eventgrid event-subscription create 'storage-function' (
     endpoint: 'https://pnpccfunctionapp.azurewebsites.net/api/ClaimCheck',
     endpoint-type: 'webhook',
     resource-id: '$RID'

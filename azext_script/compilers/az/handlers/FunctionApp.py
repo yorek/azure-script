@@ -10,7 +10,7 @@ class FunctionAppHandler(GenericHandler):
         
         if fqn == "functionapp" and self.action == "create":
 
-            # if not plan is specificied as parameter or available in the context
+            # if no plan is specificied as parameter or available in the context
             # then assume that a consumption plan should be used
             if 'plan' not in self.params and 'appservice plan' not in self.context:
                 self.add_context_parameter("consumption-plan-location", "location")
