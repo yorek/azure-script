@@ -13,8 +13,7 @@ helps['azure script'] = """
     short-summary: run Azure Script files.
 """
 
-def run_script(script, target="az", output=None):
-    debug = False
+def run_script(script, target="az", output=None, debug=False):
     result = azure_script_parse(script, target, output, debug)
     if (output is None):
         print(result)
@@ -50,4 +49,4 @@ COMMAND_LOADER_CLS = AzureScriptCommandsLoader
 
 # Used to debug from VS Code only
 if (__name__ == "__main__"):
-    run_script(sys.argv[1], sys.argv[2], sys.argv[3])
+    run_script(sys.argv[1], sys.argv[2], sys.argv[3], debug=True)

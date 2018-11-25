@@ -1,6 +1,7 @@
 import sys
 import collections
 from azext_script.compilers.Handler import Handler
+from azext_script.compilers.az.transformer.TranspilationResult import AZCLICommand
 
 class ContextParameter:
     name = None
@@ -36,7 +37,7 @@ class GenericHandler(Handler):
         cmd += u" {0}".format(self.action)
         
         if (self.name != None):
-            cmd += u" --name {0}".format(self.name)
+            cmd += u' --name "{0}"'.format(self.name)
 
         #print("-> {0} {1} {2}".format(self.resources, self.action, self.name))
         #print("-> CONTEXT: {0}".format(self.context))
@@ -88,13 +89,12 @@ class GenericHandler(Handler):
 
                 cmd += u" --{0} {1}".format(param, value)
 
-        if (self.target == "azsh"):
-            cmd += " -o json >> azcli-execution.log"
-        else:
-            cmd += " -o json"
-
-        return cmd, self
+        return AZCLICommand(cmd, source=self)
  
+    def derive_name_from_context(self, context_name):
+         if context_name in self.context and self.name is None:
+                self.name = self.context[context_name] 
+
     def add_context_parameter(self, parameter_name, context_name):
         self.context_parameters.append(ContextParameter(parameter_name, context_name))
         

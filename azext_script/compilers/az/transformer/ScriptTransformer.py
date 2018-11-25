@@ -3,14 +3,18 @@ from __future__ import absolute_import
 from lark import Transformer, Tree
 from lark.lexer import Token
 from azext_script.compilers.HandlerManager import HandlerManager
+from .TranspilationResult import AZCLICommand, EchoCommand, CommandResult
 
 class ScriptTransformer(Transformer):
+
     __handler_manager = None
-    __cmd = u""
-    __result = u""
+    __execute_result = None
     __assign_to = None
     __inner_command = None
     __target = "az"
+
+    __result = u""
+    __instructions = []
 
     def  __init__(self, target):
         self.__target = target
@@ -69,35 +73,31 @@ class ScriptTransformer(Transformer):
         action = objects[-1]
 
         handler = self.__handler_manager.get_handler(resources, action, name, params)
-        result = handler.execute()        
+        result = handler.execute()       
 
-        # Dirty trink needs to be changed to a better way
-        # By using abstract methods and return a Class instead!
-        if (type(result) is tuple):
-            self.__inner_command = result[1]
-            result = result[0]                    
-
-        self.__cmd += result
+        if isinstance(result, CommandResult):
+            self.__execute_result = result
+        else:
+            raise(Exception("Transpilation result is an unexpected type: {0}".format(type(result))))
+        #self.__cmd += result
 
     def variable(self, items):        
         self.__assign_to = items[0]
 
-    def instruction(self, items):    
-        if self.__assign_to is not None:
-            ## Horrible, need to find a better way!
-            self.__cmd = self.__cmd.replace(" -o json >> azcli-execution.log", "")            
-            self.__cmd = "export {0}=$({1} -o tsv)".format(self.__assign_to, self.__cmd)
-
+    def instruction(self, items):            
+        if self.__execute_result is None:
+            return
+        
         if (self.__target == "azsh"):
-            if (self.__inner_command is not None):
-                self.__result += "echo '{0}: {1} {2}'".format(self.__inner_command.action, self.__inner_command.get_full_resource_name(), self.__inner_command.name or '') + "\n"           
+            src = self.__execute_result.source
+            cmd = "echo '{0}: {1} {2}'".format(src.action, src.get_full_resource_name(), src.name or '')           
+            self.__instructions.append(EchoCommand(cmd))
 
-        if (self.__cmd != ''):
-            self.__result += self.__cmd + "\n\n"
+        if self.__assign_to is not None:
+            self.__execute_result.assign_to = self.__assign_to
+            self.__assign_to = None
 
-        self.__cmd = u""
-        self.__assign_to = None
-        self.__inner_command = None
+        self.__instructions.append(self.__execute_result)
 
     def start(self, items):
         header = """
@@ -121,9 +121,26 @@ rm azcli-execution.log -f
 
         \n"""
 
-        if self.__target == "azsh":
-            self.__result = header + self.__result
+        # if self.__target == "azsh":
+        #     self.__result = header + self.__result
 
+        for i in self.__instructions:
+            if (isinstance(i, AZCLICommand)):
+                if i.assign_to is not None:
+                    #     self.__cmd = self.__cmd.replace(" -o json >> azcli-execution.log", "")            
+                    self.__result += "export {0}=$({1} -o tsv)".format(i.assign_to, i.command)
+                else:
+                    self.__result += i.command
+                    if (self.__target == "azsh"):
+                        self.__result += " -o json >> azcli-execution.log"
+                    else:
+                        self.__result += " -o json"
+            else:
+                self.__result += "\n"     
+                self.__result += i.command
+
+            self.__result += "\n"
+                        
     def get_result(self):
         return self.__result.strip()
 
