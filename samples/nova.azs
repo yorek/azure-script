@@ -1,0 +1,80 @@
+location use 'eastus2';
+
+group create 'NOVA2';
+
+#
+# Storage
+# 
+storage account create 'dmnova2storage' (
+    sku: 'Standard_LRS'
+);
+
+#
+# HDInsight Spark
+#
+hdinsight create 'dmnova2hdi' (
+    size: 3,
+    type: 'spark',
+    http-user: 'damauri',
+    http-password: 'Passw0rd2018!',
+    ssh-user: 'damauri',
+    ssh-password: 'Passw0rd2018!'
+    version: '3.6',
+    storage-default-container: "dmnova2hdi"
+);
+
+#
+# Event Hubs
+#
+eventhubs namespace create 'dmnova2ehs' (
+	sku: "Standard",
+	capacity: 2	
+);
+
+eventhubs eventhub create 'dmnova2eh1' (
+	message-retention: 1,
+	partition-count: 2
+);
+
+eventhubs eventhub consumer-group create 'nova';
+
+#
+# Cosmos DB
+#
+cosmosdb create 'dmnova2cosmosdb';
+
+cosmosdb database create 'nova';
+
+cosmosdb collection create 'nova' (
+	partition-key-path: "/Id",
+	throughput: 20000,
+	indexing-policy: @indexing.json
+);
+
+#
+# Key Vault
+#
+
+#
+# Service Fabric
+#
+
+sf cluster create 'sfnova' (
+    secret-identifier: "https://{KeyVault}.vault.azure.net:443/secrets/{MyCertificate}"
+);
+
+
+# App Service
+#
+appservice plan create 'dmnova2plan' (
+	number-of-workers: 4,
+	sku: "P1"
+);
+
+#
+# Application Insights
+#
+
+appinsights create 'dmnova2appinsights' (
+	application-id: "Nova"
+);
