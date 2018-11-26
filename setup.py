@@ -65,7 +65,7 @@ setup(
     author="Davide Mauri",
     author_email="info@davidemauri.it",
     license='MIT',
-    description="A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possibile.",
+    description="A script language to make deployment and management of Azure resources as simple and intelligent as possibile.",
     long_description=load_readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/yorek/azure-script",
