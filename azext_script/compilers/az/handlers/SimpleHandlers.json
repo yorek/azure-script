@@ -1,6 +1,6 @@
 {
-    "$schema": "",
-    "handlers": [
+    "$schema": "https://github.com/yorek/azure-script/simple-handler.schema",
+    "handlers": [ 
         {
             "azure_object": "sf cluster",
             "context_parameters": [
@@ -25,6 +25,15 @@
                             "secret-identifier"
                         ]
                     ]
+                }
+            ]
+        },
+        {
+            "azure_object": "keyvault",
+            "context_parameters": [
+                {
+                    "parameter": "resource-group",
+                    "context": "group"
                 }
             ]
         }

@@ -1,0 +1,80 @@
+{
+    "$id": "simple-handler.schema",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "handlers",
+    "type": "object",
+    "properties": {
+        "handlers": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/handler"
+            }
+        }
+    },
+    "definitions": {
+        "handler": {
+            "type": "object",
+            "properties": {
+                "azure_object": {
+                    "type": "string",
+                    "description": "the Azure resource this handler will manage"
+                }, 
+                "context_parameters": { 
+                    "type": "array", 
+                    "items": {
+                        "$ref": "#/definitions/context_parameter"
+                    }
+                },
+                "actions": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/action" }
+                }
+            }
+        },
+        "action":
+        {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "description": "the action this handler will handle"
+                },
+                "context_parameters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/context_parameter"
+                    }
+                },
+                "required_parameters": {
+                    "type": "array",
+                    "items":{
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        ]
+                    }                    
+                }
+            }
+        },
+        "context_parameter": {
+            "type": "object",
+            "properties": {
+                "parameter": {
+                    "type": "string",
+                    "description": "the CLI parameter name to generate"
+                },
+                "context": {
+                    "type": "string",
+                    "description": "the Azure Object existing in the active context from which take the parameter value"
+                }
+            }
+        }
+    }
+}
