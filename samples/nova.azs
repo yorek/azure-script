@@ -54,6 +54,7 @@ cosmosdb collection create 'nova' (
 #
 # Key Vault
 #
+keyvault create 'kvnova';
 
 #
 # Service Fabric
