@@ -1,0 +1,32 @@
+{
+    "$schema": "",
+    "handlers": [
+        {
+            "azure_object": "sf cluster",
+            "context_parameters": [
+                {
+                    "parameter": "resource-group",
+                    "context": "group"
+                }
+            ],
+            "actions": [
+                {
+                    "action": "create",
+                    "context_parameters": [
+                        {
+                            "parameter": "location",
+                            "context": "location"
+                        }
+                    ],
+                    "required_parameters": [
+                        [
+                            "certificate-subject-name",
+                            "certificate-file",
+                            "secret-identifier"
+                        ]
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,7 +1,12 @@
 import sys
 import collections
+import json
+import os
 from azext_script.compilers.Handler import Handler
 from azext_script.compilers.az.transformer.TranspilationResult import AZCLICommand
+from knack.log import get_logger
+
+logger = get_logger(__name__)
 
 class ContextParameter:
     name = None
@@ -32,13 +37,30 @@ class GenericHandler(Handler):
         self.required_parameters = []
 
     def execute(self):
+        fqn = self.get_full_resource_name()
+
         cmd = u"az"
-        cmd += u" {0}".format(' '.join(self.resources))
+        cmd += u" {0}".format(fqn)
         cmd += u" {0}".format(self.action)
         
         if (self.name != None):
             cmd += u' --name "{0}"'.format(self.name)
-
+ 
+        location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))    
+        with open(os.path.join(location, 'SimpleHandlers.json'), 'r') as f:
+            jh = json.load(f)
+            for h in jh["handlers"]:
+                if fqn.startswith(h["azure_object"]):
+                    print("found json handler defintion for {0}".format(fqn))  
+                    for cp in h["context_parameters"]:
+                        self.add_context_parameter(cp["parameter"], cp["context"])  
+                    for a in h["actions"]: 
+                        if a["action"] == self.action:
+                            print("found action {0}".format(self.action))
+                            for cp in a["context_parameters"]:
+                                self.add_context_parameter(cp["parameter"], cp["context"])  
+                            for rp in a["required_parameters"]:
+                                self.set_required_parameter(rp)
         #print("-> {0} {1} {2}".format(self.resources, self.action, self.name))
         #print("-> CONTEXT: {0}".format(self.context))
         #print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
