@@ -54,13 +54,14 @@ class GenericHandler(Handler):
                     print("found json handler defintion for {0}".format(fqn))  
                     for cp in h["context_parameters"]:
                         self.add_context_parameter(cp["parameter"], cp["context"])  
-                    for a in h["actions"]: 
-                        if a["action"] == self.action:
-                            print("found action {0}".format(self.action))
-                            for cp in a["context_parameters"]:
-                                self.add_context_parameter(cp["parameter"], cp["context"])  
-                            for rp in a["required_parameters"]:
-                                self.set_required_parameter(rp)
+                    if "actions" in h:
+                        for a in h["actions"]: 
+                            if a["action"] == self.action:
+                                print("found action {0}".format(self.action))
+                                for cp in a["context_parameters"]:
+                                    self.add_context_parameter(cp["parameter"], cp["context"])  
+                                for rp in a["required_parameters"]:
+                                    self.set_required_parameter(rp)
         #print("-> {0} {1} {2}".format(self.resources, self.action, self.name))
         #print("-> CONTEXT: {0}".format(self.context))
         #print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
