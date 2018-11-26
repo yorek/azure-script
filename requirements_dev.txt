@@ -6,3 +6,4 @@ coverage
 pytest-cov
 bumpversion
 azure-cli-core
+twine
