@@ -1,6 +1,11 @@
-# AZ CLI Script
+# Azure Script
 
-A script language created from AZ CLI commands to make deployment and management of Azure resources as simple and intelligent as possible. It will significantly reduce the amount of custom code you need to write to execute Az CLI commands.
+A script language created to make deployment and management of Azure resources as simple and intelligent as possible. 
+In order to have a near zero learning curve, and to leverage everything you already know about AZ CLI and to even help you to learn more about it, the language sytanx is very similar to AZ CLI commands. It also has some additional unique feature, but you can reuse all your existing AZ CLI experience to start using Azure Script right away.
+
+It will significantly reduce the amount of custom code you need to write to execute AZ CLI commands and to create shell script to deploy your Azure resources.
+
+Read more about Azure Script [here](#TODO): 
 
 [![Build Status](https://dev.azure.com/epicstuff/AZ%20CLI%20Script/_apis/build/status/Build)](https://dev.azure.com/epicstuff/AZ%20CLI%20Script/_build/latest?definitionId=27)
 
@@ -10,10 +15,11 @@ We created this project while coding with Azure customers. It is an experiment a
 
 ## Goal
 
-For this first realease the goal is to support all available AZ CLI commands and:
+For this first realease the goal is to support all available AZ resources and:
 
 - remove all redundancy: no need to specify the same options again and again. 
 - keep command signature and options consistent across all commands: in some AZ commands the resource name is not specified using the --name option. AZ  Script will correct that.
+- integrate with 3rd party CLI like Databricks CLI or Kubernetes CLI
 - provide context-aware environment so every command knows what happened before and can act accordingly
 
 For example, if you want all your resources deployed into the 'eastus' region you can just write
@@ -68,58 +74,60 @@ AZ Script is written in Python and can easily be extended to support any kind of
 
 The (somehow) supported resources, right now, are
 
-- appservice
-- appinsights
-- cosmosdb
-- eventhubs
-- extension
-- functionapp
-- iot
-- resource group
-- sql db
-- sql server
-- storage
+- App Service
+- Application Insight
+- Cosmos DB
+- Event Grid
+- Event Hubs
+- Extension
+- Function App
+- HDInsight
+- Iot
+- Resource Group
+- Service Fabric
+- SQL DB
+- SQL Server
+- Storage
 
 More will come in near future, stay tuned.
 
 ## Install
 
-If you're not interested into developing AZ CLI Script compiler, just use the usual `pip` tool:
-
-	pip install azsc
+Azure Script has been integrated into AZ CLI via Extensions. At the present time the extension is not yet available 
+	
+	az extension add --source TODO
 
 Done. You may want to take a look at the samples folder to get started with AZ CLI Script:
 
-[AZ CLI Script Samples](./samples)
+[Azure Script Samples](./samples)
 
 ## Usage
 
-Just run the `azsc` compiler, passing the script file you want to compile.
+Just run the `az script run` command, passing the script file you want to compile.
 
 ```
-azsc <filename.azs> [--debug]
+az script run --script <filename.azs> 
 ```
 
-will generate the AZ CLI commands needed to do what defined in the script file.
-`--debug` will also print the parse tree for debugging purposes
+by default will generate the AZ CLI commands needed to do what defined in the script file.
 
 As a starting sample you can use the `e2e-2.azs` script:
 
-	azsc .\samples\e2e-2.azs
+	az script run --script .\samples\e2e-2.azs
 
 it will generate AZ CLI script ready to be executed in a [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) bash.
 
 ### Full Bash Script generation
 
-If you want to generate a full featured bash script you can use the "azsh" target:
+If you want to generate a full featured bash script you can use the `azsh` target:
 
-	azsc .\samples\e2e-2.azs --target azsh
+	az script run --script .\samples\e2e-2.azs --target azsh
 
 ### File Output
 
 The --output option will generate the code into the specified file instead of sending the result to the console
 
-	azsc .\samples\e2e-2.azs --target azsh --output c:\temp\azsc\full-output.sh
+	az script run --script .\samples\e2e-2.azs --output-file .\samples\e2e-2.azs.sh
 
 ### Samples Notes
 
@@ -145,7 +153,7 @@ But if you're curious here's something I have in mind:
 - Support running and debugging .azs script in Visual Studio Code
 - Run pre-validation checks (for example check that all files referenced in the script actually exists).
 - Add an option to inject pre-validation checks into generated script, when appropriate (for example with AZ CLI)
-- Add templating support (using [Liquid](https://shopify.github.io/liquid/))
+- Add templating support (using [Jinjia](http://jinja.pocoo.org/ß))
 - Build a graph of dependencies and the run as many AZ CLI commands in parallel as possibile
 - Using the dependency graph, validate the command even before running them
 - Enforce application of best practies and well-know patterns
