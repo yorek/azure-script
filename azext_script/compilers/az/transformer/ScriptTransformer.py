@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from lark import Transformer, Tree
 from lark.lexer import Token
 from azext_script.compilers.HandlerManager import HandlerManager
-from .TranspilationResult import AZCLICommand, EchoCommand, CommandResult
+from .TranspilationResult import AZCLICommand, EchoCommand, CommandResult, ExportCommand
 
 class ScriptTransformer(Transformer):
 
@@ -80,24 +80,35 @@ class ScriptTransformer(Transformer):
         else:
             raise(Exception("Transpilation result is an unexpected type: {0}".format(type(result))))
         #self.__cmd += result
+        #return items
 
     def variable(self, items):        
         self.__assign_to = items[0]
+        return ExportCommand(items[0], None)
 
-    def instruction(self, items):            
+    def instruction(self, items):          
+        #print(items)
+
+        if isinstance(items[0], ExportCommand):
+            self.__assign_to = None
+            items[0].value = items[1]
+            self.__instructions.append(items[0])
+            return 
+
         if self.__execute_result is None:
             return
         
         if (self.__target == "azsh"):
             src = self.__execute_result.source
-            cmd = "echo '{0}: {1} {2}'".format(src.action, src.get_full_resource_name(), src.name or '')           
-            self.__instructions.append(EchoCommand(cmd))
+            message = "{0}: {1} {2}".format(src.action, src.get_full_resource_name(), src.name or '')           
+            self.__instructions.append(EchoCommand(message))
 
         if self.__assign_to is not None:
             self.__execute_result.assign_to = self.__assign_to
             self.__assign_to = None
 
         self.__instructions.append(self.__execute_result)
+        return items
 
     def start(self, items):
         header = """
@@ -125,20 +136,7 @@ rm azcli-execution.log -f
         #     self.__result = header + self.__result
 
         for i in self.__instructions:
-            if (isinstance(i, AZCLICommand)):
-                if i.assign_to is not None:
-                    #     self.__cmd = self.__cmd.replace(" -o json >> azcli-execution.log", "")            
-                    self.__result += "export {0}=$({1} -o tsv)".format(i.assign_to, i.command)
-                else:
-                    self.__result += i.command
-                    if (self.__target == "azsh"):
-                        self.__result += " -o json >> azcli-execution.log"
-                    else:
-                        self.__result += " -o json"
-            else:
-                self.__result += "\n"     
-                self.__result += i.command
-
+            self.__result += str(i)
             self.__result += "\n"
                         
     def get_result(self):
