@@ -28,7 +28,7 @@ class AZCLICommand(CommandResult):
             result += self.command + " -o json"
         
         if self.wrapper is not None:
-            result = self.wrapper.format(self.command) 
+            result = self.wrapper.replace("@cmd", self.command) 
         
         return result
 

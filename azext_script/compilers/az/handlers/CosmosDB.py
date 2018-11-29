@@ -18,14 +18,14 @@ class CosmosDBHandler(GenericHandler):
         if fqn == "cosmosdb":
             wrapper = "SERVER_EXISTS=`az cosmosdb check-name-exists -n {0} -o tsv`".format(self.name) + "\n"
             wrapper += "if [ $SERVER_EXISTS == ""false"" ]; then\n"
-            wrapper += "  {0} \n"
+            wrapper += "  @cmd \n"
             wrapper += "fi"
             self.add_context_parameter("resource-group", "group")
 
         if fqn == "cosmosdb database":
             wrapper = "DB_EXISTS=`az cosmosdb database exists -g {0} -n {1} --db-name {2} -o tsv`".format(self.get_from_context("group"), self.get_from_context("cosmosdb"), self.name) + "\n"
             wrapper += "if [ $DB_EXISTS == ""false"" ]; then \n"
-            wrapper += "  {0} \n"
+            wrapper += "  @cmd \n"
             wrapper += "fi"
 
             db_name = self.name
@@ -36,7 +36,7 @@ class CosmosDBHandler(GenericHandler):
         if fqn == "cosmosdb collection":
             wrapper = "COLLECTION_EXISTS=`az cosmosdb collection exists -g {0} -n {1} --db-name {2} --collection-name {3} -o tsv`".format(self.get_from_context("group"), self.get_from_context("cosmosdb"), self.get_from_context("cosmosdb database"), self.name) + "\n"
             wrapper += "if [ $COLLECTION_EXISTS == ""false"" ]; then \n"
-            wrapper += "  {0} \n"
+            wrapper += "  @cmd \n"
             wrapper += "fi"
 
             collection_name = self.name
