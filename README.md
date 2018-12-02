@@ -95,7 +95,7 @@ More will come in near future, stay tuned.
 
 Azure Script has been integrated into AZ CLI via Extensions. The extension has not been pushed in the official AZ CLI Extension repository yet, since is still under heavy development, but is nonetheless available by manually specifying the source. Just run this:
 	
-	az extension add --source https://aka.ms/azure_script-0.1.15-py2.py3-none-any.whl
+	az extension add --source https://aka.ms/azure_script-latest-py2.py3-none-any.whl
 
 and you're done. You may want to take a look at the samples folder to get started with AZ CLI Script:
 
