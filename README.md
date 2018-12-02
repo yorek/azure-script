@@ -93,17 +93,17 @@ More will come in near future, stay tuned.
 
 ## Install
 
-Azure Script has been integrated into AZ CLI via Extensions. 
+Azure Script has been integrated into AZ CLI via Extensions. The extension has not been pushed in the official AZ CLI Extension repository yet, since is still under heavy development, but is nonetheless available by manually specifying the source. Just run this:
 	
-	az extension add --source TODO
+az extension add --source https://aka.ms/azure_script-0.1.15-py2.py3-none-any.whl
 
-Done. You may want to take a look at the samples folder to get started with AZ CLI Script:
+and you're done. You may want to take a look at the samples folder to get started with AZ CLI Script:
 
 [Azure Script Samples](./samples)
 
 ## Usage
 
-Just run the `az script run` command, passing the script file you want to compile.
+Run the `az script run` command, passing the script file you want to compile.
 
 ```
 az script run --script <filename.azs> 
