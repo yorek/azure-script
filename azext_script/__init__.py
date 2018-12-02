@@ -4,7 +4,6 @@
 # --------------------------------------------------------------------------------------------
 
 import sys 
-import logging
 from knack.help_files import helps
 from azure.cli.core import AzCommandsLoader
 from azext_script.parser import azure_script_parse
@@ -24,14 +23,9 @@ helps['script run'] = """
 """
 
 def run_script(script, target="az", output=None):
-    debug = False
-    result = azure_script_parse(script, target, output, debug)
+    result = azure_script_parse(script, target, output)
     if (output is None):
         print(result)
-
-# Used to debug from VS Code only
-if (__name__ == "__main__"):
-    run_script(sys.argv[1], sys.argv[2], sys.argv[3], debug=True)
 
 # AZ CLI Extension Entry Class
 class AzureScriptCommandsLoader(AzCommandsLoader):
@@ -60,3 +54,17 @@ class AzureScriptCommandsLoader(AzCommandsLoader):
             c.argument('output', options_list=['--output-file', '-of'], help='Output file to be generated.')           
             
 COMMAND_LOADER_CLS = AzureScriptCommandsLoader
+
+# Used to debug from VS Code only
+if (__name__ == "__main__"):
+    script = sys.argv[1]
+    target = "az"
+    output = None
+
+    if len(sys.argv) >= 3: 
+        target = sys.argv[2]
+    
+    if len(sys.argv) >= 4:
+        output = sys.argv[3]
+        
+    run_script(script, target, output)

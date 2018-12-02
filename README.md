@@ -5,7 +5,7 @@ In order to have a near zero learning curve, and to leverage everything you alre
 
 It will significantly reduce the amount of custom code you need to write to execute AZ CLI commands and to create shell script to deploy your Azure resources.
 
-Read more about Azure Script [here](#TODO): 
+Read more about Azure Script [here](#TODO).
 
 [![Build Status](https://dev.azure.com/epicstuff/AZ%20CLI%20Script/_apis/build/status/Build)](https://dev.azure.com/epicstuff/AZ%20CLI%20Script/_build/latest?definitionId=27)
 
@@ -93,17 +93,17 @@ More will come in near future, stay tuned.
 
 ## Install
 
-Azure Script has been integrated into AZ CLI via Extensions. At the present time the extension is not yet available 
+Azure Script has been integrated into AZ CLI via Extensions. The extension has not been pushed in the official AZ CLI Extension repository yet, since is still under heavy development, but is nonetheless available by manually specifying the source. Just run this:
 	
 	az extension add --source https://aka.ms/azure_script-0.1.15-py2.py3-none-any.whl
 
-Done. You may want to take a look at the samples folder to get started with AZ CLI Script:
+and you're done. You may want to take a look at the samples folder to get started with AZ CLI Script:
 
 [Azure Script Samples](./samples)
 
 ## Usage
 
-Just run the `az script run` command, passing the script file you want to compile.
+Run the `az script run` command, passing the script file you want to compile.
 
 ```
 az script run --script <filename.azs> 

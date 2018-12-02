@@ -1,18 +1,21 @@
-location use 'eastus2';
+$PREFIX="dmnova2";
+$LOCATION="eastus2";
 
-group create 'NOVA';
+location use '${LOCATION}';
+
+group create 'NOVA2';
 
 #
 # Storage
 # 
-storage account create 'dmnova2storage' (
+storage account create '${PREFIX}storage' (
     sku: 'Standard_LRS'
 );
 
 #
 # HDInsight Spark
 #
-hdinsight create 'dmnova2hdi' (
+hdinsight create '${PREFIX}hdi' (
     size: 3,
     type: 'spark',
     http-user: 'damauri',
@@ -20,18 +23,18 @@ hdinsight create 'dmnova2hdi' (
     ssh-user: 'damauri',
     ssh-password: 'Passw0rd2018!',
     version: '3.6',
-    storage-default-container: "dmnova2hdi"
+    storage-default-container: "${PREFIX}hdi"
 );
 
 #
 # Event Hubs
 #
-eventhubs namespace create 'dmnova2ehs' (
+eventhubs namespace create '${PREFIX}ehs' (
 	sku: "Standard",
 	capacity: 2	
 );
 
-eventhubs eventhub create 'dmnova2eh1' (
+eventhubs eventhub create '${PREFIX}eh1' (
 	message-retention: 1,
 	partition-count: 2
 );
@@ -41,7 +44,7 @@ eventhubs eventhub consumer-group create 'nova';
 #
 # Cosmos DB
 #
-cosmosdb create 'dmnova2cosmosdb';
+cosmosdb create '${PREFIX}cosmosdb';
 
 cosmosdb database create 'nova';
 
@@ -54,19 +57,19 @@ cosmosdb collection create 'nova' (
 #
 # Key Vault
 #
-keyvault create 'kvnova';
+keyvault create '${PREFIX}keyvault';
 
 #
 # Service Fabric
 #
-sf cluster create 'sfnova' (
+sf cluster create '${PREFIX}fabric' (
     secret-identifier: "https://{KeyVault}.vault.azure.net:443/secrets/{MyCertificate}"
 );
 
 
 # App Service
 #
-appservice plan create 'dmnova2plan' (
+appservice plan create '${PREFIX}plan' (
 	number-of-workers: 4,
 	sku: "P1"
 );
@@ -74,7 +77,6 @@ appservice plan create 'dmnova2plan' (
 #
 # Application Insights
 #
-
-appinsights create 'dmnova2appinsights' (
+appinsights create '${PREFIX}appinsights' (
 	application-id: "Nova"
 );

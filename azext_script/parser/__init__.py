@@ -9,7 +9,7 @@ from knack.log import get_logger
 
 logger = get_logger(__name__)
 
-def azure_script_parse(script, target, output, debug):
+def azure_script_parse(script, target, output):
     logger.debug("loading grammar")
     location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))    
     with open(os.path.join(location, os.path.join('..', 'grammar', 'azsc.lark')), 'r') as f:
@@ -40,11 +40,11 @@ def azure_script_parse(script, target, output, debug):
     t.transform(tree)
     result = t.get_result()
 
-    if (debug==True):
-        logger.debug("context:")
-        ctx = t.get_context()
-        for c in ctx:
-            logger.debug("\t[%s]=%s", str(c), str(ctx[c]))
+    # if (debug==True):
+    #     logger.debug("context:")
+    #     ctx = t.get_context()
+    #     for c in ctx:
+    #         logger.debug("\t[%s]=%s", str(c), str(ctx[c]))
 
     logger.debug("done")   
 
