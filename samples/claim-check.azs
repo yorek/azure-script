@@ -1,44 +1,47 @@
-location use 'eastus';
+$PREFIX="pnpcc";
+$LOCATION="eastus";
+
+location use '${LOCATION}';
 
 group create 'PNP';
 
-storage account create 'pnpccstorage'
+storage account create '${PREFIX}storage'
 (
     sku: 'Standard_LRS',
 	kind: 'StorageV2'
 );
 
-eventgrid topic create 'pnpcceventgrid';
+eventgrid topic create '${PREFIX}eventgrid';
 
-appservice plan create 'pnpccplan' (
+appservice plan create '${PREFIX}plan' (
 	number-of-workers: 1,
 	sku: "S1"
 );
 
-functionapp create 'pnpccfunctionapp';
+functionapp create '${PREFIX}functionapp';
 
 functionapp deployment source config-zip (
 	src: "sample-1-bin.zip"
 );
 
-appinsights create 'pnpccfunctionappinsights' (
+appinsights create '${PREFIX}functionappinsights' (
 	application-id: "function"
 );
 
-$APPINSIGHTS_KEY = appinsights key list 'pnpccfunctionappinsights' (
+$APPINSIGHTS_KEY = appinsights key list '${PREFIX}functionappinsights' (
 	query: "properties.InstrumentationKey"
 );
 
-functionapp config appsettings set 'pnpccfunctionapp' (
+functionapp config appsettings set '${PREFIX}functionapp' (
 	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
 );
 
-$RID = storage account show 'pnpccstorage' (
+$RID = storage account show '${PREFIX}storage' (
     query: "id"
 );
 
 eventgrid event-subscription create 'function' (
-    endpoint: 'https://pnpccfunctionapp.azurewebsites.net/api/ClaimCheck',
+    endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck',
     endpoint-type: 'webhook',
     resource-id: '$RID'
 );
