@@ -10,43 +10,48 @@ from knack.log import get_logger
 logger = get_logger(__name__)
 
 def azure_script_parse(script, target, output):
-    logger.debug("loading grammar")
+    logger.debug("Loading grammar")    
     location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))    
-    with open(os.path.join(location, os.path.join('..', 'grammar', 'azsc.lark')), 'r') as f:
-        grammar = f.read()
+    grammar_location = os.path.join(location, os.path.join('..', 'grammar', 'azsc.lark'))
+    logger.debug("Grammar: {0}".format(grammar_location))
+    try:
+        with open(grammar_location, 'r') as f:
+            grammar = f.read()
+    except IOError:
+        error_message = "Grammar '{0}' file not found".format(grammar_location)
+        logger.error(error_message)
+        raise(Exception(error_message))       
 
-    logger.debug("loading script file")
+    logger.debug("Loading script file")
     try:
         with open(script, 'r') as f:
             text = f.read()
     except IOError:
-        error_message = "script {0} file not found".format(script)
+        error_message = "Script '{0}' file not found".format(script)
         logger.error(error_message)
-        return "ERROR: " + error_message
+        raise(Exception(error_message))   
 
-    logger.debug("setting up parser")
+    logger.debug("Setting up parser")
     lark = Lark(grammar)
 
-    logger.debug("generating parse tree")
+    logger.debug("Generating parse tree")
     tree = lark.parse(text)
 
-    logger.debug("parse tree:\n" + tree.pretty())
+    logger.debug("Parse tree:\n" + tree.pretty())
 
-    logger.debug("importing parse tree transformer")
+    logger.debug("Importing parse tree transformer")
     t = get_transformer(target)
 
-    logger.debug("compiling")
-    #t = ScriptTransformer(target)
+    logger.debug("Transforming")
     t.transform(tree)
     result = t.get_result()
 
-    # if (debug==True):
-    #     logger.debug("context:")
-    #     ctx = t.get_context()
-    #     for c in ctx:
-    #         logger.debug("\t[%s]=%s", str(c), str(ctx[c]))
+    logger.debug("Context:")
+    ctx = t.get_context()
+    for c in ctx:
+        logger.debug("\t[%s]=%s", str(c), str(ctx[c]))
 
-    logger.debug("done")   
+    logger.debug("Done")   
 
     try:
         if (output is not None):
@@ -55,7 +60,8 @@ def azure_script_parse(script, target, output):
                 f.close()
                 result = ""                
     except OSError:
-        logger.exception("unable to write to output file")
-        sys.exit("unable to write to output file")
-
+        error_message="unable to write to output file"
+        logger.exception(error_message)
+        raise(Exception(error_message))   
+        
     return result

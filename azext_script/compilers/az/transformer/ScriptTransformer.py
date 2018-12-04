@@ -3,18 +3,17 @@ from __future__ import absolute_import
 from lark import Transformer, Tree
 from lark.lexer import Token
 from azext_script.compilers.HandlerManager import HandlerManager
-from .TranspilationResult import AZCLICommand, EchoCommand, CommandResult, ExportCommand
+from .TranspilationResult import AZCLICommand, CommandResult, ExportCommand, EmptyCommand
+from knack.log import get_logger
+
+logger = get_logger(__name__)
 
 class ScriptTransformer(Transformer):
 
     __handler_manager = None
-    __execute_result = None
-    __assign_to = None
-    __inner_command = None
     __target = "az"
 
-    __result = u""
-    __instructions = []
+    __result = ""
 
     def  __init__(self, target):
         self.__target = target
@@ -66,6 +65,7 @@ class ScriptTransformer(Transformer):
         k = ' '.join(items[0:-1])
         v = items[-1]
         self.__handler_manager.set_context(k, v)
+        return EmptyCommand()
 
     def execute(self, items):                
         name, objects, params = self.__get_name_objects_params(items)
@@ -75,42 +75,23 @@ class ScriptTransformer(Transformer):
         handler = self.__handler_manager.get_handler(resources, action, name, params)
         result = handler.execute()       
 
-        if isinstance(result, CommandResult):
-            self.__execute_result = result
-        else:
+        if not isinstance(result, CommandResult):
             raise(Exception("Transpilation result is an unexpected type: {0}".format(type(result))))
-        #self.__cmd += result
-        #return items
+
+        return result
 
     def variable(self, items):        
-        self.__assign_to = items[0]
         return ExportCommand(items[0], None)
 
     def instruction(self, items):          
-        #print(items)
-
         if isinstance(items[0], ExportCommand):
-            self.__assign_to = None
             items[0].value = items[1]
-            self.__instructions.append(items[0])
-            return 
-
-        if self.__execute_result is None:
-            return
         
-        if (self.__target == "azsh"):
-            src = self.__execute_result.source
-            message = "{0}: {1} {2}".format(src.action, src.get_full_resource_name(), src.name or '')           
-            self.__instructions.append(EchoCommand(message))
-
-        if self.__assign_to is not None:
-            self.__execute_result.assign_to = self.__assign_to
-            self.__assign_to = None
-
-        self.__instructions.append(self.__execute_result)
-        return items
+        return items[0]
 
     def start(self, items):
+        print items
+        self.__result = ""
         header = """
 #!/bin/bash
 set -e
@@ -130,15 +111,19 @@ trap on_error ERR
 
 rm azcli-execution.log -f
 
-        \n"""
+"""
+        logger.debug("Target: {0}".format(self.__target))
 
-        # if self.__target == "azsh":
-        #     self.__result = header + self.__result
+        if self.__target == "azsh":
+            self.__result += header
 
-        for i in self.__instructions:
+        for i in items:            
+            i.target = self.__target
             self.__result += str(i)
             self.__result += "\n"
-                        
+        
+        self.__result += "echo \"done\"\n"
+
     def get_result(self):
         return self.__result.strip()
 
