@@ -36,7 +36,7 @@ class AZCLICommand(CommandResult):
             if (self.target == "azsh"):
                 result += self.command + " -o json >> azcli-execution.log"                
             else:
-                result += self.command + " -o json"            
+                result += self.command + " -o table"            
         
         if self.wrapper is not None:
             result += self.wrapper.replace("@cmd", self.command) 
