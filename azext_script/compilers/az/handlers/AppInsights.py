@@ -20,15 +20,20 @@ class AppInsightsHandler(GenericHandler):
             self.add_context_parameter("resource-group", "group")
             self.add_context_parameter("location", "location")
 
+        if (self.action == "show"):
+            self.derive_name_from_context("appinsights")    
+
         if (self.action == "list"):
             self.action = "show"
+            self.derive_name_from_context("appinsights")    
             self.add_context_parameter("resource-group", "group")
+
 
         self.add_parameter("resource-type", "Microsoft.Insights/components")
 
         cmd = super(AppInsightsHandler, self).execute()
 
-        self.save_to_context()
+        self.save_to_context(self.azure_object)
 
         return cmd
 

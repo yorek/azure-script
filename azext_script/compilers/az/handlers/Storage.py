@@ -21,6 +21,12 @@ class StorageHandler(GenericHandler):
         if (self.action == "create"):
             self.add_context_parameter("location", "location")
 
+        if (self.action == "show"):
+            self.derive_name_from_context("storage account")    
+
+        if (self.action == "list"):
+            self.derive_name_from_context("storage account")    
+
         cmd = super(StorageHandler, self).execute()
 
         self.save_to_context()
