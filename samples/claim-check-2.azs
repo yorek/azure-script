@@ -1,10 +1,11 @@
-# Also names, when not using CREATE action, are inferred by active context
+$PREFIX="pnpcc";
+$LOCATION="eastus";
 
-location use 'eastus';
+location use '${LOCATION}';
 
 group create 'PNP';
 
-storage account create 'pnpccstorage'
+storage account create '${PREFIX}storage'
 (
     sku: 'Standard_LRS',
 	kind: 'StorageV2'
@@ -14,7 +15,7 @@ $RID = storage account show (
     query: "id"
 );
 
-appinsights create 'pnpccfunctionappinsights' (
+appinsights create '${PREFIX}functionappinsights' (
 	application-id: "function"
 );
 
@@ -22,12 +23,13 @@ $APPINSIGHTS_KEY = appinsights key list (
 	query: "properties.InstrumentationKey"
 );
 
-appservice plan create 'pnpccplan' (
+# Do not createor use a service plan if you want to use a consumption plan
+appservice plan create '${PREFIX}plan' (
 	number-of-workers: 1,
 	sku: "S1"
 );
 
-functionapp create 'pnpccfunctionapp';
+functionapp create '${PREFIX}functionapp';
 
 functionapp deployment source config-zip (
 	src: "sample-1-bin.zip"
@@ -37,10 +39,10 @@ functionapp config appsettings set (
 	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
 );
 
-eventgrid topic create 'pnpcceventgrid';
+eventgrid topic create '${PREFIX}eventgrid';
 
-eventgrid event-subscription create 'storage-function' (
-    endpoint: 'https://pnpccfunctionapp.azurewebsites.net/api/ClaimCheck',
+eventgrid event-subscription create 'function' (
+    endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck',
     endpoint-type: 'webhook',
     resource-id: '$RID'
 );
