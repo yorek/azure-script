@@ -89,8 +89,7 @@ class ScriptTransformer(Transformer):
         
         return items[0]
 
-    def start(self, items):
-        print items
+    def start(self, items):        
         self.__result = ""
         header = """
 #!/bin/bash
