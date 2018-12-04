@@ -54,6 +54,7 @@ class ExportCommand(CommandResult):
     def __str__(self):
         if isinstance(self.value, AZCLICommand):
             self.value.assign_to = self.name
+            self.value.target = self.target
             return str(self.value)
         else:
             return 'export {0}="{1}"'.format(self.name, self.value)           
