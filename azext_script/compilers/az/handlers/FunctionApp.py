@@ -19,7 +19,7 @@ class FunctionAppHandler(GenericHandler):
 
             self.add_context_parameter("storage-account", "storage account")
 
-        if fqn == "functionapp deployment source" and self.action == "config-zip":
+        if self.action != "create":
            self.derive_name_from_context("functionapp")    
 
         cmd = super(FunctionAppHandler, self).execute()
