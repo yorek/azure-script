@@ -36,6 +36,15 @@
                     "context": "group"
                 }
             ]
+        },
+        {
+            "azure_object": "storage queue",
+            "context_parameters": [                
+                {
+                    "parameter": "account-name",
+                    "context": "storage account"
+                }
+            ]
         }
     ]
 }
