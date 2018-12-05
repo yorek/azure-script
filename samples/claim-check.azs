@@ -11,8 +11,19 @@ storage account create '${PREFIX}storage'
 	kind: 'StorageV2'
 );
 
-eventgrid topic create '${PREFIX}eventgrid';
+$RID = storage account show (
+    query: "id"
+);
 
+appinsights create '${PREFIX}functionappinsights' (
+	application-id: "function"
+);
+
+$APPINSIGHTS_KEY = appinsights key list (
+	query: "properties.InstrumentationKey"
+);
+
+# Do not create or use a service plan if you want to use a consumption plan
 appservice plan create '${PREFIX}plan' (
 	number-of-workers: 1,
 	sku: "S1"
@@ -24,21 +35,11 @@ functionapp deployment source config-zip (
 	src: "sample-1-bin.zip"
 );
 
-appinsights create '${PREFIX}functionappinsights' (
-	application-id: "function"
-);
-
-$APPINSIGHTS_KEY = appinsights key list '${PREFIX}functionappinsights' (
-	query: "properties.InstrumentationKey"
-);
-
-functionapp config appsettings set '${PREFIX}functionapp' (
+functionapp config appsettings set (
 	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
 );
 
-$RID = storage account show '${PREFIX}storage' (
-    query: "id"
-);
+eventgrid topic create '${PREFIX}eventgrid';
 
 eventgrid event-subscription create 'function' (
     endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck',

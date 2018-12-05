@@ -1,3 +1,7 @@
+#
+# Add also a Azure Storage Queue to allow custom app to process EventGrid messages
+#
+
 $PREFIX="pnpcc";
 $LOCATION="eastus";
 
@@ -15,6 +19,8 @@ $RID = storage account show (
     query: "id"
 );
 
+storage queue create '${PREFIX}queue';
+
 appinsights create '${PREFIX}functionappinsights' (
 	application-id: "function"
 );
@@ -23,7 +29,7 @@ $APPINSIGHTS_KEY = appinsights key list (
 	query: "properties.InstrumentationKey"
 );
 
-# Do not createor use a service plan if you want to use a consumption plan
+# Do not create or use a service plan if you want to use a consumption plan
 appservice plan create '${PREFIX}plan' (
 	number-of-workers: 1,
 	sku: "S1"
@@ -45,4 +51,10 @@ eventgrid event-subscription create 'function' (
     endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck',
     endpoint-type: 'webhook',
     resource-id: '$RID'
+);
+
+eventgrid event-subscription create 'queue' (
+    endpoint: '${RID}/queueservices/default/queues/${PREFIX}queue',
+    endpoint-type: 'storagequeue',
+	resource-id: '$RID'
 );
