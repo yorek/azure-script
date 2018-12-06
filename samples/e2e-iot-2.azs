@@ -23,6 +23,7 @@ sql server create 'dmiotsqlserver'
 	admin-password: "Passw0rd2018!"
 );
 
+# create database
 sql db create 'dmiotdb'
 (
 	edition: 'Basic'
