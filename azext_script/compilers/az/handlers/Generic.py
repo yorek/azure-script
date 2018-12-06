@@ -41,6 +41,7 @@ class GenericHandler(Handler):
 
     context_parameters = []
     required_parameters = []
+    
 
     def __init__(self, context, resources, action, name, params, target):
         super(GenericHandler, self).__init__(context, resources, action, name, params, target)
@@ -125,10 +126,33 @@ class GenericHandler(Handler):
                 self.name = self.context[context_name] 
 
     def add_context_parameter(self, parameter_name, context_name):
+        """Specify how to map a context value to a parameter value
+        
+        parameter_name: parameter name. eg: resource-group
+
+        context_name: context that holds the value to be passed to the paramter. eg: group        
+        """
         self.context_parameters.append(ContextParameter(parameter_name, context_name))
         
     def add_parameter(self, parameter_name, parameter_value):
         self.params[parameter_name] = parameter_value
+
+    def get_param_value(self, name):
+        """Return the value of the specified parameter. If parameter is not present, will look in the context, using the provided mapping
+
+        name: parameter name
+        """
+        if name in self.params:
+            return self.params[name]
+
+        context_name = [ cp.context for cp in self.context_parameters if cp.name == name ][0]
+
+        if context_name is not None:
+            return self.context[context_name]
+        else:    
+            message = "Missing '{0}' in parameters or context".format(name)
+            raise(Exception(message))
+
 
     def set_required_parameter(self, parameters):
         """Mark parameters as mandatory
