@@ -1,0 +1,29 @@
+#
+# Test file
+#
+
+# set location
+location use 'eastus';
+
+# create resource group
+group create 'dmiottest';
+
+# create iot hub 
+iot hub create 'dmiothubtest' (
+	sku: "F1" 
+);
+
+# create iot hub device
+iot hub device-identity create 'mxchip';
+
+# create sql server
+sql server create 'dmiotsqlserver'
+(
+	admin-user: "damauri",
+	admin-password: "Passw0rd2018!"
+);
+
+sql db create 'dmiotdb'
+(
+	edition: 'Basic'
+);
