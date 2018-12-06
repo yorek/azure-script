@@ -26,21 +26,24 @@ class AZCLICommand(CommandResult):
 
     def __str__(self):
         result = ""
-        
+        command = ""
+
         if (self.target == "azsh"):            
             result += "echo \"{0}: {1} {2}\"\n".format(self.source.action, self.source.get_full_resource_name(), self.source.name or '')        
 
         if self.assign_to is not None:
-            result += "export {0}=$({1} -o tsv)".format(self.assign_to, self.command)
+            command += "export {0}=$({1} -o tsv)".format(self.assign_to, self.command)
         else:
             if (self.target == "azsh"):
-                result += self.command + " -o json >> azcli-execution.log"                
+                command += self.command + " -o json >> azcli-execution.log"                
             else:
-                result += self.command + " -o table"            
+                command += self.command + " -o table"            
         
         if self.wrapper is not None:
-            result += self.wrapper.replace("@cmd", self.command) 
+            command = self.wrapper.replace("@cmd", self.command) 
         
+        result += command
+
         return result + "\n"
 
 class ExportCommand(CommandResult):
