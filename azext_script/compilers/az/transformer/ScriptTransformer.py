@@ -118,8 +118,10 @@ rm azcli-execution.log -f
 
         for i in items:            
             i.target = self.__target
-            self.__result += str(i)
-            self.__result += "\n"
+            command = str(i)
+            if command != "":
+                self.__result += str(i)
+                self.__result += "\n"
         
         self.__result += "echo \"done\"\n"
 
