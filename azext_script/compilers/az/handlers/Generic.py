@@ -8,6 +8,17 @@ from knack.log import get_logger
 
 logger = get_logger(__name__)
 
+class Parameter:
+    value = None
+    omit_quotes = False
+
+    def __init__(self, value, omit_quotes = False):
+        self.value = value    
+        self.omit_quotes = omit_quotes
+
+    def __str__(self):
+        return self.value
+
 class ContextParameter:
     name = None
     context = None
@@ -87,15 +98,23 @@ class GenericHandler(Handler):
             ordered_params = collections.OrderedDict(sorted(self.params.items()))
             for param in ordered_params:
                 value = self.params[param]
-                quote = '"'
+                quote = '"'                
 
-                if '"' in value:
-                    quote = "'"
+                if isinstance(value, Parameter):
+                    if value.omit_quotes == True:
+                        quote = ""
+                else:
+                    if '"' in value:
+                        quote = "'"
 
-                if "'" in value:
-                    quote = '"'
+                    if "'" in value:
+                        quote = '"'
 
-                value = quote + value + quote
+                if isinstance(value, Parameter):
+                    if value.omit_quotes == True:
+                        quote = ""
+
+                value = quote + str(value) + quote
 
                 cmd += u" --{0} {1}".format(param, value)
 
