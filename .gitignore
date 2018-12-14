@@ -347,3 +347,4 @@ htmlcov/
 .vscode/settings.json
 coverage.xml
 testresults.xml
+output/
