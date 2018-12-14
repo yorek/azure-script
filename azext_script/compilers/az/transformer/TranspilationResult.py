@@ -44,7 +44,7 @@ class AZCLICommand(CommandResult):
         
         result += command
 
-        return result + "\n"
+        return "\n" + result
 
 class ExportCommand(CommandResult):
     name = ""

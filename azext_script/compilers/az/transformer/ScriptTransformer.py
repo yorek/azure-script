@@ -123,7 +123,7 @@ rm azcli-execution.log -f
                 self.__result += str(i)
                 self.__result += "\n"
         
-        self.__result += "echo \"done\"\n"
+        self.__result += "\necho \"done\""
 
     def get_result(self):
         return self.__result.strip()
