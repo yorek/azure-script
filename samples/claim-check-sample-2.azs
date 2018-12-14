@@ -85,14 +85,14 @@ eventgrid topic create '${PREFIX}eventgrid';
 
 eventgrid event-subscription create 'function' (
     source-resource-id: '${SID}',
-	endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck',
+	included-event-types: "Microsoft.Storage.BlobCreated",
     endpoint-type: 'webhook',
-	included-event-types: "Microsoft.Storage.BlobCreated" 
+	endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck'
 );
 
 eventgrid event-subscription create 'eventhub' (  
 	source-resource-id: '${SID}',
+	included-event-types: "Microsoft.Storage.BlobCreated",
   	endpoint-type: "eventhub",
-	endpoint: "${EEID}",
-	included-event-types: "Microsoft.Storage.BlobCreated" 
+	endpoint: "${EEID}"
 );

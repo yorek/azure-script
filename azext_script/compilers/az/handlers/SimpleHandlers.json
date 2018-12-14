@@ -45,6 +45,32 @@
                     "context": "storage account"
                 }
             ]
+        },
+        {
+            "azure_object": "storage container",
+            "context_parameters": [                
+                {
+                    "parameter": "account-name",
+                    "context": "storage account"
+                }
+            ]
+        },
+        {
+            "azure_object": "eventhubs eventhub authorization-rule",
+            "context_parameters": [                
+                {
+                    "parameter": "resource-group",
+                    "context": "group"
+                },
+                {
+                    "parameter": "namespace-name",
+                    "context": "eventhubs namespace"
+                },
+                {
+                    "parameter": "eventhub-name",
+                    "context": "eventhubs eventhub"
+                }
+            ]
         }
     ]
 }
