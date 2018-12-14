@@ -2,9 +2,9 @@ location use 'eastus';
 
 group create 'dmsample';
 
-databricks service create 'my-databricks';
+databricks workspace create 'mydatabricks';
 
-databricks clusters create 'my-cluster'
+databricks clusters create 'mycluster'
 (
     mode: 'Standard',
     runtime: '4.3',

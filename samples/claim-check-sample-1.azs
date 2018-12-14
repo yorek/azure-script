@@ -1,9 +1,14 @@
-$PREFIX="pnpcc";
+#
+# Claim-Check Pattern Sample 1
+#
+
+$RG="pnp";
+$PREFIX="${RG}cc";
 $LOCATION="eastus";
 
 location use '${LOCATION}';
 
-group create 'PNP';
+group create '${RG}';
 
 storage account create '${PREFIX}storage'
 (
@@ -11,9 +16,11 @@ storage account create '${PREFIX}storage'
 	kind: 'StorageV2'
 );
 
-$RID = storage account show (
+$SID = storage account show (
     query: "id"
 );
+
+storage queue create '${PREFIX}queue';
 
 appinsights create '${PREFIX}functionappinsights' (
 	application-id: "function"
@@ -42,7 +49,15 @@ functionapp config appsettings set (
 eventgrid topic create '${PREFIX}eventgrid';
 
 eventgrid event-subscription create 'function' (
-    endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck',
+    source-resource-id: '${SID}',
+	endpoint: 'https://${PREFIX}functionapp.azurewebsites.net/api/ClaimCheck',
     endpoint-type: 'webhook',
-    resource-id: '$RID'
+	included-event-types: "Microsoft.Storage.BlobCreated" 
+);
+
+eventgrid event-subscription create 'queue' (  
+	source-resource-id: '${SID}',
+  	endpoint-type: "storagequeue",
+	endpoint: "${SID}/queueservices/default/queues/${PREFIX}queue",
+	included-event-types: "Microsoft.Storage.BlobCreated" 
 );

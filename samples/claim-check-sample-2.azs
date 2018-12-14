@@ -1,18 +1,14 @@
 #
-# Add also a Azure Storage Queue to allow custom app to process EventGrid messages
+# Claim-Check Pattern Sample 2
 #
 
 $RG="pnp";
-$PREFIX="${RG}cc";
+$PREFIX="${RG}cc2";
 $LOCATION="eastus";
 
 location use '${LOCATION}';
 
 group create '${RG}';
-
-# TODO: add option to remove extension at the end of the script if not already there?
-# TODO: add option to update an extension if already existing?
-extension add 'eventgrid';
 
 storage account create '${PREFIX}storage'
 (
@@ -24,7 +20,19 @@ $SID = storage account show (
     query: "id"
 );
 
-storage queue create '${PREFIX}queue';
+storage account create '${PREFIX}capture'
+(
+    sku: 'Standard_LRS',
+	kind: 'StorageV2'
+);
+
+$CID = storage account show (
+    query: "id"
+);
+
+storage container create 'eventhubs';
+
+storage account use '${PREFIX}storage';
 
 appinsights create '${PREFIX}functionappinsights' (
 	application-id: "function"
@@ -43,11 +51,34 @@ appservice plan create '${PREFIX}plan' (
 functionapp create '${PREFIX}functionapp';
 
 functionapp deployment source config-zip (
-	src: "sample-1-bin.zip"
+	src: "./bin/sample-2-bin.zip"
 );
 
 functionapp config appsettings set (
 	settings: "APPINSIGHTS_INSTRUMENTATIONKEY=$APPINSIGHTS_KEY"
+);
+
+eventhubs namespace create '${PREFIX}eventhubs' (
+	sku: "Standard",
+	capacity: 1
+);
+
+eventhubs eventhub create '${PREFIX}eventhub' (
+	partition-count: 1,
+	enable-capture: "true",
+	capture-interval: 60,
+	destination-name: "EventHubArchive.AzureBlockBlob",	
+	archive-name-format: "{Namespace}/{EventHub}/P{PartitionId}Y{Year}M{Month}D{Day}h{Hour}m{Minute}s{Second}",
+	blob-container: 'eventhubs',
+	storage-account: "${CID}"
+);
+
+eventhubs eventhub authorization-rule create 'Listen' (
+	rights: 'Listen'
+);
+
+$EEID = eventhubs eventhub show (
+    query: "id"
 );
 
 eventgrid topic create '${PREFIX}eventgrid';
@@ -59,9 +90,9 @@ eventgrid event-subscription create 'function' (
 	included-event-types: "Microsoft.Storage.BlobCreated" 
 );
 
-eventgrid event-subscription create 'queue' (  
+eventgrid event-subscription create 'eventhub' (  
 	source-resource-id: '${SID}',
-  	endpoint-type: "storagequeue",
-	endpoint: "${SID}/queueservices/default/queues/${PREFIX}queue",
+  	endpoint-type: "eventhub",
+	endpoint: "${EEID}",
 	included-event-types: "Microsoft.Storage.BlobCreated" 
 );
