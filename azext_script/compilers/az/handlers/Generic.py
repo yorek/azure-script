@@ -41,12 +41,17 @@ class GenericHandler(Handler):
 
     context_parameters = []
     required_parameters = []
-    
+    simple_handlers = None
 
     def __init__(self, context, resources, action, name, params, target):
         super(GenericHandler, self).__init__(context, resources, action, name, params, target)
         self.context_parameters = []
         self.required_parameters = []
+
+        # Load simple handlers json
+        simple_handlers_location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))    
+        with open(os.path.join(simple_handlers_location, './simple-handlers/SimpleHandlers.json'), 'r') as f:
+            self.simple_handlers = json.load(f)
 
     def execute(self):
         fqn = self.get_full_resource_name()
@@ -179,26 +184,23 @@ class GenericHandler(Handler):
     def _load_from_json(self):
         fqn = self.get_full_resource_name()
 
-        location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))    
-        with open(os.path.join(location, 'SimpleHandlers.json'), 'r') as f:
-            jh = json.load(f)
-            for h in jh["handlers"]:
-                # Just for now. Same logic used for leading the most specialized
-                # handler must be used also here. 
-                # TODO: apply only the most specific handler configuration 
-                # JSON should be loaded as a "static/class" method
-                if fqn.startswith(h["azure_object"]):
-                    logger.debug("Found JSON Simple Handler defintion for resource '{0}'".format(fqn))  
-                    if "context_parameters" in h:
-                        for cp in h["context_parameters"]:
-                            self.add_context_parameter(cp["parameter"], cp["context"])  
-                    if "actions" in h:
-                        for a in h["actions"]: 
-                            if a["action"] == self.action:
-                                logger.debug("Found action {0}".format(self.action))
-                                if "context_parameters" in a:
-                                    for cp in a["context_parameters"]:
-                                        self.add_context_parameter(cp["parameter"], cp["context"])  
-                                if "required_parameters" in a:
-                                    for rp in a["required_parameters"]:
-                                        self.set_required_parameter(rp)
+        for h in self.simple_handlers["handlers"]:
+            # Just for now. Same logic used for leading the most specialized
+            # handler must be used also here. 
+            # TODO: apply only the most specific handler configuration 
+            # JSON should be loaded as a "static/class" method
+            if fqn.startswith(h["azure_object"]):
+                logger.debug("Found JSON Simple Handler defintion for resource '{0}'".format(fqn))  
+                if "context_parameters" in h:
+                    for cp in h["context_parameters"]:
+                        self.add_context_parameter(cp["parameter"], cp["context"])  
+                if "actions" in h:
+                    for a in h["actions"]: 
+                        if a["action"] == self.action:
+                            logger.debug("Found action {0}".format(self.action))
+                            if "context_parameters" in a:
+                                for cp in a["context_parameters"]:
+                                    self.add_context_parameter(cp["parameter"], cp["context"])  
+                            if "required_parameters" in a:
+                                for rp in a["required_parameters"]:
+                                    self.set_required_parameter(rp)

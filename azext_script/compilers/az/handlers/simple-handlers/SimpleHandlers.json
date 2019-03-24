@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/yorek/azure-script/master/azext_script/compilers/az/handlers/SimpleHandlers.schema.json",
-    "handlers": [ 
+    "handlers": [     
         {
             "azure_object": "group",
             "actions":
@@ -15,7 +15,7 @@
                     ]
                 }
             ]            
-        },
+        },    
         {
             "azure_object": "sf cluster",
             "context_parameters": [

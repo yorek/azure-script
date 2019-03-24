@@ -1,0 +1,20 @@
+{
+    "$schema": "https://raw.githubusercontent.com/yorek/azure-script/master/azext_script/compilers/az/handlers/SimpleHandlers.schema.json",
+    "handlers": [ 
+        {
+            "azure_object": "group",
+            "actions":
+            [
+                {
+                    "action": "create",
+                    "context_parameters": [
+                        {
+                            "parameter": "location",
+                            "context": "location"
+                        }
+                    ]
+                }
+            ]            
+        }
+    ]
+}
