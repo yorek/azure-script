@@ -70,7 +70,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/yorek/azure-script",
     packages=find_packages(),
-    package_data={'azext_script': ['grammar/*.lark']},
+    package_data={'azext_script': ['grammar/*.lark', 'compilers/az/handlers/simple-handlers/*.json']},
     classifiers=CLASSIFIERS,
     install_requires=DEPENDENCIES        
 )
