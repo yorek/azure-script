@@ -1,0 +1,17 @@
+location use 'eastus';
+
+group create 'dmtotal';
+
+cosmosdb create 'total';
+
+cosmosdb database create 'total';
+
+cosmosdb collection create 'rawdata' (
+	partition-key-path: "/id",
+	throughput: 20000
+);
+
+cosmosdb collection create 'views' (
+	partition-key-path: "/id",
+	throughput: 20000
+);

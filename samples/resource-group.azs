@@ -1,0 +1,3 @@
+location use 'eastus';
+
+group create 'dmtest1';

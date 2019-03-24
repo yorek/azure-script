@@ -65,7 +65,7 @@ class GenericHandler(Handler):
         #print("-> CONTEXT: {0}".format(self.context))
         #print("-> PARAM_CONTEXT: {0}".format(self.context_parameters))
 
-        # push parameters from valus available in the context
+        # push parameters from values available in the context
         for cp in self.context_parameters:
             self._set_param_from_context(cp.name, cp.context)            
         
@@ -189,13 +189,16 @@ class GenericHandler(Handler):
                 # JSON should be loaded as a "static/class" method
                 if fqn.startswith(h["azure_object"]):
                     logger.debug("Found JSON Simple Handler defintion for resource '{0}'".format(fqn))  
-                    for cp in h["context_parameters"]:
-                        self.add_context_parameter(cp["parameter"], cp["context"])  
+                    if "context_parameters" in h:
+                        for cp in h["context_parameters"]:
+                            self.add_context_parameter(cp["parameter"], cp["context"])  
                     if "actions" in h:
                         for a in h["actions"]: 
                             if a["action"] == self.action:
                                 logger.debug("Found action {0}".format(self.action))
-                                for cp in a["context_parameters"]:
-                                    self.add_context_parameter(cp["parameter"], cp["context"])  
-                                for rp in a["required_parameters"]:
-                                    self.set_required_parameter(rp)
+                                if "context_parameters" in a:
+                                    for cp in a["context_parameters"]:
+                                        self.add_context_parameter(cp["parameter"], cp["context"])  
+                                if "required_parameters" in a:
+                                    for rp in a["required_parameters"]:
+                                        self.set_required_parameter(rp)

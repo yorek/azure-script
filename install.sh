@@ -1,4 +1,4 @@
-rm -rf /Users/damauri/.azure/devcliextension/azure-script
+rm -rf ~/.azure/devcliextension/azure-script
 
 pip install --upgrade --target ~/.azure/devcliextension/azure-script .
 
