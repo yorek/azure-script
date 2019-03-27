@@ -1,3 +1,5 @@
+#!/bin/sh
+
 rm -rf ~/.azure/devcliextension/azure-script
 
 pip install --upgrade --target ~/.azure/devcliextension/azure-script .
