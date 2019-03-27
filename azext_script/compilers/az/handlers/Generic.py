@@ -51,10 +51,12 @@ class GenericHandler(Handler):
 
         # Load simple handlers json
         self.simple_handlers["handlers"] = []
-        simple_handlers_location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))            
+        simple_handlers_location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))   
+        logger.debug("Looking from simple handlers definition in '{0}'".format(simple_handlers_location))          
         for f in glob.glob(os.path.join(simple_handlers_location, './simple-handlers/*.json')):
             if os.path.basename(f) <> 'SimpleHandlers.schema.json':
-                with open(f, 'r') as sc:
+                logger.debug("Found simple handler definition '{0}'. Adding to dictionary.".format(os.path.basename(f)))
+                with open(f, 'r') as sc:                    
                     lsd = json.load(sc)
                     for h in lsd["handlers"]:
                         self.simple_handlers["handlers"].append(h)
