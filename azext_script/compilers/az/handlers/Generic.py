@@ -1,6 +1,7 @@
 import sys
 import collections
 import json
+import glob
 import os
 from azext_script.compilers.Handler import Handler
 from azext_script.compilers.az.transformer.TranspilationResult import AZCLICommand
@@ -41,7 +42,7 @@ class GenericHandler(Handler):
 
     context_parameters = []
     required_parameters = []
-    simple_handlers = None
+    simple_handlers = {}
 
     def __init__(self, context, resources, action, name, params, target):
         super(GenericHandler, self).__init__(context, resources, action, name, params, target)
@@ -49,9 +50,15 @@ class GenericHandler(Handler):
         self.required_parameters = []
 
         # Load simple handlers json
-        simple_handlers_location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))    
-        with open(os.path.join(simple_handlers_location, './simple-handlers/SimpleHandlers.json'), 'r') as f:
-            self.simple_handlers = json.load(f)
+        self.simple_handlers["handlers"] = []
+        simple_handlers_location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))            
+        for f in glob.glob(os.path.join(simple_handlers_location, './simple-handlers/*.json')):
+            if os.path.basename(f) <> 'SimpleHandlers.schema.json':
+                with open(f, 'r') as sc:
+                    lsd = json.load(sc)
+                    for h in lsd["handlers"]:
+                        self.simple_handlers["handlers"].append(h)
+                    
 
     def execute(self):
         fqn = self.get_full_resource_name()
