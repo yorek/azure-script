@@ -13,7 +13,7 @@ helps['script'] = """
     type: group
     short-summary: run Azure Script files.
     long-summary: |
-                  Review the extension doc  to maximize usage
+                  Review the extension documentation learn how to create Azure Script files
                   https://github.com/yorek/azure-script
 """
 
