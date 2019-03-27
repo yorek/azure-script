@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "azext_script.__init__",
             "console": "integratedTerminal",
-            "args": ["./samples/resource-group.azs", "azsh"]
+            "args": ["./samples/readme-sample.azs", "azsh"]
         }
     ]
 }
